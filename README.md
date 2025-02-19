@@ -2,6 +2,14 @@
 
 A Pet Adoption & Shelter Management Application
 
+## GitHub Repository Links
+
+| Repository | Link |
+|------------|------|
+| Furever Homes - Organisation Page | [https://github.com/Furever-Homes](https://github.com/Furever-Homes) |
+| Furever Homes - Full Stack Application | [https://github.com/Furever-Homes/T3A2-Part-B](https://github.com/Furever-Homes/T3A2-Part-B) |
+| Furever Homes - Deployed Website | TBC |
+
 ## Contents
 
 1) [What is "Furever Homes"?](#what-is-furever-homes)
