@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
+const petRoutes = require("./routes/petRoutes")
+
 const app = express();
 
 app.use(helmet());
@@ -14,5 +16,7 @@ app.get("/", (request, response) => {
         message: "Hello World!"
     });
 });
+
+app.use("/api/pets", petRoutes);
 
 module.exports = { app }
