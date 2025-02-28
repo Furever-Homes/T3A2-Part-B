@@ -1,19 +1,20 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar"; // Ensure Navbar is in components/
 
-import Home from "./pages/Home.jsx";
-import Explore from "./pages/Explore.jsx";
-import Profile from "./pages/Profile.jsx";
-import Adopt from "./pages/Adopt.jsx";
-import Favourites from "./pages/Favourites.jsx";
-import NotFound from "./pages/NotFound.jsx";
+import Home from "./pages/Home";
+import Explore from "./pages/Explore";
+import Profile from "./pages/Profile";
+import Adopt from "./pages/Adopt";
+import Favourites from "./pages/Favourites";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <Router>
-      {/* make the Navbar appear on all pages */}
+      {/* Navbar appears on all pages */}
       <Navbar />
 
       {/* Routes for the pages */}
@@ -23,7 +24,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/adopt" element={<Adopt />} />
         <Route path="/favourites" element={<Favourites />} />
-        <Route path="*" element={<NotFound />} /> {/* for 404 */}
+        <Route path="*" element={<NotFound />} /> {/* 404 page */}
       </Routes>
     </Router>
   );
