@@ -2,10 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
-
-const petRoutes = require("./routes/petRoutes")
-const authRoutes = require("./routes/authRoutes")
-
+const guestRoutes = require("./routes/guestRoutes")
 
 const app = express();
 
@@ -20,9 +17,6 @@ app.get("/", (request, response) => {
     });
 });
 
-
-app.use("/api/pets", petRoutes);
-app.use("/api/auth", authRoutes);
-
+app.use("/api/pets", guestRoutes);
 
 module.exports = { app }

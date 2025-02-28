@@ -30,9 +30,8 @@ const PetSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    shelter: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+    location: {
+        type: String,
         required: true
     },
     image: {
