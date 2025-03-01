@@ -27,6 +27,17 @@ async function submitApplication(request, response) {
     })
 }
 
+async function getAllApplications (request, response) {
+    if (!request.user.admin) {
+        return response.status(403)
+        .json({
+            message: "Only administrators are authorised to perform this operation"
+        });
+        
+        const applications = await Application.find().populate("user", "name email").populate("pet", "name species");
+        response.json(applications)
+    }
+}
 
 module.exports = {
     submitApplication
