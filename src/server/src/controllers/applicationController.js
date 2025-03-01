@@ -32,11 +32,10 @@ async function getAllApplications (request, response) {
         return response.status(403)
         .json({
             message: "Only administrators are authorised to perform this operation"
-        });
-        
+        })
+    }
         const applications = await Application.find().populate("user", "name email").populate("pet", "name species");
         response.json(applications)
-    }
 }
 
 module.exports = {
