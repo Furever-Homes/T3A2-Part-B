@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"]
     },
+    favourites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Pet"        
+    }],
     admin: {
         type: Boolean,
         default: false
