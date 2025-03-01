@@ -23,6 +23,11 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"]
+    },
+    admin: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 
