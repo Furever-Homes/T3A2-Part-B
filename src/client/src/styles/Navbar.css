@@ -1,52 +1,98 @@
+/* General Navbar Styles */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #8B5E3B; /* Brown color */
+  position: fixed;
+  width: 100vw; /* Full width */
+  height: 60px;
+  background-color: #8B5E3B; /* Brown */
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensures proper spacing */
+  padding: 0 20px;
+  z-index: 1000;
+  top: 0;
+  left: 0;
 }
 
-.logo {
+/* Align logo to center-left */
+.navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none;
   color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Keeps it vertically centered */
+  flex: 1; /* Allows spacing while keeping it to the left */
+}
+
+/* Mobile Logo - Stays at the Top */
+.mobile-logo {
+  display: none;
+  width: 100vw; /* Full width */
+  text-align: center;
+  background-color: #8B5E3B;
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  z-index: 1001;
 }
 
 .paw {
   color: #FFD700; /* Gold paw print */
 }
 
+/* Navigation Links */
 .nav-links {
   display: flex;
   gap: 20px;
+  flex: 1; /* Allows spacing while keeping items to the right */
+  justify-content: flex-end;
 }
 
 .nav-links a {
   text-decoration: none;
   color: white;
   font-weight: bold;
+  padding: 10px;
 }
 
-/* Mobile Navigation Bar */
+/* Mobile Responsive Styles */
 @media (max-width: 768px) {
   .navbar {
     position: fixed;
     bottom: 0;
-    width: 100%;
-    background-color: #8B5E3B;
-    display: flex;
+    top: auto;
+    width: 100vw; /* Full width */
+    height: 60px;
     justify-content: space-around;
-    padding: 10px 0;
+    padding: 0;
   }
 
   .nav-links {
+    width: 100%;
     display: flex;
-    gap: 10px;
+    justify-content: space-around;
   }
 
   .nav-links a {
-    font-size: 16px;
+    font-size: 18px;
+    padding: 15px;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Show Mobile Logo at the Top */
+  .mobile-logo {
+    display: block;
+  }
+
+  /* Hide Desktop Logo in Mobile View */
+  .navbar-logo {
+    display: none;
   }
 }

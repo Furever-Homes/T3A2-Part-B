@@ -4,13 +4,28 @@ import "../styles/Navbar.css";
 
 const Navbar = () => {
   return (
-    <nav className="navbar">
-      <Link to="/">Home</Link>
-      <Link to="/explore">Explore</Link>
-      <Link to="/profile">Profile</Link>
-      <Link to="/adopt">Adopt</Link>
-      <Link to="/favourites">Favourites</Link>
-    </nav>
+    <>
+      {/* Mobile-Only Logo - Stays at the Top */}
+      <div className="mobile-logo">
+        <Link to="/" className="logo">
+          Furever H<span className="paw">🐾</span>mes
+        </Link>
+      </div>
+
+      <nav className="navbar">
+        {/* Logo inside Navbar for Desktop */}
+        <Link to="/" className="logo navbar-logo">
+          Furever H<span className="paw">🐾</span>mes
+        </Link>
+
+        <div className="nav-links">
+          <Link to="/explore">Explore</Link>
+          <Link to="/favourites">Favourites</Link>
+          <Link to="/applications">Applications</Link>
+          <Link to="/profile">Profile</Link>
+        </div>
+      </nav>
+    </>
   );
 };
 
