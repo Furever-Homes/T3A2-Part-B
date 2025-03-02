@@ -71,10 +71,82 @@ async function deleteUserApplication(request, response) {
     }
 };
 
+async function approveApplication(request, response) {
+    try {
+        const applicationId = request.params.id;
+
+        const application = await Application.findById(applicationId);
+        if (!application) {
+            return response.status(404)
+            .json({
+                message: "Application not found"
+            });
+        }
+        if (application.status !== "Pending") {
+            return response.status(400)
+            .json({
+                message: "Application has already been processed"
+            });
+        }
+
+        application.status = "Approved";
+        await application.save();
+
+        response.status(200)
+        .json({
+            message: "Application approved successfully", application
+        })
+    } catch (error) {
+        response.status(500)
+        .json({
+            message: "Error occured while approving application", error: error.message
+        })
+    }
+};
+
+async function rejectApplication(request, response) {
+    try {
+        const applicationId = request.params.id;
+
+        const application = await Application.findById(applicationId);
+        if (!application) {
+            return response.status(404).json({ message: "Application not found" });
+        }
+
+        if (application.status !== "Pending") {
+            return response.status(400).json({ message: "Application has already been processed" });
+        }
+
+        application.status = "Rejected";
+        await application.save();
+
+        response.status(200).json({ message: "Application rejected successfully", application });
+    } catch (error) {
+        response.status(500).json({ message: "Error rejecting application", error: error.message });
+    }
+};
+
+async function deleteApplicationByAdmin(request, response) {
+    try {
+        const { applicationId } = request.params;
+
+        const application = await Application.findByIdAndDelete(applicationId);
+        if (!application) {
+            return response.status(404).json({ message: "Application not found" });
+        }
+
+        response.status(200).json({ message: "Application deleted successfully by admin" });
+    } catch (error) {
+        response.status(500).json({ message: "Error deleting application", error: error.message });
+    }
+};
 
 module.exports = {
     submitApplication,
     getAllApplications,
     getUserApplications,
-    deleteUserApplication
+    deleteUserApplication,
+    approveApplication,
+    rejectApplication,
+    deleteApplicationByAdmin
 }

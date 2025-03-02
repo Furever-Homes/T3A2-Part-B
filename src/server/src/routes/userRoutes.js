@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-
-const authMiddleware = require("../middlewares/authMiddleware");
 const { submitApplication, getUserApplications, deleteUserApplication } = require("../controllers/applicationController");
+const { validateToken } = require("../middlewares/authMiddleware");
 
-router.use(authMiddleware);
+router.use(validateToken);
 
 
 router.post("/applications/:petId", submitApplication);
-router.get("/applications", authMiddleware, getUserApplications)
-router.delete("/applications/:applicationId", authMiddleware, deleteUserApplication);
+router.get("/applications", validateToken, getUserApplications)
+router.delete("/applications/:applicationId", validateToken, deleteUserApplication);
 
 module.exports = router;
+
