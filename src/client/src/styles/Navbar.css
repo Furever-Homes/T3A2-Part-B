@@ -1,27 +1,52 @@
 .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #8B5E3B; /* Brown color */
+  color: white;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.paw {
+  color: #FFD700; /* Gold paw print */
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+/* Mobile Navigation Bar */
+@media (max-width: 768px) {
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #8B5E3B;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #ffcc00;
+    justify-content: space-around;
+    padding: 10px 0;
   }
-  
-  .navbar ul {
-    list-style: none;
+
+  .nav-links {
     display: flex;
-    gap: 20px;
+    gap: 10px;
   }
-  
-  .navbar ul li {
-    display: inline;
+
+  .nav-links a {
+    font-size: 16px;
   }
-  
-  .navbar ul li a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-  }
-  
-  .navbar ul li a:hover {
-    color: blue;
-  }
+}
