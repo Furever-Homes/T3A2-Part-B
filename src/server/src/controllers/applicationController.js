@@ -49,10 +49,32 @@ async function getUserApplications(request, response) {
     response.statu(200).json(applications)
 }
 
+async function deleteUserApplication(request, response) {
+    try {
+        const applicationId = request.params.id;
+
+        const application = await Application.findById(applicationId);
+
+        if (!application) {
+            return response.status(404).json({ message: "Application not found" });
+        }
+
+        if (application.user.toString() !== request.user.id) {
+            return response.status(403).json({ message: "You are not authorised to delete this application." });
+        }
+
+        await Application.findByIdAndDelete(applicationId);
+
+        response.status(200).json({ message: "Application deleted successfully" });
+    } catch (error) {
+        response.status(500).json({ message: "Error deleting application", error: error.message });
+    }
+};
 
 
 module.exports = {
     submitApplication,
     getAllApplications,
-    getUserApplications
+    getUserApplications,
+    deleteUserApplication
 }

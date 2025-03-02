@@ -2,17 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const { submitApplication, getUserApplications } = require("../controllers/applicationController");
+const { submitApplication, getUserApplications, deleteUserApplication } = require("../controllers/applicationController");
 
 router.use(authMiddleware);
 
 
 router.post("/applications/:petId", submitApplication);
-router.get("/user", authMiddleware, getUserApplications)
-
-
-router.delete("/applications/:applicationId", () => {
-    console.log("delete an application screen")
-});
+router.get("/applications", authMiddleware, getUserApplications)
+router.delete("/applications/:applicationId", authMiddleware, deleteUserApplication);
 
 module.exports = router;
