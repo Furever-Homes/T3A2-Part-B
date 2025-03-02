@@ -1,5 +1,5 @@
 const Application = require("../models/ApplicationModel");
-const Pet = require("../models/PetModel")
+const Pet = require("../models/PetModel");
 
 async function submitApplication(request, response) {
     const { petId, message } = request.body;
@@ -27,6 +27,7 @@ async function submitApplication(request, response) {
     })
 }
 
+// Get all open applications as an admin
 async function getAllApplications (request, response) {
     if (!request.user.admin) {
         return response.status(403)
@@ -38,6 +39,20 @@ async function getAllApplications (request, response) {
         response.json(applications)
 }
 
+async function getUserApplications(request, response) {
+    const applications = await Application.find({
+        user: request.user.id
+    })
+        .populate("pet", "name breed status")
+        .sort({ createdAt: -1 }); // Sorts by latest applications first
+
+    response.statu(200).json(applications)
+}
+
+
+
 module.exports = {
-    submitApplication
+    submitApplication,
+    getAllApplications,
+    getUserApplications
 }
