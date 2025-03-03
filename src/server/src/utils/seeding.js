@@ -1,15 +1,15 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const { dbConnect, dbDisconnect, dbDrop } = require("./database");
-const { UserModel } = require("./models/User");
-const { Pet } = require("./models/Pet");
+const { User } = require("../models/UserModel");
+const { Pet } = require("../models/PetModel");
 
 async function seed() {
     await dbConnect();
     console.log("Connected to the Database. Dropping existing data...");
 
     // Create Users
-    const user1 = new UserModel({
+    const user1 = new User({
         name: "John Doe",
         email: "johndoe@example.com",
         password: "abc123", // In real cases, hash this with bcrypt
@@ -17,7 +17,7 @@ async function seed() {
         favourites: []
     });
 
-    const user2 = new UserModel({
+    const user2 = new User({
         name: "Admin User",
         email: "admin@example.com",
         password: "abc123", // In real cases, hash this with bcrypt
