@@ -1,20 +1,26 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const { dbConnect, dbDisconnect, dbDrop } = require("./database");
+const { dbConnect, dbDisconnect } = require("./database");
 const { User } = require("../models/UserModel");
 const { Pet } = require("../models/PetModel");
+
+const PASSWORD = "abc123";
 
 
 async function seed() {
     await dbConnect();
     console.log("Connected to the Database. Dropping existing data...");
 
+    // Hash passwords
+    const hashedPassword = await bcrypt.hash(PASSWORD, 10);
+
     // Create Users
     const user1 = new User({
         name: "John Doe",
         email: "johndoe@example.com",
-        password: "abc123", // In real cases, hash this with bcrypt
+        password: hashedPassword,
         admin: false,
         favourites: []
     });
@@ -22,7 +28,7 @@ async function seed() {
     const user2 = new User({
         name: "Admin User",
         email: "admin@example.com",
-        password: "abc123", // In real cases, hash this with bcrypt
+        password: hashedPassword,
         admin: true,
         favourites: []
     });
