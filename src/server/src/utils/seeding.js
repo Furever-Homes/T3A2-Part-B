@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const { dbConnect, dbDisconnect } = require("./database");
 const { User } = require("../models/UserModel");
