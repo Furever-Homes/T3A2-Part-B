@@ -19,8 +19,8 @@ app.get("/", (request, response) => {
     });
 });
 
-app.use("/api/pets", guestRoutes);
-app.use("api/user", userRoutes);
-app.use("api/admin", adminRoutes);
+app.use("/api", guestRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = { app }

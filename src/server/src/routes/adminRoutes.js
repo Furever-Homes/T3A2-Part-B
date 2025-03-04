@@ -1,18 +1,32 @@
 const express = require("express");
+
+const { createPet, updatePet, deletePet } = require("../controllers/petController");
 const { getAllApplications, approveApplication, rejectApplication, deleteApplicationByAdmin } = require("../controllers/applicationController");
-const { adminMiddleware } = require("../middlewares/adminMiddleware");
 const { validateToken } = require("../middlewares/authMiddleware");
+const { checkAdmin } = require("../middlewares/adminMiddleware");
 validateToken
 const router = express.Router();
 
+// Apply authentication & admin check
 router.use(validateToken);
-router.use(adminMiddleware);
+router.use(checkAdmin);
 
 
-router.get("/applications", validateToken, adminMiddleware,  getAllApplications);
-router.put("/applications/:applicationId/approve", validateToken, adminMiddleware, approveApplication)
-router.put("/applications/:applicationId/reject", validateToken, adminMiddleware, rejectApplication)
-router.delete("/applications/:applicationId", validateToken, adminMiddleware, deleteApplicationByAdmin);
+// Manage pets
+router.post("/pets", createPet); // Add a new pet
+router.put("/pets/:id", updatePet); // Edit pet details
+router.delete("/pets/:id", deletePet); // Remove a pet
+
+// Application routes
+router.get("/applications", getAllApplications);
+router.put("/applications/:applicationId/approve", approveApplication)
+router.put("/applications/:applicationId/reject", rejectApplication)
+router.delete("/applications/:applicationId", deleteApplicationByAdmin);
 
 
 module.exports = router;
+
+
+
+
+

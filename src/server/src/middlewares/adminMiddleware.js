@@ -1,11 +1,11 @@
-const adminMiddleware = (req, res, next) => {
-    if (!req.user || !req.user.admin) {
-        return res.status(403).json({ message: "Access denied. Admins only." });
+async function checkAdmin(request, response, next) {
+    const user = await UserModel.findById(request.authUserData.id);
+    if (!user || !user.admin) {
+        return response.status(403).json({ message: "Forbidden: Admins only"});
     }
-
     next();
 };
 
 module.exports = {
-    adminMiddleware
-}
+    checkAdmin 
+};

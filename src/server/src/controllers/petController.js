@@ -40,15 +40,53 @@ async function getPet(request, response) {
 }
 
 // Create a pet
+// POST /api/pets
+async function createPet(request, response) {
+    try {
+        const { error } = petSchema.validate(request.body);
+        if (error) return response.status(400).json({ error: error.details[0].message });
+
+        const pet = new Pet(request.body);
+        await pet.save();
+        response.status(201).json(pet);
+    } catch (err) {
+        response.status(500).json({ error: "Server error" });
+    }
+}
 
 // Update existing pet details
+// PUT /api/pets/:id
+async function updatePet(request, response) {
+    try {
+        const { error } = petSchema.validate(request.body);
+        if (error) return response.status(400).json({ error: error.details[0].message });
 
-// Remove a pet
+        const pet = await Pet.findByIdAndUpdate(request.params.id, request.body, { new: true });
+        if (!pet) return response.status(404).json({ error: "Pet not found" });
+
+        response.status(200).json(pet);
+    } catch (err) {
+        response.status(500).json({ error: "Server error" });
+    }
+}
+
+// Delete a pet
+// DELETE /api/pets/:id
+async function deletePet(request, response) {
+    try {
+        const pet = await Pet.findByIdAndDelete(request.params.id);
+        if (!pet) return response.status(404).json({ error: "Pet not found" });
+
+        response.status(200).json({ message: "Pet deleted successfully" });
+    } catch (err) {
+        response.status(500).json({ error: "Server error" });
+    }
+}
 
 module.exports = {
     getAllPets,
     getPet,
-    // createPet,
-    // updatePet,
-    // deletePet
+    createPet,
+    updatePet,
+    deletePet
 };
