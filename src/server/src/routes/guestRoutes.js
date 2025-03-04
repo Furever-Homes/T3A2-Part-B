@@ -4,6 +4,7 @@ const { getAllPets, getPet } = require("../controllers/petController.js")
 
 const router = express.Router();
 
+
 // Public routes (no authentication required)
 router.get("/pets", getAllPets); // View all pets
 router.get("/pets/:id", getPet); // View a specific pet by ID

@@ -1,4 +1,5 @@
-const User = require("../models/UserModel");
+const { User } = require("../models/UserModel");
+
 
 async function favouritePet(request, response) {
     try {
@@ -66,7 +67,6 @@ async function getFavourites(request, response) {
         return response.status(500).json({ success: false, message: "Error fetching favourite pets" });
     }
 }
-
 
 module.exports = {
     favouritePet,

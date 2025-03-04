@@ -5,12 +5,13 @@ const { getAllApplications, approveApplication, rejectApplication, deleteApplica
 const { validateToken } = require("../middlewares/authMiddleware");
 const { checkAdmin } = require("../middlewares/adminMiddleware");
 validateToken
+
 const router = express.Router();
+
 
 // Apply authentication & admin check
 router.use(validateToken);
 router.use(checkAdmin);
-
 
 // Manage pets
 router.post("/pets", createPet); // Add a new pet

@@ -1,5 +1,5 @@
-const Application = require("../models/ApplicationModel");
-const Pet = require("../models/PetModel");
+const { Application } = require("../models/ApplicationModel");
+
 
 async function submitApplication(request, response) {
     const { petId, message } = request.body;

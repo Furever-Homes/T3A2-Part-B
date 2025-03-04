@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const applicationSchema = new mongoose.Schema({
+const ApplicationSchema = new mongoose.Schema({
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "User", 
@@ -19,10 +19,11 @@ const applicationSchema = new mongoose.Schema({
     message: { 
         type: String, 
         default: "No message provided"
-    },
-}, 
-    { timestamps: true });
+    }
+}, { timestamps: true });
+
+const Application = mongoose.model("Application", ApplicationSchema);
 
 module.exports = {
-    applicationSchema
+    Application
 }

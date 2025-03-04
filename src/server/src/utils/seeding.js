@@ -1,8 +1,10 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+
 const { dbConnect, dbDisconnect, dbDrop } = require("./database");
 const { User } = require("../models/UserModel");
 const { Pet } = require("../models/PetModel");
+
 
 async function seed() {
     await dbConnect();
