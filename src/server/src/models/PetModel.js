@@ -13,8 +13,8 @@ const PetSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    birthday: {
-        type: Date,
+    age: {
+        type: Number,
         required: true
     },
     activityLevel: {
@@ -32,6 +32,7 @@ const PetSchema = new mongoose.Schema({
     },
     location: {
         type: String,
+        enum: ["Melbourne", "Sydney", "Brisbane", "Perth", "Canberra"],
         required: true
     },
     image: {

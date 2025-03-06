@@ -64,6 +64,8 @@ async function loginUser(request, response) {
     );
 }
 
+// Update user details function required
+
 module.exports = {
     registerUser, loginUser
 }

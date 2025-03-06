@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Pet"        
     }],
+    image: {
+        type: String,
+        required: true
+    },
     admin: {
         type: Boolean,
         default: false,
