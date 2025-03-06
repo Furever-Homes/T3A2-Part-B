@@ -1,10 +1,11 @@
-const User = require("../models/UserModel");
+const { User } = require("../models/UserModel");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
 async function registerUser (request, response) {
-    const { firstName, lastName, password, email } = request.body;
+    const { name, password, email } = request.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -18,8 +19,7 @@ async function registerUser (request, response) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-        firstName,
-        lastName,
+        name,
         password: hashedPassword,
         email
     });
@@ -64,7 +64,7 @@ async function loginUser(request, response) {
     );
 }
 
-
+// Update user details function required
 
 module.exports = {
     registerUser, loginUser

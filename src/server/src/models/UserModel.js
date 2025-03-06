@@ -1,15 +1,10 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-    firstName: {
+    name: {
         type: String,
         required: true,
         trim: true,
-    },
-    lastName: {
-        type: String,
-        required: true,
-        trim: true
     },
     password: {
         type: String,
@@ -23,11 +18,24 @@ const UserSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"]
+    },
+    favourites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Pet"        
+    }],
+    image: {
+        type: String,
+        required: true
+    },
+    admin: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 
-const UserModel = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 module.exports = {
-    UserModel
+    User
 }
