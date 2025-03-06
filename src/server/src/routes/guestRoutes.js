@@ -1,9 +1,8 @@
 const express = require("express");
 const { registerUser, loginUser } = require("../controllers/userController.js");
-const { getAllPets, getPet } = require("../controllers/petController.js")
+const { getAllPets, getPet } = require("../controllers/petController.js");
 
 const router = express.Router();
-
 
 // Public routes (no authentication required) "/api"
 router.get("/pets", getAllPets); // View all pets
