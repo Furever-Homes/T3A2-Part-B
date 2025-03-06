@@ -21,6 +21,7 @@ async function seed() {
         name: "John Doe",
         email: "johndoe@example.com",
         password: hashedPassword,
+        image: "john_picture.jpg",
         admin: false,
         favourites: []
     });
@@ -29,6 +30,7 @@ async function seed() {
         name: "Admin User",
         email: "admin@example.com",
         password: hashedPassword,
+        image: "admin_icon.jpg",
         admin: true,
         favourites: []
     });
