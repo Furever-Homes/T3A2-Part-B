@@ -15,16 +15,30 @@ const petSchema = Joi.object({
     image: Joi.string().required()
 });
 
-// Function to get all available pets in the database
-// GET /api/pets
+// Get all available pets in the database with optional filtering
+// GET /api/pets?animalType=Dog&location=Sydney
 async function getAllPets(request, response) {
     try {
-        const pets = await Pet.find({ status: "Available" });
+        const { animalType, location } = request.query; // Get query parameters
+
+        // Filter pets by Available status
+        let filter = { status: "Available" };
+
+        // If route includes animalType query, add to filter
+        if (animalType) {
+            filter.animalType = animalType;
+        }
+
+        // If route includes location query, add to filter
+        if (location) {
+            filter.location = location;
+        }
+
+        // Fetch pets based on the filter/s
+        const pets = await Pet.find(filter);
         response.json(pets);
     } catch (error) {
-        response.status(500).json({
-            message: error.message
-        });
+        response.status(500).json({ error: error.message });
     }
 }
 
