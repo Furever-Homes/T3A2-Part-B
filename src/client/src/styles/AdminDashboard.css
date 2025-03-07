@@ -1,0 +1,54 @@
+/* Admin Dashboard Page */
+.admin-dashboard {
+    text-align: center;
+    padding: 80px 20px 20px; /* Ensures space below navbar */
+  }
+  
+  /* Admin Dashboard Heading */
+  .admin-dashboard h1 {
+    font-size: 2rem;
+    color: #8B5E3B; /* Brown shade for consistency */
+    margin-bottom: 20px;
+  }
+  
+  /* Dashboard Links */
+  .admin-dashboard a {
+    display: block;
+    background-color: #8B5E3B; /* Brown */
+    color: white;
+    padding: 15px;
+    margin: 10px auto;
+    width: 250px;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .admin-dashboard a:hover {
+    background-color: #6E4829; /* Darker brown */
+  }
+  
+  /* Layout for larger screens */
+  @media (min-width: 768px) {
+    .admin-dashboard {
+      padding-top: 100px;
+    }
+  
+    .admin-dashboard a {
+      width: 300px;
+      font-size: 1.2rem;
+    }
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .admin-dashboard {
+      padding-top: 120px;
+    }
+  
+    .admin-dashboard a {
+      width: 90%;
+    }
+  }

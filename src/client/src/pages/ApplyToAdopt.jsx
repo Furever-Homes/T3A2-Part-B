@@ -13,7 +13,7 @@ const ApplyToAdopt = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Application submitted:", formData);
-    navigate("/success"); // Redirects to success page
+    navigate("/success"); 
   };
 
   return (
