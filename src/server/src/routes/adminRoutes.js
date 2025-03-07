@@ -13,7 +13,6 @@ const {
 } = require("../controllers/applicationController");
 const { validateToken } = require("../middlewares/authMiddleware");
 const { checkAdmin } = require("../middlewares/adminMiddleware");
-validateToken;
 
 const router = express.Router();
 

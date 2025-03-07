@@ -8,11 +8,8 @@ const PetSchema = new mongoose.Schema(
     },
     animalType: {
       type: String,
-      required: true,
-    },
-    breed: {
-      type: String,
-      required: true,
+      enum: ["Cat", "Dog", "Other"],
+      required: true
     },
     age: {
       type: Number,
@@ -37,8 +34,7 @@ const PetSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
-      required: true,
+      type: String
     },
   },
   { timestamps: true }
