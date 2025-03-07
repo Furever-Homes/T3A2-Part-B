@@ -28,15 +28,41 @@ async function submitApplication(request, response) {
 }
 
 // Get all open applications as an admin
-async function getAllApplications (request, response) {
+async function getAllApplications(request, response) {
     if (!request.user.admin) {
-        return response.status(403)
-        .json({
+        return response.status(403).json({
             message: "Only administrators are authorised to perform this operation"
-        })
+        });
     }
-        const applications = await Application.find().populate("user", "name email").populate("pet", "name species");
-        response.json(applications)
+
+    try {
+        const { location, animalType } = request.query;
+        
+        let applicationsQuery = Application.find()
+            .populate("user", "name email")
+            .populate({
+                path: "pet",
+                select: "name breed location animalType",
+            });
+
+        // Apply filtering only if there are filters
+        if (location || animalType) {
+            applicationsQuery = applicationsQuery.populate({
+                path: "pet",
+                select: "name breed location animalType",
+                match: {
+                    ...(location && { location }),
+                    ...(animalType && { animalType }),
+                }
+            });
+        }
+
+        const applications = await applicationsQuery;
+
+        response.json(applications);
+    } catch (error) {
+        response.status(500).json({ message: "Error fetching applications", error: error.message });
+    }
 }
 
 async function getUserApplications(request, response) {
@@ -46,7 +72,7 @@ async function getUserApplications(request, response) {
         .populate("pet", "name breed status")
         .sort({ createdAt: -1 }); // Sorts by latest applications first
 
-    response.statu(200).json(applications)
+    response.status(200).json(applications)
 }
 
 async function deleteUserApplication(request, response) {
