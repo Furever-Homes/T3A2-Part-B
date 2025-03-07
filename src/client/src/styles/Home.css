@@ -1,0 +1,54 @@
+/* Home Page */
+.home-page {
+    text-align: center;
+    padding: 80px 20px 20px;
+  }
+  
+  /* Home Page Heading */
+  .home-page h1 {
+    font-size: 2.5rem;
+    color: #8B5E3B; /* Brown for branding */
+    margin-bottom: 10px;
+  }
+  
+  /* Home Page Description */
+  .home-page p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Explore Button */
+  .explore-btn {
+    display: inline-block;
+    background-color: #8B5E3B; /* Brown */
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .explore-btn:hover {
+    background-color: #6E4829; /* Darker Brown */
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .home-page {
+      padding-top: 100px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .home-page {
+      padding-top: 120px;
+    }
+  
+    .explore-btn {
+      width: 90%;
+      text-align: center;
+    }
+  }
