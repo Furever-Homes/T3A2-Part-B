@@ -113,25 +113,21 @@ async function deleteUser(request, response) {
   }
 }
 
-async function getUserProfile(request, response) {
-  try {
-      const user = await User.findById(request.user.id).select("-password");
-
-      if (!user) {
-          return response.status(404).json({ message: "User not found" });
-      }
-
+async function getUser(request, response) {
+    try {
+      const user = await User.findById(request.authUserData.userId).select("-password");
+  
       response.status(200).json(user);
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching user profile:", error.message);
       response.status(500).json({ message: "Server error" });
-  }
-};
+    }
+  };  
 
 module.exports = {
   registerUser,
   loginUser,
   updateUser,
   deleteUser,
-  getUserProfile
+  getUser
 };
