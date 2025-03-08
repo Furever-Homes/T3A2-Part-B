@@ -1,16 +1,15 @@
 require("dotenv").config();
 const { dbConnect, dbDisconnect, dbDrop } = require("./database");
 
-
 async function drop() {
-    await dbDrop();
+  await dbDrop();
 
-    await dbDisconnect();
+  await dbDisconnect();
 
-    console.log("Disconnected!");
+  console.log("Disconnected!");
 }
 
 dbConnect().then(() => {
-    console.log("Connected to the Database. Dropping now...");
-    drop();
+  console.log("Connected to the Database. Dropping now...");
+  drop();
 });
