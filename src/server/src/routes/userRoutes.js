@@ -5,17 +5,26 @@ const {
   unFavouritePet,
   getFavourites,
 } = require("../controllers/favouriteController");
+
 const {
   submitApplication,
   getUserApplications,
   deleteUserApplication,
 } = require("../controllers/applicationController");
+
+const { updateUser, deleteUser } = require("../controllers/userController");
+
+const upload = require("../middleware/uploadMiddleware");
 const { validateToken } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 // Routes requiring authentication
 router.use(validateToken); // Apply authentication middleware
+
+// Profile Routes "/api/user"
+router.put("/profile", upload.single("image"), updateUser); // Route to update user details (with image upload)
+router.delete("/profile", deleteUser); // Route to delete user profile
 
 // Application Routes "/api/user"
 router.post("/applications/:petId", submitApplication);
