@@ -7,5 +7,6 @@ async function checkAdmin(request, response, next) {
 }
 
 module.exports = {
-  checkAdmin,
+    checkAdmin 
 };
+

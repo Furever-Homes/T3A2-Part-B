@@ -1,53 +1,98 @@
 const { Application } = require("../models/ApplicationModel");
 
 async function submitApplication(request, response) {
-  const { petId, message } = request.body;
-  const existingApplication = await Application.findOne({
-    user: request.user.id,
-    pet: petId,
-  });
+    try {
+        const { petId, message } = request.body;
 
-  if (existingApplication) {
-    return response.status(400).json({
-      message: "You have already submitted an application for this pet",
-    });
-  }
+        // Check if the user has already applied for this pet
+        const existingApplication = await Application.findOne({
+            user: request.user.id,
+            pet: petId,
+        });
 
-  const newApplication = new Application({
-    user: request.user.id,
-    pet: petId,
-    message,
-  });
+        if (existingApplication) {
+            return response.status(400).json({
+                message: "You have already submitted an application for this pet",
+            });
+        }
 
-  await newApplication.save();
+        // Create and save the new application
+        const newApplication = new Application({
+            user: request.user.id,
+            pet: petId,
+            message,
+        });
 
-  response.status(201).json({
-    message: "Application Submitted Successfully",
-    application: newApplication,
-  });
+        await newApplication.save();
+
+        response.status(201).json({
+            message: "Application Submitted Successfully",
+            application: newApplication,
+        });
+
+    } catch (error) {
+        console.error("Error submitting application:", error.message);
+        response.status(500).json({
+            message: "An error occurred while submitting your application",
+            error: error.message,
+        });
+    }
 }
 
-// Get all open applications as an admin
+// Get all open applications as an admin, with option to filter by Location or animalType
 async function getAllApplications(request, response) {
-  if (!request.user.admin) {
-    return response.status(403).json({
-      message: "Only administrators are authorised to perform this operation",
-    });
-  }
-  const applications = await Application.find()
-    .populate("user", "name email")
-    .populate("pet", "name species");
-  response.json(applications);
+    if (!request.user.admin) {
+        return response.status(403).json({
+            message: "Only administrators are authorised to perform this action"
+        });
+    }
+
+    try {
+        const { location, animalType } = request.query;
+        
+        let applicationsQuery = Application.find()
+            .populate("user", "name email")
+            .populate({
+                path: "pet",
+                select: "name breed location animalType",
+            });
+
+        // Apply filtering only if there are filters
+        if (location || animalType) {
+            applicationsQuery = applicationsQuery.populate({
+                path: "pet",
+                select: "name breed location animalType",
+                match: {
+                    ...(location && { location }),
+                    ...(animalType && { animalType }),
+                }
+            });
+        }
+
+        const applications = await applicationsQuery;
+
+        response.json(applications);
+    } catch (error) {
+        response.status(500).json({ message: "Error fetching applications", error: error.message });
+    }
 }
 
 async function getUserApplications(request, response) {
-  const applications = await Application.find({
-    user: request.user.id,
-  })
-    .populate("pet", "name breed status")
-    .sort({ createdAt: -1 }); // Sorts by latest applications first
+    try {
+        const applications = await Application.find({
+            user: request.user.id,
+        })
+        .populate("pet", "name breed status")
+        .sort({ createdAt: -1 }); // Sorts by latest applications first
 
-  response.statu(200).json(applications);
+        response.status(200).json(applications);
+    } catch (error) {
+        console.error("Error fetching user applications:", error.message);
+        response.status(500).json({
+            message: "An error occurred while retrieving applications",
+            error: error.message,
+        });
+    }
 }
 
 async function deleteUserApplication(request, response) {
@@ -163,5 +208,5 @@ module.exports = {
   deleteUserApplication,
   approveApplication,
   rejectApplication,
-  deleteApplicationByAdmin,
-};
+  deleteApplicationByAdmin
+}
