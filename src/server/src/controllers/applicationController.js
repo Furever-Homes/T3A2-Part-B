@@ -1,45 +1,50 @@
 const { Application } = require("../models/ApplicationModel");
 
 async function submitApplication(request, response) {
-    try {
-        const { petId, message } = request.body;
+  try {
+      const { message } = request.body; 
+      const { petId } = request.params.petId; 
 
-        // Check if the user has already applied for this pet
-        const existingApplication = await Application.findOne({
-            user: request.user.id,
-            pet: petId,
-        });
+      // Check if the user has already applied for this pet
+      const existingApplication = await Application.findOne({
+          user: request.user.id,
+          pet: petId,
+      });
 
-        if (existingApplication) {
-            return response.status(400).json({
-                message: "You have already submitted an application for this pet",
-            });
-        }
+      if (existingApplication) {
+          return response.status(400).json({
+              message: "You have already submitted an application for this pet",
+          });
+      }
 
-        // Create and save the new application
-        const newApplication = new Application({
-            user: request.user.id,
-            pet: petId,
-            message,
-        });
+      // Create and save the new application
+      const newApplication = new Application({
+          user: request.user.id,
+          pet: petId,
+          message,
+      });
 
-        await newApplication.save();
+      await newApplication.save();
 
-        response.status(201).json({
-            message: "Application Submitted Successfully",
-            application: newApplication,
-        });
+      response.status(201).json({
+          message: "Application Submitted Successfully",
+          application: newApplication,
+      });
 
-    } catch (error) {
-        console.error("Error submitting application:", error.message);
-        response.status(500).json({
-            message: "An error occurred while submitting your application",
-            error: error.message,
-        });
-    }
+  } catch (error) {
+      console.error("Error submitting application:", error.message);
+      response.status(500).json({
+          message: "An error occurred while submitting your application",
+          error: error.message,
+      });
+  }
 }
 
 // Get all open applications as an admin, with option to filter by Location or animalType
+// /api/admin/applications
+// /api/admin/applications?location=xxx
+// /api/admin/applications?animalType=xxx
+// /api/admin/applications?location=xxx&animalType=xxx
 async function getAllApplications(request, response) {
     if (!request.user.admin) {
         return response.status(403).json({
@@ -97,7 +102,7 @@ async function getUserApplications(request, response) {
 
 async function deleteUserApplication(request, response) {
   try {
-    const applicationId = request.params.id;
+    const applicationId = request.params.applicationId;
 
     const application = await Application.findById(applicationId);
 
@@ -125,7 +130,7 @@ async function deleteUserApplication(request, response) {
 
 async function approveApplication(request, response) {
   try {
-    const applicationId = request.params.id;
+    const applicationId = request.params.applicationId;
 
     const application = await Application.findById(applicationId);
     if (!application) {
@@ -156,7 +161,7 @@ async function approveApplication(request, response) {
 
 async function rejectApplication(request, response) {
   try {
-    const applicationId = request.params.id;
+    const applicationId = request.params.applicationId;
 
     const application = await Application.findById(applicationId);
     if (!application) {
@@ -184,7 +189,7 @@ async function rejectApplication(request, response) {
 
 async function deleteApplicationByAdmin(request, response) {
   try {
-    const { applicationId } = request.params;
+    const { applicationId } = request.params.applicationId;
 
     const application = await Application.findByIdAndDelete(applicationId);
     if (!application) {
