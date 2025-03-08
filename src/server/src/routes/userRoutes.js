@@ -14,7 +14,7 @@ const {
 
 const { updateUser, deleteUser } = require("../controllers/userController");
 
-const upload = require("../middleware/uploadMiddleware");
+const upload = require("../middlewares/uploadMiddleware");
 const { validateToken } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
