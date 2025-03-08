@@ -16,43 +16,47 @@ async function seed() {
   // Hash passwords
   const hashedPassword = await bcrypt.hash(PASSWORD, 10);
 
-  // Create Users
-  const users = [
-    new User({
-      name: "John Doe",
-      email: "johndoe@example.com",
-      password: hashedPassword,
-      image: null,
-      admin: false,
-      favourites: [],
-    }),
-    new User({
-      name: "Jane Smith",
-      email: "janesmith@example.com",
-      password: hashedPassword,
-      image: null,
-      admin: false,
-      favourites: [],
-    }),
-    new User({
-      name: "Alex Brown",
-      email: "alexbrown@example.com",
-      password: hashedPassword,
-      image: null,
-      admin: false,
-      favourites: [],
-    }),
-    new User({
-      name: "Admin User",
-      email: "admin@example.com",
-      password: hashedPassword,
-      image: null,
-      admin: true,
-      favourites: [],
-    }),
-  ];
+   // Create Users
+   const user1 = new User({
+    name: "John Doe",
+    email: "johndoe@example.com",
+    password: hashedPassword,
+    image: null,
+    admin: false,
+    favourites: [],
+  });
 
-  await User.insertMany(users);
+  const user2 = new User({
+    name: "Jane Smith",
+    email: "janesmith@example.com",
+    password: hashedPassword,
+    image: null,
+    admin: false,
+    favourites: [],
+  });
+
+  const user3 = new User({
+    name: "Alex Brown",
+    email: "alexbrown@example.com",
+    password: hashedPassword,
+    image: null,
+    admin: false,
+    favourites: [],
+  });
+
+  const adminUser = new User({
+    name: "Admin User",
+    email: "admin@example.com",
+    password: hashedPassword,
+    image: null,
+    admin: true,
+    favourites: [],
+  });
+
+  await user1.save();
+  await user2.save();
+  await user3.save();
+  await adminUser.save();
   console.log("Users seeded!");
 
   // Create Pets
@@ -152,7 +156,7 @@ async function seed() {
   await Pet.insertMany(pets);
   console.log("Pets seeded!");
 
-  // Assign Favourites (Only for non-admin users)
+  // Assign Favourites
   user1.favourites.push(pets[0]._id, pets[2]._id);
   user2.favourites.push(pets[1]._id, pets[4]._id);
   user3.favourites.push(pets[3]._id, pets[5]._id);
