@@ -7,7 +7,7 @@ const { User } = require("../models/UserModel");
 const { Pet } = require("../models/PetModel");
 const { Application } = require("../models/ApplicationModel");
 
-const PASSWORD = "abc123";
+const PASSWORD = process.env.PASSWORD;
 
 async function seed() {
   await dbConnect();
