@@ -113,7 +113,7 @@ async function deleteUser(request, response) {
   }
 }
 
-const getUserProfile = async (request, response) => {
+async function getUserProfile(request, response) {
   try {
       const user = await User.findById(request.user.id).select("-password");
 
