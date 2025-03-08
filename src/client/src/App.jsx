@@ -10,6 +10,8 @@ import Profile from "./pages/Profile";
 import Adopt from "./pages/Adopt";
 import Favourites from "./pages/Favourites";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login"; 
+import Signup from "./pages/Signup"; 
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/adopt" element={<Adopt />} />
         <Route path="/favourites" element={<Favourites />} />
+        <Route path="/login" element={<Login />} />  
+        <Route path="/signup" element={<Signup />} />  
         <Route path="*" element={<NotFound />} /> {/* 404 page */}
       </Routes>
     </Router>

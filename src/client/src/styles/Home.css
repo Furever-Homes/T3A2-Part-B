@@ -1,54 +1,60 @@
-/* Home Page */
-.home-page {
-    text-align: center;
-    padding: 80px 20px 20px;
-  }
-  
-  /* Home Page Heading */
-  .home-page h1 {
-    font-size: 2.5rem;
-    color: #8B5E3B; /* Brown for branding */
-    margin-bottom: 10px;
-  }
-  
-  /* Home Page Description */
-  .home-page p {
-    font-size: 1.2rem;
-    color: #555;
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
     margin-bottom: 20px;
   }
   
-  /* Explore Button */
-  .explore-btn {
-    display: inline-block;
-    background-color: #8B5E3B; /* Brown */
+  /* Login Button */
+  .login-btn {
+    background-color: #8B5E3B; /* Dark Brown */
     color: white;
-    padding: 12px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
     text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    font-size: 16px;
+  }
+  
+  .login-btn:hover {
+    background-color: #6D4822; /* Darker Brown */
+  }
+  
+  /* Sign Up Button */
+  .signup-btn {
+    background-color: #A67C52; /* Slightly Lighter Brown */
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    font-size: 16px;
+  }
+  
+  .signup-btn:hover {
+    background-color: #8B5E3B; /* Match Login Button on Hover */
+  }
+  
+  /* Explore Pets Button - More Unique */
+  .explore-btn {
+    display: block;
+    text-align: center;
+    background: linear-gradient(45deg, #83c3f1, #080d20); /* Gold to Orange */
+    color: white;
+    padding: 14px 28px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    margin-top: 20px;
   }
   
   .explore-btn:hover {
-    background-color: #6E4829; /* Darker Brown */
-  }
-  
-  /* Responsive Design */
-  @media (min-width: 768px) {
-    .home-page {
-      padding-top: 100px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .home-page {
-      padding-top: 120px;
-    }
-  
-    .explore-btn {
-      width: 90%;
-      text-align: center;
-    }
+    background: linear-gradient(45deg, #5a3d1c, #bba178); /* Inverse Gradient */
+    transform: scale(1.05);
+    color: white;
   }
