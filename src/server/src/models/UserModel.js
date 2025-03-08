@@ -27,7 +27,9 @@ const UserSchema = new mongoose.Schema({
   ],
   image: {
     type: String,
-    required: true,
+    default: function () {
+      return process.env.CLOUDINARY_DEFAULT_USER;
+    },
   },
   admin: {
     type: Boolean,
