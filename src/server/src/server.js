@@ -9,7 +9,18 @@ const adminRoutes = require("./routes/adminRoutes")
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+
+const corsOptions = {
+    origin: [
+      "http://localhost:5173", // Allow local frontend for testing
+      // https://fureverhomes.com.au <-- insert URL for deployed frontend website here
+    ],
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  };
+  
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // app.verb(path, callback) - Test server connection;
