@@ -16,12 +16,12 @@ async function seed() {
   // Hash passwords
   const hashedPassword = await bcrypt.hash(PASSWORD, 10);
 
-  // Create Users
-  const user1 = new User({
+   // Create Users
+   const user1 = new User({
     name: "John Doe",
     email: "johndoe@example.com",
     password: hashedPassword,
-    image: "john_picture.jpg",
+    image: null,
     admin: false,
     favourites: [],
   });
@@ -30,7 +30,7 @@ async function seed() {
     name: "Jane Smith",
     email: "janesmith@example.com",
     password: hashedPassword,
-    image: "jane_picture.jpg",
+    image: null,
     admin: false,
     favourites: [],
   });
@@ -39,7 +39,7 @@ async function seed() {
     name: "Alex Brown",
     email: "alexbrown@example.com",
     password: hashedPassword,
-    image: "alex_picture.jpg",
+    image: null,
     admin: false,
     favourites: [],
   });
@@ -48,7 +48,7 @@ async function seed() {
     name: "Admin User",
     email: "admin@example.com",
     password: hashedPassword,
-    image: "admin_icon.jpg",
+    image: null,
     admin: true,
     favourites: [],
   });
@@ -64,119 +64,99 @@ async function seed() {
     new Pet({
       name: "Buddy",
       animalType: "Dog",
-      breed: "Golden Retriever",
       age: 5,
       activityLevel: "High",
       status: "Available",
       description: "A friendly and energetic dog.",
       location: "Sydney",
-      image: "buddy.jpg",
+      image: null,
     }),
     new Pet({
       name: "Mittens",
       animalType: "Cat",
-      breed: "Siamese",
       age: 3,
       activityLevel: "Medium",
       status: "Available",
       description: "A curious and playful kitten.",
       location: "Melbourne",
-      image: "mittens.jpg",
+      image: null,
     }),
     new Pet({
       name: "Charlie",
       animalType: "Dog",
-      breed: "Labrador",
       age: 4,
       activityLevel: "High",
       status: "Available",
       description: "Loves to play fetch!",
       location: "Brisbane",
-      image: "charlie.jpg",
+      image: null,
     }),
     new Pet({
       name: "Luna",
       animalType: "Cat",
-      breed: "Persian",
       age: 2,
       activityLevel: "Low",
       status: "Available",
       description: "Enjoys sleeping all day.",
       location: "Perth",
-      image: "luna.jpg",
+      image: null,
     }),
     new Pet({
       name: "Max",
       animalType: "Dog",
-      breed: "Beagle",
       age: 3,
       activityLevel: "Medium",
       status: "Available",
       description: "Curious and energetic.",
       location: "Canberra",
-      image: "max.jpg",
-    }),
-    new Pet({
-      name: "Bella",
-      animalType: "Dog",
-      breed: "Poodle",
-      age: 6,
-      activityLevel: "Medium",
-      status: "Available",
-      description: "Loves attention!",
-      location: "Sydney",
-      image: "bella.jpg",
+      image: null,
     }),
     new Pet({
       name: "Oscar",
       animalType: "Cat",
-      breed: "Maine Coon",
       age: 5,
       activityLevel: "Medium",
       status: "Available",
       description: "A big fluffy cat!",
       location: "Melbourne",
-      image: "oscar.jpg",
-    }),
-    new Pet({
-      name: "Coco",
-      animalType: "Dog",
-      breed: "Shih Tzu",
-      age: 7,
-      activityLevel: "Low",
-      status: "Available",
-      description: "Very calm and friendly.",
-      location: "Brisbane",
-      image: "coco.jpg",
+      image: null,
     }),
     new Pet({
       name: "Rocky",
       animalType: "Dog",
-      breed: "German Shepherd",
       age: 4,
       activityLevel: "High",
       status: "Available",
       description: "Very protective.",
       location: "Perth",
-      image: "rocky.jpg",
+      image: null,
     }),
     new Pet({
       name: "Daisy",
       animalType: "Cat",
-      breed: "British Shorthair",
       age: 3,
       activityLevel: "Low",
       status: "Available",
       description: "A sweet and gentle cat.",
       location: "Canberra",
-      image: "daisy.jpg",
+      image: null,
+    }),
+    new Pet({
+      name: "Slytherin",
+      animalType: "Other",
+      age: 2,
+      activityLevel: "Low",
+      status: "Available",
+      description: "Loves to slide around!",
+      location: "Sydney",
+      image: null,
     }),
   ];
 
   await Pet.insertMany(pets);
   console.log("Pets seeded!");
 
-  // Assign Favourites (Only for non-admin users)
+  // Assign Favourites
   user1.favourites.push(pets[0]._id, pets[2]._id);
   user2.favourites.push(pets[1]._id, pets[4]._id);
   user3.favourites.push(pets[3]._id, pets[5]._id);

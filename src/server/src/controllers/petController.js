@@ -1,102 +1,119 @@
 const { Pet } = require("../models/PetModel");
+const { User } = require("../models/UserModel");
+const { Application } = require("../models/ApplicationModel");
+const cloudinary = require("../utils/cloudinaryConfig");
 const Joi = require("joi");
 
 // Validation schema for Pet
 const petSchema = Joi.object({
   name: Joi.string().required(),
-  animalType: Joi.string().required(),
-  breed: Joi.string().required(),
-  birthday: Joi.date().required(),
+  animalType: Joi.string().valid("Dog", "Cat", "Other").required(),
+  age: Joi.number().required(),
   activityLevel: Joi.string().valid("Low", "Medium", "High").required(),
   status: Joi.string().valid("Available", "Adopted"),
   description: Joi.string().allow(""),
   location: Joi.string().required(),
-  image: Joi.string().required(),
+  image: Joi.string().allow(null, ""),
 });
 
-// Get all available pets in the database with optional filtering
-// GET /api/pets?animalType=Dog&location=Sydney
+// Get all available pets (with optional filtering)
 async function getAllPets(request, response) {
   try {
-    const { animalType, location } = request.query; // Get query parameters
-
-    // Filter pets by Available status
+    const { animalType, location } = request.query;
     let filter = { status: "Available" };
 
-    // If route includes animalType query, add to filter
-    if (animalType) {
-      filter.animalType = animalType;
-    }
+    if (animalType) filter.animalType = animalType;
+    if (location) filter.location = location;
 
-    // If route includes location query, add to filter
-    if (location) {
-      filter.location = location;
-    }
-
-    // Fetch pets based on the filter/s
     const pets = await Pet.find(filter);
     response.json(pets);
   } catch (error) {
-    response.status(500).json({ error: error.message });
-  }
-}
-
-// Get a specific pet (by ID)
-// GET /api/pets/:id
-async function getPet(request, response) {
-  try {
-    const pet = await Pet.findById(request.params.id);
-    if (!pet) return response.status(404).json({ error: "Pet not found" });
-    response.status(200).json(pet);
-  } catch (err) {
     response.status(500).json({ error: "Server error" });
   }
 }
 
-// Create a pet
-// POST /api/pets
+// Get a specific pet
+async function getPet(request, response) {
+  try {
+    const pet = await Pet.findById(request.params.petId);
+    if (!pet) return response.status(404).json({ error: "Pet not found" });
+    response.status(200).json(pet);
+  } catch (error) {
+    response.status(500).json({ error: "Server error" });
+  }
+}
+
+// Create a new pet
 async function createPet(request, response) {
   try {
     const { error } = petSchema.validate(request.body);
-    if (error)
-      return response.status(400).json({ error: error.details[0].message });
+    if (error) return response.status(400).json({ error: error.details[0].message });
 
-    const pet = new Pet(request.body);
+    // Use Cloudinary image from middleware, or default image
+    const imageUrl = request.file ? request.file.path : null;
+
+    const pet = new Pet({ ...request.body, image: imageUrl });
     await pet.save();
     response.status(201).json(pet);
-  } catch (err) {
+  } catch (error) {
     response.status(500).json({ error: "Server error" });
   }
 }
 
-// Update existing pet details
-// PUT /api/pets/:id
+// Update an existing pet
 async function updatePet(request, response) {
   try {
-    const { error } = petSchema.validate(request.body);
-    if (error)
-      return response.status(400).json({ error: error.details[0].message });
-
-    const pet = await Pet.findByIdAndUpdate(request.params.id, request.body, {
-      new: true,
-    });
+    const pet = await Pet.findById(request.params.petId);
     if (!pet) return response.status(404).json({ error: "Pet not found" });
 
+    // If an image is uploaded, use the new Cloudinary URL, else continue using linked image
+    let newImage = request.file ? request.file.path : pet.image;
+
+    // If image is removed, reset to Cloudinary default
+    if (request.body.image === "" || request.body.image === null) {
+      newImage = {
+        Dog: process.env.CLOUDINARY_DEFAULT_DOG,
+        Cat: process.env.CLOUDINARY_DEFAULT_CAT,
+        Other: process.env.CLOUDINARY_DEFAULT_OTHER,
+      }[pet.animalType] || process.env.CLOUDINARY_DEFAULT_OTHER;
+    }
+
+    Object.assign(pet, request.body, { image: newImage });
+    await pet.save();
     response.status(200).json(pet);
-  } catch (err) {
+  } catch (error) {
     response.status(500).json({ error: "Server error" });
   }
 }
 
 // Delete a pet
-// DELETE /api/pets/:id
 async function deletePet(request, response) {
   try {
-    const pet = await Pet.findByIdAndDelete(request.params.id);
-    if (!pet) return response.status(404).json({ error: "Pet not found" });
+    const pet = await Pet.findById(request.params.petId);
+    if (!pet) return response.status(404).json({ error: "Pet not found." });
 
-    response.status(200).json({ message: "Pet deleted successfully" });
-  } catch (err) {
+    const defaultImages = [
+      process.env.CLOUDINARY_DEFAULT_DOG,
+      process.env.CLOUDINARY_DEFAULT_CAT,
+      process.env.CLOUDINARY_DEFAULT_OTHER,
+    ];
+    
+    if (pet.image && !defaultImages.includes(pet.image)) {
+      const publicId = pet.image.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(`pets/${publicId}`);
+    }
+
+    await User.updateMany(
+      { favourites: pet._id },
+      { $pull: { favourites: pet._id } }
+    );
+
+    await Application.deleteMany({ pet: pet._id });
+
+    await Pet.findByIdAndDelete(request.params.petId);
+
+    response.status(200).json({ message: "Pet deleted successfully." });
+  } catch (error) {
     response.status(500).json({ error: "Server error" });
   }
 }

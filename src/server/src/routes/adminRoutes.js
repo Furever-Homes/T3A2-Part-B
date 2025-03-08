@@ -13,7 +13,7 @@ const {
 } = require("../controllers/applicationController");
 const { validateToken } = require("../middlewares/authMiddleware");
 const { checkAdmin } = require("../middlewares/adminMiddleware");
-validateToken;
+const upload = require("../middlewares/uploadMiddleware");
 
 const router = express.Router();
 
@@ -22,9 +22,9 @@ router.use(validateToken);
 router.use(checkAdmin);
 
 // Manage pets "/api/admin"
-router.post("/pets", createPet); // Add a new pet
-router.put("/pets/:id", updatePet); // Edit pet details
-router.delete("/pets/:id", deletePet); // Remove a pet
+router.post("/pets", upload.single("image"), createPet); // Add a new pet
+router.put("/pets/:petId", upload.single("image"), updatePet); // Edit pet details
+router.delete("/pets/:petId", deletePet); // Remove a pet
 
 // Application routes "/api/admin"
 router.get("/applications", getAllApplications);
