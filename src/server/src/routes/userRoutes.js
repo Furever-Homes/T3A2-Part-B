@@ -25,7 +25,7 @@ router.use(validateToken); // Apply authentication middleware
 // Profile Routes "/api/user"
 router.put("/profile", upload.single("image"), updateUser); // Route to update user details (with image upload)
 router.delete("/profile", deleteUser); // Route to delete user profile
-router.get("/profile", getUser);
+router.get("/profile", getUser); // Route to get logged in user details
 
 // Application Routes "/api/user"
 router.post("/applications/:petId", submitApplication);
