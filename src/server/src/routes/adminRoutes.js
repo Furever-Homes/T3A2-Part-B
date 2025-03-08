@@ -13,7 +13,7 @@ const {
 } = require("../controllers/applicationController");
 const { validateToken } = require("../middlewares/authMiddleware");
 const { checkAdmin } = require("../middlewares/adminMiddleware");
-const upload = require("../middleware/uploadMiddleware");
+const upload = require("../middlewares/uploadMiddleware");
 
 const router = express.Router();
 
