@@ -12,7 +12,7 @@ const {
   deleteUserApplication,
 } = require("../controllers/applicationController");
 
-const { updateUser, deleteUser } = require("../controllers/userController");
+const { updateUser, deleteUser, getUserProfile } = require("../controllers/userController");
 
 const upload = require("../middlewares/uploadMiddleware");
 const { validateToken } = require("../middlewares/authMiddleware");
@@ -25,6 +25,7 @@ router.use(validateToken); // Apply authentication middleware
 // Profile Routes "/api/user"
 router.put("/profile", upload.single("image"), updateUser); // Route to update user details (with image upload)
 router.delete("/profile", deleteUser); // Route to delete user profile
+router.get("/profile", validateToken, getUserProfile);
 
 // Application Routes "/api/user"
 router.post("/applications/:petId", submitApplication);
