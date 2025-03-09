@@ -12,10 +12,6 @@ const Navbar = () => {
     setUser(storedUser);
   }, []);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("userProfile");
     setUser(null);
@@ -37,15 +33,19 @@ const Navbar = () => {
         </Link>
 
         <div className="nav-links">
-          <Link to="/explore">Explore</Link>
-          <Link to="/favourites">Favourites</Link>
-          <Link to="/applications">Applications</Link>
+          <Link to="/explore" className={location.pathname === "/explore" ? "active" : ""}>Explore</Link>
+          <Link to="/favourites" className={location.pathname === "/favourites" ? "active" : ""}>Favourites</Link>
+          <Link to="/applications" className={location.pathname === "/applications" ? "active" : ""}>Applications</Link>
           
           {/* Profile Dropdown */}
-          <div className="profile-dropdown">
-            <button className="dropdown-btn" onClick={toggleDropdown}>
-              {location.pathname === "/profile" ? "Profile" : "Profile ▼"}
-            </button>
+          <div 
+            className="profile-dropdown"
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
+            <Link to="/profile" className={`dropdown-btn ${location.pathname === "/profile" ? "active" : ""}`}>
+              Profile
+            </Link>
             {dropdownOpen && (
               <div className="dropdown-menu">
                 {!user ? (

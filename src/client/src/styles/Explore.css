@@ -1,16 +1,35 @@
 /* Explore Page Styles */
 .explore-page {
   text-align: center;
-  padding: 80px 20px 20px;
+  padding: 100px 20px 20px; /* Ensures title and content are fully visible */
+  margin-top: 60px; /* Prevents content from getting cut off behind navbar */
 }
 
+/* Ensure space below the navbar in desktop */
+@media (min-width: 769px) {
+  .explore-page {
+    padding-top: 120px; /* Extra space for the navbar */
+  }
+}
+
+/* Ensure space below the logo and above the bottom navbar in mobile */
+@media (max-width: 768px) {
+  .explore-page {
+    padding-top: 140px; /* Extra space for mobile logo */
+    padding-bottom: 80px; /* Extra space for bottom navbar */
+  }
+}
+
+/* Pet Card Grid */
 .pet-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  padding-bottom: 40px; /* Prevents content from getting cut off at the bottom */
 }
 
+/* Individual Pet Card */
 .pet-card {
   width: 250px;
   border-radius: 10px;
@@ -31,6 +50,7 @@
   border-radius: 10px;
 }
 
+/* Favourite Button */
 .favourite-btn {
   background: none;
   border: none;
@@ -42,6 +62,7 @@
   color: brown;
 }
 
+/* Popup Styles */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -60,6 +81,11 @@
   border-radius: 10px;
   width: 400px;
   text-align: center;
+}
+
+.popup-image {
+  width: 100%;
+  border-radius: 10px;
 }
 
 .apply-btn {
