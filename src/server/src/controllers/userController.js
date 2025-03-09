@@ -98,10 +98,12 @@ async function deleteUser(request, response) {
   try {
     const user = await User.findById(request.authUserData.userId);
 
-    // Remove profile image from Cloudinary if it's not the default
-    if (user.image && !user.image.includes("default")) {
-      const publicId = user.image.split("/").pop().split(".")[0];
-      await cloudinary.uploader.destroy(`users/${publicId}`);
+    const defaultImage = process.env.CLOUDINARY_DEFAULT_USER;
+    
+    // If user image exists & it is not the default user image
+    if (user.image && user.image !== defaultImage) {
+      const publicId = cloudinary.utils.extractPublicId(user.image); // Extract user image from Cloudinary
+      await cloudinary.uploader.destroy(publicId); // Delete user image from Cloudinary
     }
 
     await User.findByIdAndDelete(request.authUserData.id);
@@ -114,15 +116,15 @@ async function deleteUser(request, response) {
 }
 
 async function getUser(request, response) {
-    try {
-      const user = await User.findById(request.authUserData.userId).select("-password");
-  
-      response.status(200).json(user);
-    } catch (error) {
-      console.error("Error fetching user profile:", error.message);
-      response.status(500).json({ message: "Server error" });
-    }
-  };  
+  try {
+    const user = await User.findById(request.authUserData.userId).select("-password");
+
+    response.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user profile:", error.message);
+    response.status(500).json({ message: "Server error" });
+  }
+}
 
 module.exports = {
   registerUser,
