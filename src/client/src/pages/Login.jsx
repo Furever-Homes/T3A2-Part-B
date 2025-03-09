@@ -6,14 +6,13 @@ import axios from "axios";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("userProfile"));
-    if (storedUser) {
-      setUser(storedUser);
-      navigate("/profile");
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/profile"); // Redirect if already logged in
     }
   }, [navigate]);
 
@@ -23,14 +22,23 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
+
     try {
-      const response = await axios.post("http://localhost:8008/api/login", formData, {
-        withCredentials: true,
+      const response = await axios.post("http://localhost:5000/api/users/login", formData, {
+        headers: { "Content-Type": "application/json" },
       });
-      localStorage.setItem("userProfile", JSON.stringify(response.data));
+
+      // Store token for authentication
+      localStorage.setItem("token", response.data.token);
+
+      // Redirect to Profile page after login
       navigate("/profile");
     } catch (error) {
-      setError("Invalid email or password. Please try again.");
+      setError(error.response?.data?.message || "Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,29 +46,27 @@ const Login = () => {
     <div className="login-page">
       <h1>🔑 Login</h1>
       {error && <p className="error-message">{error}</p>}
-      {!user ? (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-      ) : (
-        <p>You are already logged in. Redirecting...</p>
-      )}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
     </div>
   );
 };

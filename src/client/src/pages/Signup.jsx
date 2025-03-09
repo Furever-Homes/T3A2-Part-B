@@ -14,6 +14,7 @@ const Signup = () => {
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const states = ["VIC", "QLD", "NT", "ACT", "TAS", "WA", "NSW", "SA"];
@@ -24,19 +25,32 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!formData.name || !formData.email || !formData.mobile || !formData.dateOfBirth || !formData.state || !formData.password) {
       setError("All fields are required.");
       return;
     }
+
+    setLoading(true);
+    setError(null);
+
     try {
-      const response = await axios.post("http://localhost:8008/api/register", formData, {
-        withCredentials: true,
+      const response = await axios.post("http://localhost:5000/api/users/register", formData, {
+        headers: { "Content-Type": "application/json" },
       });
-      localStorage.setItem("userProfile", JSON.stringify(response.data));
+
+      // Store token in localStorage for authentication
+      localStorage.setItem("token", response.data.token);
       setSuccess(true);
-      navigate("/profile");
+
+      // Redirect user to login page after signup
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
-      setError("Error signing up. Please try again.");
+      setError(error.response?.data?.message || "Signup failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,7 +58,8 @@ const Signup = () => {
     <div className="signup-page">
       <h1>📝 Sign Up</h1>
       {error && <p className="error-message">{error}</p>}
-      {success && <p className="success-message">Signup successful! Redirecting...</p>}
+      {success && <p className="success-message">Signup successful! Redirecting to login...</p>}
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -98,7 +113,10 @@ const Signup = () => {
           onChange={handleChange}
           required
         />
-        <button type="submit">Sign Up</button>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
       </form>
     </div>
   );

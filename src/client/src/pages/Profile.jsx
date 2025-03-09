@@ -7,8 +7,9 @@ const Profile = () => {
   const [editing, setEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({});
   const [profileImage, setProfileImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
-  // Fetch user data from backend when the component loads
+  // Fetch user profile on component load
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -74,9 +75,33 @@ const Profile = () => {
   };
 
   // Handle profile image upload
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    setProfileImage(file);
+    if (!file) return;
+    
+    setUploading(true);
+    
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await axios.post("http://localhost:5000/api/users/upload", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setUser((prevUser) => ({ ...prevUser, profileImage: response.data.imageUrl }));
+      alert("Profile image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   if (!user) {
@@ -88,12 +113,13 @@ const Profile = () => {
       <div className="profile-container">
         {/* Profile Image */}
         <div className="profile-image-container">
-          {profileImage ? (
-            <img src={URL.createObjectURL(profileImage)} alt="Profile" className="profile-image" />
+          {user.profileImage ? (
+            <img src={user.profileImage} alt="Profile" className="profile-image" />
           ) : (
             <p>No profile image</p>
           )}
           <input type="file" accept="image/*" onChange={handleImageUpload} />
+          {uploading && <p>Uploading...</p>}
         </div>
 
         {/* Profile Info */}
