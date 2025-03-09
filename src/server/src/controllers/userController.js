@@ -104,7 +104,7 @@ async function deleteUser(request, response) {
       await cloudinary.uploader.destroy(`users/${publicId}`);
     }
 
-    await User.findByIdAndDelete(request.user.id);
+    await User.findByIdAndDelete(request.authUserData.id);
     response
       .status(200)
       .json({ message: "You have successfully deleted your account." });
