@@ -1,38 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../styles/Navbar.css";
 
-const Profile = () => {
-  const [user, setUser] = useState({
-    name: "",
-    preferredPet: "",
-  });
+const Navbar = () => {
+  const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("userProfile"));
+    setUser(storedUser);
+  }, []);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
   };
 
   return (
-    <div>
-      <h1>👤 Profile</h1>
-      <label>Name:</label>
-      <input
-        type="text"
-        name="name"
-        value={user.name}
-        onChange={handleChange}
-      />
+    <>
+      {/* Mobile-Only Logo - Stays at the Top */}
+      <div className="mobile-logo">
+        <Link to="/" className="logo">
+          Furever H<span className="paw">🐾</span>mes
+        </Link>
+      </div>
 
-      <label>Preferred Pet Type:</label>
-      <input
-        type="text"
-        name="preferredPet"
-        value={user.preferredPet}
-        onChange={handleChange}
-      />
+      <nav className="navbar">
+        {/* Logo inside Navbar for Desktop */}
+        <Link to="/" className="logo navbar-logo">
+          Furever H<span className="paw">🐾</span>mes
+        </Link>
 
-      <p><strong>Name:</strong> {user.name || "Not set"}</p>
-      <p><strong>Preferred Pet:</strong> {user.preferredPet || "Not set"}</p>
-    </div>
+        <div className="nav-links">
+          <Link to="/explore">Explore</Link>
+          <Link to="/favourites">Favourites</Link>
+          <Link to="/applications">Applications</Link>
+          <div className="profile-dropdown">
+            <button className="dropdown-btn" onClick={toggleDropdown}>
+              {user ? "Manage Account" : "Login / Signup"} ▼
+            </button>
+            {dropdownOpen && (
+              <div className="dropdown-menu">
+                {user ? (
+                  <Link to="/profile">Manage Account</Link>
+                ) : (
+                  <>
+                    <Link to="/login">Login</Link>
+                    <Link to="/signup">Signup</Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </nav>
+    </>
   );
 };
 
-export default Profile;
+export default Navbar;
