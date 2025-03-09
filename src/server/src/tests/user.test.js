@@ -2,30 +2,31 @@ const request = require("supertest");
 const { app } = require("../server");
 const { User } = require("../models/UserModel");
 const bcrypt = require("bcrypt");
-const setupTestDB = require("./setupTestDB");
+
+require("./setupTestDB");
 
 describe("User API Endpoints", () => {
   let userToken;
 
   beforeEach(async () => {
     const hashedPassword = await bcrypt.hash("testpassword", 10);
-    
-    const user = await User.create({
+
+    // Create a test user
+    await User.create({
       name: "Test User",
       email: "test@example.com",
       password: hashedPassword,
-      image: process.env.CLOUDINARY_DEFAULT_USER,
     });
 
-    // Generate a valid JWT token for testing (mimicking login)
-    userToken = `Bearer ${require("jsonwebtoken").sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    )}`;
+    // Log in the user to get a valid token
+    const loginResponse = await request(app)
+      .post("/api/login")
+      .send({ email: "test@example.com", password: "testpassword" });
+
+    userToken = `Bearer ${loginResponse.body.token}`;
   });
 
-  test("should register a new user", async () => {
+  test("✅ should register a new user", async () => {
     const response = await request(app)
       .post("/api/register")
       .send({
@@ -38,7 +39,7 @@ describe("User API Endpoints", () => {
     expect(response.body.message).toBe("User registered successfully.");
   });
 
-  test("should prevent duplicate user registration", async () => {
+  test("✅ should prevent duplicate user registration", async () => {
     const response = await request(app)
       .post("/api/register")
       .send({
@@ -51,7 +52,7 @@ describe("User API Endpoints", () => {
     expect(response.body.message).toBe("Email address already in use.");
   });
 
-  test("should allow user to log in", async () => {
+  test("✅ should allow user to log in", async () => {
     const response = await request(app)
       .post("/api/login")
       .send({
@@ -63,7 +64,7 @@ describe("User API Endpoints", () => {
     expect(response.body.token).toBeDefined();
   });
 
-  test("should fetch user profile", async () => {
+  test("✅ should fetch user profile", async () => {
     const response = await request(app)
       .get("/api/user/profile")
       .set("Authorization", userToken);
@@ -72,7 +73,7 @@ describe("User API Endpoints", () => {
     expect(response.body.email).toBe("test@example.com");
   });
 
-  test("should update user profile", async () => {
+  test("✅ should update user profile", async () => {
     const response = await request(app)
       .put("/api/user/profile")
       .set("Authorization", userToken)
@@ -82,7 +83,7 @@ describe("User API Endpoints", () => {
     expect(response.body.name).toBe("Updated User");
   });
 
-  test("should delete user account", async () => {
+  test("✅ should delete user account", async () => {
     const response = await request(app)
       .delete("/api/user/profile")
       .set("Authorization", userToken);
