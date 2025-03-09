@@ -2,6 +2,7 @@ const { Pet } = require("../models/PetModel");
 const { User } = require("../models/UserModel");
 const { Application } = require("../models/ApplicationModel");
 const cloudinary = require("../utils/cloudinaryConfig");
+const { getCloudinaryPublicId } = require("../utils/cloudinaryPublicId");
 const Joi = require("joi");
 
 // Validation schema for Pet
@@ -67,21 +68,45 @@ async function updatePet(request, response) {
     const pet = await Pet.findById(request.params.petId);
     if (!pet) return response.status(404).json({ error: "Pet not found" });
 
-    // If an image is uploaded, use the new Cloudinary URL, else continue using linked image
-    let newImage = request.file ? request.file.path : pet.image;
+    const defaultImages = [
+      process.env.CLOUDINARY_DEFAULT_DOG,
+      process.env.CLOUDINARY_DEFAULT_CAT,
+      process.env.CLOUDINARY_DEFAULT_OTHER,
+    ];
 
-    // If image is removed, reset to Cloudinary default
-    if (request.body.image === "" || request.body.image === null) {
-      newImage =
-        {
-          Dog: process.env.CLOUDINARY_DEFAULT_DOG,
-          Cat: process.env.CLOUDINARY_DEFAULT_CAT,
-          Other: process.env.CLOUDINARY_DEFAULT_OTHER,
-        }[pet.animalType] || process.env.CLOUDINARY_DEFAULT_OTHER;
+    let newImage = pet.image; // Keep the existing image by default
+
+    // If new image is uploaded
+    if (request.file) {
+      newImage = request.file.path; // Assign new file to newImage
+
+      // Delete previous Cloudinary image if it's not a default one
+      if (pet.image && !defaultImages.includes(pet.image)) {
+        const publicId = getCloudinaryPublicId(pet.image);
+        if (publicId) await cloudinary.uploader.destroy(publicId);
+      }
     }
 
+    // If image is reset (image: "" or null)
+    if ("image" in request.body && (request.body.image === "" || request.body.image === null)) {
+      // Delete previous Cloudinary image if it's not a default one
+      if (pet.image && !defaultImages.includes(pet.image)) {
+        const publicId = getCloudinaryPublicId(pet.image);
+        await cloudinary.uploader.destroy(publicId);
+      }
+
+      // Set the default image based on pet type
+      newImage = {
+        Dog: process.env.CLOUDINARY_DEFAULT_DOG,
+        Cat: process.env.CLOUDINARY_DEFAULT_CAT,
+        Other: process.env.CLOUDINARY_DEFAULT_OTHER,
+      }[pet.animalType] || process.env.CLOUDINARY_DEFAULT_OTHER;
+    }
+
+    // Update pet details
     Object.assign(pet, request.body, { image: newImage });
     await pet.save();
+
     response.status(200).json(pet);
   } catch (error) {
     response.status(500).json({ error: "Server error" });
@@ -101,7 +126,7 @@ async function deletePet(request, response) {
     ];
 
     if (pet.image && !defaultImages.includes(pet.image)) {
-      const publicId = cloudinary.utils.extractPublicId(pet.image);
+      const publicId = getCloudinaryPublicId(pet.image);
       await cloudinary.uploader.destroy(publicId);
     }
 

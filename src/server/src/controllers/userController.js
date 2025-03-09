@@ -1,5 +1,6 @@
 const { User } = require("../models/UserModel");
 const cloudinary = require("../utils/cloudinaryConfig");
+const { getCloudinaryPublicId } = require("../utils/cloudinaryPublicId");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
@@ -29,7 +30,7 @@ async function registerUser(request, response) {
     const user = new User({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await user.save();
@@ -71,11 +72,28 @@ async function updateUser(request, response) {
     // Grab user ID from validated JWT
     const user = await User.findById(request.authUserData.userId);
 
-    // If a new image is uploaded, replace in Cloudinary
-    let newImage = request.file ? request.file.path : user.image;
+    const defaultUserImage = process.env.CLOUDINARY_DEFAULT_USER;
 
-    // If image is removed, reset to default
+    let newImage = user.image; // Keep the existing image by default
+
+    // If new image is uploaded
+    if (request.file) {
+      newImage = request.file.path; // Assign new file to newImage
+
+      // Delete previous Cloudinary image if it's not a default one
+      if (user.image && user.image !== defaultUserImage) {
+        const publicId = getCloudinaryPublicId(user.image);
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
+
+    // If image is reset (image: "" or null)
     if (request.body.image === "" || request.body.image === null) {
+      // Delete previous Cloudinary image if it's not a default one
+      if (user.image && user.image !== defaultUserImage) {
+        const publicId = getCloudinaryPublicId(user.image);
+        await cloudinary.uploader.destroy(publicId);
+      }
       newImage = process.env.CLOUDINARY_DEFAULT_USER;
     }
 
@@ -98,14 +116,14 @@ async function deleteUser(request, response) {
     const user = await User.findById(request.authUserData.userId);
 
     const defaultImage = process.env.CLOUDINARY_DEFAULT_USER;
-    
+
     // If user image exists & it is not the default user image
     if (user.image && user.image !== defaultImage) {
-      const publicId = cloudinary.utils.extractPublicId(user.image); // Extract user image from Cloudinary
+      const publicId = getCloudinaryPublicId(user.image); // Extract user image from Cloudinary
       await cloudinary.uploader.destroy(publicId); // Delete user image from Cloudinary
     }
 
-    await User.findByIdAndDelete(request.authUserData.id);
+    await User.findByIdAndDelete(request.authUserData.userId);
     response
       .status(200)
       .json({ message: "You have successfully deleted your account." });
@@ -116,7 +134,9 @@ async function deleteUser(request, response) {
 
 async function getUser(request, response) {
   try {
-    const user = await User.findById(request.authUserData.userId).select("-password");
+    const user = await User.findById(request.authUserData.userId).select(
+      "-password"
+    );
 
     response.status(200).json(user);
   } catch (error) {
@@ -130,5 +150,5 @@ module.exports = {
   loginUser,
   updateUser,
   deleteUser,
-  getUser
+  getUser,
 };
