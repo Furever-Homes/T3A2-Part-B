@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Explore.css";
 
 const allPets = [
@@ -16,6 +17,7 @@ const Explore = () => {
   const [selectedPet, setSelectedPet] = useState(null);
   const [favourites, setFavourites] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];
@@ -34,14 +36,22 @@ const Explore = () => {
     setSelectedPet(null);
   };
 
+  const toggleFavourite = (pet) => {
+    const isFavourited = favourites.some((fav) => fav.id === pet.id);
+    const updatedFavourites = isFavourited
+      ? favourites.filter((fav) => fav.id !== pet.id)
+      : [...favourites, pet];
+    setFavourites(updatedFavourites);
+    localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+  };
+
   return (
     <div className="explore-page">
       <h1>🐾 Explore Pets</h1>
 
-      {/* Recently Added Pets Section */}
       <h2>📌 Recently Added Pets</h2>
       <div className="pet-grid">
-        {allPets.slice(0, 8).map((pet) => (
+        {allPets.slice(-4).map((pet) => (
           <div key={pet.id} className="pet-card" onClick={() => openPopup(pet)}>
             <img src={pet.photo} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
@@ -51,12 +61,7 @@ const Explore = () => {
               className={`favourite-btn ${favourites.some((fav) => fav.id === pet.id) ? "favourited" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
-                if (favourites.some((fav) => fav.id === pet.id)) {
-                  setFavourites(favourites.filter((fav) => fav.id !== pet.id));
-                } else {
-                  setFavourites([...favourites, pet]);
-                }
-                localStorage.setItem("favourites", JSON.stringify(favourites));
+                toggleFavourite(pet);
               }}
             >
               {favourites.some((fav) => fav.id === pet.id) ? "❤️ Favourited" : "🤍 Favourite"}
@@ -65,10 +70,9 @@ const Explore = () => {
         ))}
       </div>
 
-      {/* All Pets Section */}
       <h2>🐶🐱 All Pets</h2>
       <div className="pet-grid">
-        {allPets.slice(0, 8).map((pet) => (
+        {allPets.map((pet) => (
           <div key={pet.id} className="pet-card" onClick={() => openPopup(pet)}>
             <img src={pet.photo} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
@@ -78,12 +82,7 @@ const Explore = () => {
               className={`favourite-btn ${favourites.some((fav) => fav.id === pet.id) ? "favourited" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
-                if (favourites.some((fav) => fav.id === pet.id)) {
-                  setFavourites(favourites.filter((fav) => fav.id !== pet.id));
-                } else {
-                  setFavourites([...favourites, pet]);
-                }
-                localStorage.setItem("favourites", JSON.stringify(favourites));
+                toggleFavourite(pet);
               }}
             >
               {favourites.some((fav) => fav.id === pet.id) ? "❤️ Favourited" : "🤍 Favourite"}
