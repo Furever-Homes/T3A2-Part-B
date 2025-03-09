@@ -29,8 +29,7 @@ async function registerUser(request, response) {
     const user = new User({
       name,
       email,
-      password: hashedPassword,
-      image: null,
+      password: hashedPassword
     });
 
     await user.save();

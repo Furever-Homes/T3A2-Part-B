@@ -51,7 +51,7 @@ async function createPet(request, response) {
       return response.status(400).json({ error: error.details[0].message });
 
     // Use Cloudinary image from middleware, or default image
-    const imageUrl = request.file ? request.file.path : null;
+    const imageUrl = request.file ? request.file.path : undefined;
 
     const pet = new Pet({ ...request.body, image: imageUrl });
     await pet.save();
