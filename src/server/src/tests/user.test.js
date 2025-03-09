@@ -64,6 +64,18 @@ describe("User API Endpoints", () => {
     expect(response.body.token).toBeDefined();
   });
 
+  test("❌ should cause error, user with email doesn't exist", async () => {
+    const response = await request(app)
+      .post("/api/login")
+      .send({
+        email: "doesntexist@example.com",
+        password: "nopassword",
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("User with that email does not exist.");
+  });
+
   test("✅ should fetch user profile", async () => {
     const response = await request(app)
       .get("/api/user/profile")
