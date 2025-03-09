@@ -10,7 +10,7 @@
 /* Login Heading */
 .login-page h1 {
   font-size: 2.5rem;
-  color: #8B5E3B;
+  color: #8B5E3B; 
   margin-bottom: 20px;
 }
 
@@ -35,13 +35,21 @@
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+/* Highlight input when focused */
+.login-page input:focus {
+  border-color: #8B5E3B; 
+  outline: none;
+  box-shadow: 0 0 5px rgba(139, 94, 59, 0.5);
 }
 
 /* Login Button */
 .login-page button {
   width: 100%;
   padding: 12px;
-  background-color: #8B5E3B;
+  background-color: #8B5E3B; 
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -51,8 +59,14 @@
   transition: background-color 0.3s ease;
 }
 
+/* Hover Effect */
 .login-page button:hover {
-  background-color: #6E4829;
+  background-color: #6E4829; 
+
+/* Loading Button */
+.login-page button:disabled {
+  background-color: #A68A6F; 
+  cursor: not-allowed;
 }
 
 /* Error Message */
@@ -60,6 +74,7 @@
   color: red;
   font-size: 1rem;
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
 /* Redirect Message */

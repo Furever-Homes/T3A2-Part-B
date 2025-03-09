@@ -2,95 +2,126 @@
 .profile-page {
   text-align: center;
   padding: 80px 20px 20px;
-  background-color: #f5e1c8; /* Light brown background */
+  background-color: #f5e1c8; 
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Profile Container */
 .profile-container {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  display: inline-block;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
   text-align: left;
   max-width: 400px;
   width: 100%;
 }
 
 /* Profile Image */
+.profile-image-container {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
 .profile-image {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 10px;
+  border: 3px solid #8B5E3B; /* Brown border */
+  padding: 3px;
 }
 
 /* File Upload Input */
 .file-input {
-  margin-bottom: 10px;
+  display: block;
+  margin: 10px auto;
 }
 
 /* Profile Information */
 .profile-container label {
   display: block;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 12px;
   color: #8B5E3B;
 }
 
 .profile-container input, 
 .profile-container select {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+  padding: 10px;
+  margin-top: 6px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: border 0.3s ease-in-out;
 }
 
-/* Edit and Delete Buttons */
+.profile-container input:focus, 
+.profile-container select:focus {
+  border-color: #8B5E3B;
+  outline: none;
+  box-shadow: 0px 0px 6px rgba(139, 94, 59, 0.5);
+}
+
+/* Buttons */
+.profile-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
 .edit-btn, .delete-btn {
-  width: 100%;
+  flex: 1;
   padding: 12px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
+/* Edit Button */
 .edit-btn {
-  background-color: #8B5E3B; /* Brown */
+  background: linear-gradient(135deg, #8B5E3B, #6E4829);
   color: white;
-  transition: background-color 0.3s ease;
 }
 
 .edit-btn:hover {
-  background-color: #6E4829; /* Darker Brown */
+  background: linear-gradient(135deg, #6E4829, #57321D);
+  transform: scale(1.02);
 }
 
+/* Delete Button */
 .delete-btn {
-  background-color: #d9534f; /* Red */
+  background: linear-gradient(135deg, #d9534f, #b52b27);
   color: white;
-  transition: background-color 0.3s ease;
 }
 
 .delete-btn:hover {
-  background-color: #b52b27; /* Darker Red */
+  background: linear-gradient(135deg, #b52b27, #92251f);
+  transform: scale(1.02);
 }
 
 /* Error Message */
 .error-message {
   color: red;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .profile-container {
       width: 90%;
+  }
+  
+  .profile-buttons {
+      flex-direction: column;
   }
 }
