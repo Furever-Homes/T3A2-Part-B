@@ -96,7 +96,7 @@ describe("Pet API Endpoints", () => {
       .send({
         location: "Melbourne",
       });
-    console.log(updateResponse.body);
+
     expect(updateResponse.status).toBe(200);
     expect(updateResponse.body.location).toBe("Melbourne");
   });
