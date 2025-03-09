@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("userProfile"));
@@ -43,7 +44,7 @@ const Navbar = () => {
           {/* Profile Dropdown */}
           <div className="profile-dropdown">
             <button className="dropdown-btn" onClick={toggleDropdown}>
-              Profile ▼
+              {location.pathname === "/profile" ? "Profile" : "Profile ▼"}
             </button>
             {dropdownOpen && (
               <div className="dropdown-menu">
@@ -51,7 +52,6 @@ const Navbar = () => {
                   <>
                     <Link to="/login">Login</Link>
                     <Link to="/signup">Signup</Link>
-                    <Link to="/profile">Manage Profile</Link>
                   </>
                 ) : (
                   <>

@@ -1,60 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Navbar.css";
+import "../styles/Profile.css";
+import axios from "axios";
 
-const Navbar = () => {
+const Profile = () => {
   const [user, setUser] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("userProfile"));
-    setUser(storedUser);
+    fetchUserProfile();
   }, []);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  const fetchUserProfile = async () => {
+    try {
+      const response = await axios.get("http://localhost:8008/api/user/profile", {
+        withCredentials: true,
+      });
+      setUser(response.data);
+    } catch (error) {
+      setError("Could not fetch user profile. Please log in.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      {/* Mobile-Only Logo - Stays at the Top */}
-      <div className="mobile-logo">
-        <Link to="/" className="logo">
-          Furever H<span className="paw">🐾</span>mes
-        </Link>
-      </div>
-
-      <nav className="navbar">
-        {/* Logo inside Navbar for Desktop */}
-        <Link to="/" className="logo navbar-logo">
-          Furever H<span className="paw">🐾</span>mes
-        </Link>
-
-        <div className="nav-links">
-          <Link to="/explore">Explore</Link>
-          <Link to="/favourites">Favourites</Link>
-          <Link to="/applications">Applications</Link>
-          <div className="profile-dropdown">
-            <button className="dropdown-btn" onClick={toggleDropdown}>
-              {user ? "Manage Account" : "Login / Signup"} ▼
-            </button>
-            {dropdownOpen && (
-              <div className="dropdown-menu">
-                {user ? (
-                  <Link to="/profile">Manage Account</Link>
-                ) : (
-                  <>
-                    <Link to="/login">Login</Link>
-                    <Link to="/signup">Signup</Link>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
+    <div className="profile-page">
+      <h1>👤 Profile</h1>
+      {loading ? (
+        <p>Loading profile...</p>
+      ) : error ? (
+        <p className="error-message">{error}</p>
+      ) : (
+        <div className="profile-details">
+          <h2>{user.name}</h2>
+          <p>Email: {user.email}</p>
+          <p>Mobile: {user.mobile}</p>
+          <p>Date of Birth: {user.dateOfBirth}</p>
+          <p>State: {user.state}</p>
         </div>
-      </nav>
-    </>
+      )}
+    </div>
   );
 };
 
-export default Navbar;
+export default Profile;

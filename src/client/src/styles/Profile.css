@@ -4,65 +4,50 @@
     padding: 80px 20px 20px;
   }
   
-  /* Profile Details */
-  .profile-details {
+  .profile-container {
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     display: inline-block;
     text-align: left;
+    max-width: 400px;
+    width: 100%;
   }
   
-  .profile-details h2 {
-    font-size: 1.8rem;
+  .profile-container label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
     color: #8B5E3B;
   }
   
-  .profile-details p {
+  .profile-container input, .profile-container select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     font-size: 1rem;
-    color: #555;
   }
   
-  /* Dropdown Button */
-  .dropdown-btn {
+  .profile-container input:disabled, .profile-container select:disabled {
+    background-color: #f0f0f0;
+  }
+  
+  .edit-btn {
     background: #8B5E3B;
     color: white;
-    padding: 10px 15px;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 15px;
     font-size: 1rem;
+    width: 100%;
   }
   
-  .dropdown-btn:hover {
+  .edit-btn:hover {
     background: #6E4829;
-  }
-  
-  /* Dropdown Menu */
-  .dropdown-menu {
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .dropdown-menu a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1rem;
-    padding: 5px 10px;
-  }
-  
-  .dropdown-menu a:hover {
-    background: #f0f0f0;
-    border-radius: 5px;
   }
   
