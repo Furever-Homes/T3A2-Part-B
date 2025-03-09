@@ -7,7 +7,6 @@ require("./setupTestDB");
 
 describe("Pet API Endpoints", () => {
   let adminToken;
-  let petId;
 
   beforeEach(async () => {
     const hashedPassword = await bcrypt.hash("testpassword", 10);
