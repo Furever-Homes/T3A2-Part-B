@@ -47,7 +47,8 @@ async function getPet(request, response) {
 async function createPet(request, response) {
   try {
     const { error } = petSchema.validate(request.body);
-    if (error) return response.status(400).json({ error: error.details[0].message });
+    if (error)
+      return response.status(400).json({ error: error.details[0].message });
 
     // Use Cloudinary image from middleware, or default image
     const imageUrl = request.file ? request.file.path : null;
@@ -71,11 +72,12 @@ async function updatePet(request, response) {
 
     // If image is removed, reset to Cloudinary default
     if (request.body.image === "" || request.body.image === null) {
-      newImage = {
-        Dog: process.env.CLOUDINARY_DEFAULT_DOG,
-        Cat: process.env.CLOUDINARY_DEFAULT_CAT,
-        Other: process.env.CLOUDINARY_DEFAULT_OTHER,
-      }[pet.animalType] || process.env.CLOUDINARY_DEFAULT_OTHER;
+      newImage =
+        {
+          Dog: process.env.CLOUDINARY_DEFAULT_DOG,
+          Cat: process.env.CLOUDINARY_DEFAULT_CAT,
+          Other: process.env.CLOUDINARY_DEFAULT_OTHER,
+        }[pet.animalType] || process.env.CLOUDINARY_DEFAULT_OTHER;
     }
 
     Object.assign(pet, request.body, { image: newImage });
@@ -97,10 +99,10 @@ async function deletePet(request, response) {
       process.env.CLOUDINARY_DEFAULT_CAT,
       process.env.CLOUDINARY_DEFAULT_OTHER,
     ];
-    
+
     if (pet.image && !defaultImages.includes(pet.image)) {
-      const publicId = pet.image.split("/").pop().split(".")[0];
-      await cloudinary.uploader.destroy(`pets/${publicId}`);
+      const publicId = cloudinary.utils.extractPublicId(pet.image);
+      await cloudinary.uploader.destroy(publicId);
     }
 
     await User.updateMany(
