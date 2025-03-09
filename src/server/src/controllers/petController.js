@@ -26,7 +26,7 @@ async function getAllPets(request, response) {
     if (location) filter.location = location;
 
     const pets = await Pet.find(filter);
-    response.json(pets);
+    response.status(200).json(pets);
   } catch (error) {
     response.status(500).json({ error: "Server error" });
   }
