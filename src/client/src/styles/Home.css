@@ -1,54 +1,93 @@
+/* Apply background color to the whole page */
+body, html {
+  background-color: #F5E1C8; /* Light brown */
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensures full-page coverage */
+}
+
 /* Home Page */
 .home-page {
-    text-align: center;
-    padding: 80px 20px 20px;
-  }
-  
-  /* Home Page Heading */
-  .home-page h1 {
-    font-size: 2.5rem;
-    color: #8B5E3B; /* Brown for branding */
-    margin-bottom: 10px;
-  }
-  
-  /* Home Page Description */
-  .home-page p {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 20px;
-  }
-  
-  /* Explore Button */
-  .explore-btn {
-    display: inline-block;
-    background-color: #8B5E3B; /* Brown */
+  text-align: center;
+  min-height: 100vh; /* Ensures it fills the full viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Home Page Heading */
+.home-page h1 {
+  font-size: 2.5rem;
+  color: #5A3E2B; /* Dark brown */
+  margin-bottom: 10px;
+}
+
+/* Home Page Description */
+.home-page p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Login & Sign Up Button Container */
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Login & Sign Up Buttons */
+.login-btn, .signup-btn {
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  color: white;
+
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Login Button (Darker Brown) */
+.login-btn {
+  background-color: #8B5E3B; /* Brown */
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #6E4829; /* Darker shade */
+}
+
+/* Signup Button (Slightly Lighter Brown) */
+.signup-btn {
+  background-color: #A67C52; 
+}
+
+.signup-btn:hover {
+  background-color: #8B5E3B; /
     color: white;
-    padding: 12px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .explore-btn:hover {
-    background-color: #6E4829; /* Darker Brown */
-  }
-  
-  /* Responsive Design */
-  @media (min-width: 768px) {
-    .home-page {
-      padding-top: 100px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .home-page {
-      padding-top: 120px;
-    }
-  
-    .explore-btn {
-      width: 90%;
-      text-align: center;
-    }
-  }
+
+}
+
+/* Explore Button */
+.explore-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out;
+  border: none;
+  color: white;
+  background: linear-gradient(to right, #554534, #615f59); 
+  width: 250px; 
+  text-align: center;
+}
+
+/* Button Hover Effect */
+.explore-btn:hover {
+  transform: scale(1.05);
+}
