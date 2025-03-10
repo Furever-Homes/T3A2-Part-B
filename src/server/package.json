@@ -7,7 +7,8 @@
     "start": "node src/index.js",
     "dev": "node src/index.js --watch",
     "seed": "node src/utils/seeding.js",
-    "db:drop": "node src/utils/dropping.js"
+    "db:drop": "node src/utils/dropping.js",
+    "test": "jest --coverage --runInBand"
   },
   "keywords": [],
   "author": "",
