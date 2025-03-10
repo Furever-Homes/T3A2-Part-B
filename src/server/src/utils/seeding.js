@@ -21,7 +21,6 @@ async function seed() {
     name: "John Doe",
     email: "johndoe@example.com",
     password: hashedPassword,
-    image: null,
     admin: false,
     favourites: [],
   });
@@ -30,7 +29,6 @@ async function seed() {
     name: "Jane Smith",
     email: "janesmith@example.com",
     password: hashedPassword,
-    image: null,
     admin: false,
     favourites: [],
   });
@@ -39,7 +37,6 @@ async function seed() {
     name: "Alex Brown",
     email: "alexbrown@example.com",
     password: hashedPassword,
-    image: null,
     admin: false,
     favourites: [],
   });
@@ -48,7 +45,6 @@ async function seed() {
     name: "Admin User",
     email: "admin@example.com",
     password: hashedPassword,
-    image: null,
     admin: true,
     favourites: [],
   });
@@ -69,7 +65,6 @@ async function seed() {
       status: "Available",
       description: "A friendly and energetic dog.",
       location: "Sydney",
-      image: null,
     }),
     new Pet({
       name: "Mittens",
@@ -79,7 +74,6 @@ async function seed() {
       status: "Available",
       description: "A curious and playful kitten.",
       location: "Melbourne",
-      image: null,
     }),
     new Pet({
       name: "Charlie",
@@ -89,7 +83,6 @@ async function seed() {
       status: "Available",
       description: "Loves to play fetch!",
       location: "Brisbane",
-      image: null,
     }),
     new Pet({
       name: "Luna",
@@ -99,7 +92,6 @@ async function seed() {
       status: "Available",
       description: "Enjoys sleeping all day.",
       location: "Perth",
-      image: null,
     }),
     new Pet({
       name: "Max",
@@ -109,7 +101,6 @@ async function seed() {
       status: "Available",
       description: "Curious and energetic.",
       location: "Canberra",
-      image: null,
     }),
     new Pet({
       name: "Oscar",
@@ -119,7 +110,6 @@ async function seed() {
       status: "Available",
       description: "A big fluffy cat!",
       location: "Melbourne",
-      image: null,
     }),
     new Pet({
       name: "Rocky",
@@ -129,7 +119,6 @@ async function seed() {
       status: "Available",
       description: "Very protective.",
       location: "Perth",
-      image: null,
     }),
     new Pet({
       name: "Daisy",
@@ -139,7 +128,6 @@ async function seed() {
       status: "Available",
       description: "A sweet and gentle cat.",
       location: "Canberra",
-      image: null,
     }),
     new Pet({
       name: "Slytherin",
@@ -149,7 +137,6 @@ async function seed() {
       status: "Available",
       description: "Loves to slide around!",
       location: "Sydney",
-      image: null,
     }),
   ];
 
