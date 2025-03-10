@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Explore.css";
-
-const allPets = [
-  { id: 1, name: "Bella", age: 3, breed: "Golden Retriever", description: "A friendly and playful companion.", photo: "https://via.placeholder.com/150" },
-  { id: 2, name: "Charlie", age: 2, breed: "Beagle", description: "Loves to explore and sniff around!", photo: "https://via.placeholder.com/150" },
-  { id: 3, name: "Lucy", age: 5, breed: "Tabby Cat", description: "Loves to cuddle and nap in the sun.", photo: "https://via.placeholder.com/150" },
-  { id: 4, name: "Duke", age: 4, breed: "Husky", description: "Energetic and loyal, loves the snow!", photo: "https://via.placeholder.com/150" },
-  { id: 5, name: "Max", age: 1, breed: "Labrador Retriever", description: "Loves playing fetch and swimming.", photo: "https://via.placeholder.com/150" },
-  { id: 6, name: "Mittens", age: 2, breed: "Persian Cat", description: "Fluffy and affectionate, enjoys naps.", photo: "https://via.placeholder.com/150" },
-  { id: 7, name: "Rocky", age: 4, breed: "Bulldog", description: "Strong and gentle, great with kids.", photo: "https://via.placeholder.com/150" },
-  { id: 8, name: "Luna", age: 3, breed: "Siamese Cat", description: "Curious and vocal, loves attention.", photo: "https://via.placeholder.com/150" },
-];
+import axios from "axios";
 
 const Explore = () => {
+  const [pets, setPets] = useState([]); // Stores fetched pets
   const [selectedPet, setSelectedPet] = useState(null);
   const [favourites, setFavourites] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/pets"); // Fetch pets from backend
+        setPets(response.data);
+      } catch (error) {
+        setError("Failed to load pets. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPets();
+
     const savedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];
     setFavourites(savedFavourites);
+
     const storedUser = JSON.parse(localStorage.getItem("userProfile"));
     if (storedUser) {
       setIsLoggedIn(true);
@@ -34,59 +43,65 @@ const Explore = () => {
     setSelectedPet(null);
   };
 
+  const toggleFavourite = (pet) => {
+    const isFavourited = favourites.some((fav) => fav._id === pet._id);
+    const updatedFavourites = isFavourited
+      ? favourites.filter((fav) => fav._id !== pet._id)
+      : [...favourites, pet];
+
+    setFavourites(updatedFavourites);
+    localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+  };
+
+  if (loading) {
+    return <p>Loading pets...</p>;
+  }
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
   return (
     <div className="explore-page">
       <h1>🐾 Explore Pets</h1>
 
-      {/* Recently Added Pets Section */}
-      <h2>📌 Recently Added Pets</h2>
+      <h2> Recently Added Pets</h2>
       <div className="pet-grid">
-        {allPets.slice(0, 8).map((pet) => (
-          <div key={pet.id} className="pet-card" onClick={() => openPopup(pet)}>
+        {pets.slice(-4).map((pet) => (
+          <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
             <img src={pet.photo} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
             <p>Breed: {pet.breed}</p>
             <button 
-              className={`favourite-btn ${favourites.some((fav) => fav.id === pet.id) ? "favourited" : ""}`}
+              className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
-                if (favourites.some((fav) => fav.id === pet.id)) {
-                  setFavourites(favourites.filter((fav) => fav.id !== pet.id));
-                } else {
-                  setFavourites([...favourites, pet]);
-                }
-                localStorage.setItem("favourites", JSON.stringify(favourites));
+                toggleFavourite(pet);
               }}
             >
-              {favourites.some((fav) => fav.id === pet.id) ? "❤️ Favourited" : "🤍 Favourite"}
+              {favourites.some((fav) => fav._id === pet._id) ? "❤️ Favourited" : "🤍 Favourite"}
             </button>
           </div>
         ))}
       </div>
 
-      {/* All Pets Section */}
-      <h2>🐶🐱 All Pets</h2>
+      <h2> All Pets</h2>
       <div className="pet-grid">
-        {allPets.slice(0, 8).map((pet) => (
-          <div key={pet.id} className="pet-card" onClick={() => openPopup(pet)}>
+        {pets.map((pet) => (
+          <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
             <img src={pet.photo} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
             <p>Breed: {pet.breed}</p>
             <button 
-              className={`favourite-btn ${favourites.some((fav) => fav.id === pet.id) ? "favourited" : ""}`}
+              className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
               onClick={(e) => {
                 e.stopPropagation();
-                if (favourites.some((fav) => fav.id === pet.id)) {
-                  setFavourites(favourites.filter((fav) => fav.id !== pet.id));
-                } else {
-                  setFavourites([...favourites, pet]);
-                }
-                localStorage.setItem("favourites", JSON.stringify(favourites));
+                toggleFavourite(pet);
               }}
             >
-              {favourites.some((fav) => fav.id === pet.id) ? "❤️ Favourited" : "🤍 Favourite"}
+              {favourites.some((fav) => fav._id === pet._id) ? "❤️ Favourited" : "🤍 Favourite"}
             </button>
           </div>
         ))}
