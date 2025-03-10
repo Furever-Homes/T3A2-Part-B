@@ -1,22 +1,21 @@
 /* Explore Page Styles */
 .explore-page {
   text-align: center;
-  padding: 100px 20px 20px; /* Ensures title and content are fully visible */
-  margin-top: 60px; /* Prevents content from getting cut off behind navbar */
+  padding: 100px 20px 20px;
+  margin-top: 60px; 
+  background-color: #f5e1c8; 
 }
 
-/* Ensure space below the navbar in desktop */
 @media (min-width: 769px) {
   .explore-page {
-    padding-top: 120px; /* Extra space for the navbar */
+    padding-top: 120px;
   }
 }
 
-/* Ensure space below the logo and above the bottom navbar in mobile */
 @media (max-width: 768px) {
   .explore-page {
-    padding-top: 140px; /* Extra space for mobile logo */
-    padding-bottom: 80px; /* Extra space for bottom navbar */
+    padding-top: 140px;
+    padding-bottom: 80px;
   }
 }
 
@@ -26,7 +25,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  padding-bottom: 40px; /* Prevents content from getting cut off at the bottom */
+  padding-bottom: 40px;
 }
 
 /* Individual Pet Card */
@@ -37,13 +36,15 @@
   background: white;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .pet-card:hover {
   transform: scale(1.05);
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Pet Image */
 .pet-image {
   width: 100%;
   height: auto;
@@ -56,13 +57,18 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .favourite-btn.favourited {
-  color: brown;
+  color: #8B5E3B;
 }
 
-/* Popup Styles */
+.favourite-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Popup Overlay */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -75,32 +81,54 @@
   align-items: center;
 }
 
+/* Popup Styling */
 .popup {
   background: white;
   padding: 20px;
   border-radius: 10px;
   width: 400px;
   text-align: center;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Popup Image */
 .popup-image {
   width: 100%;
   border-radius: 10px;
 }
 
+/* Apply Button */
 .apply-btn {
-  background: brown;
+  background: #8B5E3B;
   color: white;
-  padding: 10px;
+  padding: 12px;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  transition: background 0.3s ease;
 }
 
+.apply-btn:hover {
+  background: #6E4829;
+}
+
+/* Close Button */
 .close-btn {
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: red;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
 }
