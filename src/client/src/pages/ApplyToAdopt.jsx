@@ -27,7 +27,7 @@ const ApplyToAdopt = () => {
 
       const applicationData = { ...formData, petId };
 
-      await axios.post("https://localhost:5001/api/applications", applicationData, {
+      await axios.post("http://localhost:5001/api/applications", applicationData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -16,11 +16,11 @@ const AdminDashboard = () => {
         const token = localStorage.getItem("token");
         if (!token) return setError("Unauthorized access.");
 
-        const petsResponse = await axios.get("https://localhost:5001/api/pets", {
+        const petsResponse = await axios.get("http://localhost:5001/api/pets", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const applicationsResponse = await axios.get("https://localhost:5001/api/applications", {
+        const applicationsResponse = await axios.get("http://localhost:5001/api/applications", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
