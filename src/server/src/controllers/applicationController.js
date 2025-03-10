@@ -1,4 +1,5 @@
 const { Application } = require("../models/ApplicationModel");
+const { Pet } = require("../models/PetModel");
 
 async function submitApplication(request, response) {
   try {
@@ -70,22 +71,31 @@ async function getAllApplications(request, response) {
 }
 
 async function getUserApplications(request, response) {
-    try {
-        const applications = await Application.find({
-            user: request.authUserData.id,
-        })
-        .populate("pet", "name breed status")
-        .sort({ createdAt: -1 }); // Sorts by latest applications first
+  try {
+      // Ensure user data exists in the request
+      if (!request.authUserData || !request.authUserData.userId) {
+          return response.status(401).json({ message: "Unauthorised: User not found" });
+      }
+      const userId = request.authUserData.userId; // Extract user ID 
 
-        response.status(200).json(applications);
-    } catch (error) {
-        console.error("Error fetching user applications:", error.message);
-        response.status(500).json({
-            message: "An error occurred while retrieving applications",
-            error: error.message,
-        });
-    }
+      // Fetch applications submitted by the user and populate pet details
+      const applications = await Application.find({ user: userId })
+          .populate("pet", "name status location")
+          .sort({ createdAt: -1 });
+
+      response.status(200).json(applications);
+  } catch (error) {
+      console.error("Error fetching user applications:", error.message);
+      response.status(500).json({
+          message: "An error occurred while retrieving applications",
+          error: error.message,
+      });
+  }
 }
+
+
+
+
 
 async function deleteUserApplication(request, response) {
   try {
@@ -119,32 +129,43 @@ async function approveApplication(request, response) {
   try {
     const applicationId = request.params.applicationId;
 
-    const application = await Application.findById(applicationId);
+    // Find the application and populate pet details
+    const application = await Application.findById(applicationId).populate("pet");
     if (!application) {
-      return response.status(404).json({
-        message: "Application not found",
-      });
-    }
-    if (application.status !== "Pending") {
-      return response.status(400).json({
-        message: "Application has already been processed",
-      });
+      return response.status(404).json({ message: "Application not found" });
     }
 
+    // Check if application is already processed
+    if (application.status !== "Pending") {
+      return response.status(400).json({ message: "Application has already been processed" });
+    }
+
+    // Approve application
     application.status = "Approved";
     await application.save();
 
+    let petName = "Pet"; 
+    if (application.pet && application.pet._id) {
+      petName = application.pet.name; // Get pet name
+
+      // Update pet status to "Adopted"
+      await Pet.findByIdAndUpdate(application.pet._id, { status: "Adopted" });
+    }
+
     response.status(200).json({
-      message: "Application approved successfully",
+      message: `Application has been successfully approved. ${petName} has found their Furever Home!`,
       application,
     });
   } catch (error) {
+    console.error("Error approving application:", error.message);
     response.status(500).json({
-      message: "Error occured while approving application",
+      message: "Error occurred while approving application",
       error: error.message,
     });
   }
 }
+
+
 
 async function rejectApplication(request, response) {
   try {
