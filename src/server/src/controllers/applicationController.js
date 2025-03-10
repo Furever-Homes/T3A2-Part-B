@@ -69,8 +69,6 @@ async function getAllApplications(request, response) {
   }
 }
 
-
-
 async function getUserApplications(request, response) {
   try {
       // Ensure user data exists in the request
@@ -81,12 +79,12 @@ async function getUserApplications(request, response) {
 
       // Fetch applications submitted by the user and populate pet details
       const applications = await Application.find({ user: userId })
-          .populate("pet", "name breed status location")
+          .populate("pet", "name status location")
           .sort({ createdAt: -1 });
 
       response.status(200).json(applications);
   } catch (error) {
-      console.error("❌ Error fetching user applications:", error.message);
+      console.error("Error fetching user applications:", error.message);
       response.status(500).json({
           message: "An error occurred while retrieving applications",
           error: error.message,
