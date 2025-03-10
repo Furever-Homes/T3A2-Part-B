@@ -148,10 +148,19 @@ async function getUser(request, response) {
   }
 }
 
+async function logout(request, response) {
+  try {
+    response.status(200).json({ message: "You have logged out successfully." });
+  } catch (error) {
+    response.status(500).json({ message: "Logout failed", error: error.message });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
   updateUser,
   deleteUser,
   getUser,
+  logout
 };
