@@ -165,8 +165,6 @@ async function approveApplication(request, response) {
   }
 }
 
-
-
 async function rejectApplication(request, response) {
   try {
     const applicationId = request.params.applicationId;
