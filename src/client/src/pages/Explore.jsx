@@ -15,7 +15,7 @@ const Explore = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get("https://fureverhomes.onrender.com/api/pets"); // Fetch pets from backend
+        const response = await axios.get("https://localhost:5001/api/pets"); // Fetch pets from backend
         setPets(response.data);
       } catch (error) {
         setError("Failed to load pets. Please try again later.");

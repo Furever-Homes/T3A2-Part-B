@@ -20,7 +20,7 @@ const Favourites = () => {
         return;
       }
 
-      const response = await axios.get("https://fureverhomes.onrender.com/api/favourites", {
+      const response = await axios.get("https://localhost:5001/api/favourites", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -37,7 +37,7 @@ const Favourites = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.delete(`https://fureverhomes.onrender.com/api/favourites/${petId}`, {
+      await axios.delete(`https://localhost:5001/api/favourites/${petId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

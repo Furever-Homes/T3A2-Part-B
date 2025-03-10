@@ -20,7 +20,7 @@ const Applications = () => {
         return;
       }
 
-      const response = await axios.get("https://fureverhomes.onrender.com/api/applications", {
+      const response = await axios.get("https://localhost:5001/api/applications", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
