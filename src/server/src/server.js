@@ -12,7 +12,7 @@ app.use(helmet());
 
 const corsOptions = {
     origin: [
-      "http://localhost:5173", // Allow local frontend for testing
+      "http://localhost:5174", // Allow local frontend for testing
       // https://fureverhomes.com.au <-- insert URL for deployed frontend website here
     ],
     methods: "GET,POST,PUT,DELETE",
