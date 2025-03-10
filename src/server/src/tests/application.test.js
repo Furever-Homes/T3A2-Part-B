@@ -45,9 +45,7 @@ describe("Pet Application API Endpoints", () => {
       .send({ email: "usertest@example.com", password: "testpassword" });
 
     userToken = `Bearer ${userLoginResponse.body.token}`;
-  });
 
-  test("should submit an application", async () => {
     // Create a pet
     const createPetResponse = await request(app)
       .post("/api/admin/pets")
@@ -62,8 +60,11 @@ describe("Pet Application API Endpoints", () => {
         location: "Sydney",
       });
 
-    const petId = createPetResponse.body._id
+    petId = createPetResponse.body._id
 
+  });
+
+  test("should submit an application", async () => {
     // Apply for the pet
     const applicationResponse = await request(app)
       .post(`/api/user/applications/${petId}`)
@@ -82,23 +83,7 @@ describe("Pet Application API Endpoints", () => {
     expect(checkResponse.message).toBe("I love this pet and would like to adopt!");
   });
 
-  test("should not allow duplicate applications for the same pet", async () => {
-    // Create a pet
-    const createPetResponse = await request(app)
-      .post("/api/admin/pets")
-      .set("Authorization", adminToken)
-      .send({
-        name: "ApplicationBuddy",
-        animalType: "Dog",
-        age: 3,
-        activityLevel: "High",
-        status: "Available",
-        description: "A playful application dog.",
-        location: "Sydney",
-      });
-
-    const petId = createPetResponse.body._id
-    
+  test("should not allow duplicate applications for the same pet", async () => {   
     // Apply for the pet
     await request(app)
       .post(`/api/user/applications/${petId}`)
@@ -112,6 +97,101 @@ describe("Pet Application API Endpoints", () => {
 
     expect(duplicateResponse.status).toBe(400);
     expect(duplicateResponse.body.message).toBe("You have already submitted an application for this pet");
+  });
+
+  test("should fetch all user applications", async () => {
+    // Create an application
+    await request(app)
+      .post(`/api/user/applications/${petId}`)
+      .set("Authorization", userToken)
+      .send({ message: "I want this pet!" });
+
+    // Fetch user applications
+    const response = await request(app)
+      .get("/api/user/applications")
+      .set("Authorization", userToken);
+
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body[0].pet._id).toBe(petId);
+  });
+
+  test("should fetch all applications as admin", async () => {
+    // Create an application
+    await request(app)
+      .post(`/api/user/applications/${petId}`)
+      .set("Authorization", userToken)
+      .send({ message: "Adopting!" });
+
+    // Fetch all applications as admin
+    const response = await request(app)
+      .get("/api/admin/applications")
+      .set("Authorization", adminToken);
+
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBeGreaterThan(0);
+  });
+
+  test("should approve an application", async () => {
+    // Create an application
+    const applicationResponse = await request(app)
+      .post(`/api/user/applications/${petId}`)
+      .set("Authorization", userToken)
+      .send({ message: "I want this pet!" });
+
+    const applicationId = applicationResponse.body.application._id;
+
+    // Approve the application
+    const approveResponse = await request(app)
+      .put(`/api/admin/applications/${applicationId}/approve`)
+      .set("Authorization", adminToken);
+
+    expect(approveResponse.status).toBe(200);
+    expect(approveResponse.body.application.status).toBe("Approved");
+
+    // Check if pet status changed
+    const updatedPet = await Pet.findById(petId);
+    expect(updatedPet.status).toBe("Adopted");
+  });
+
+  test(" should reject an application", async () => {
+    // Create an application
+    const applicationResponse = await request(app)
+      .post(`/api/user/applications/${petId}`)
+      .set("Authorization", userToken)
+      .send({ message: "Please let me adopt!" });
+
+    const applicationId = applicationResponse.body.application._id;
+
+    // Reject the application
+    const rejectResponse = await request(app)
+      .put(`/api/admin/applications/${applicationId}/reject`)
+      .set("Authorization", adminToken);
+
+    expect(rejectResponse.status).toBe(200);
+    expect(rejectResponse.body.application.status).toBe("Rejected");
+  });
+
+  test("🗑️ should delete an application", async () => {
+    // Create an application
+    const applicationResponse = await request(app)
+      .post(`/api/user/applications/${petId}`)
+      .set("Authorization", userToken)
+      .send({ message: "Deleting this later!" });
+
+    const applicationId = applicationResponse.body.application._id;
+
+    // Delete the application
+    const deleteResponse = await request(app)
+      .delete(`/api/user/applications/${applicationId}`)
+      .set("Authorization", userToken);
+
+    expect(deleteResponse.status).toBe(200);
+    expect(deleteResponse.body.message).toBe("Application deleted successfully");
+
+    // Check if application is removed
+    const deletedApplication = await Application.findById(applicationId);
+    expect(deletedApplication).toBeNull();
   });
 
 });
