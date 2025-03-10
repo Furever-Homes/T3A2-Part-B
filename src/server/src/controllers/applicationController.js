@@ -2,12 +2,6 @@ const { Application } = require("../models/ApplicationModel");
 
 async function submitApplication(request, response) {
   try {
-
-      console.log("✅ Request received at submitApplication");
-      console.log("✅ User in request:", request.authUserData.userId); // Debugging
-      console.log("✅ Request params:", request.params);
-      console.log("✅ Request body:", request.body);
-
       const { message } = request.body; 
       const { petId } = request.params; 
 
