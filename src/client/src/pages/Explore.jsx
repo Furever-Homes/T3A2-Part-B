@@ -4,18 +4,19 @@ import "../styles/Explore.css";
 import axios from "axios";
 
 const Explore = () => {
-  const [pets, setPets] = useState([]); // Stores fetched pets
+  const [pets, setPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
   const [favourites, setFavourites] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [applying, setApplying] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/pets"); // Fetch pets from backend
+        const response = await axios.get("http://localhost:5001/api/pets");
         setPets(response.data);
       } catch (error) {
         setError("Failed to load pets. Please try again later.");
@@ -51,6 +52,43 @@ const Explore = () => {
 
     setFavourites(updatedFavourites);
     localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+  };
+
+  const handleApplyToAdopt = async (petId) => {
+    if (!isLoggedIn) {
+      alert("You must be logged in to apply.");
+      navigate("/login");
+      return;
+    }
+
+    setApplying(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to apply.");
+        navigate("/login");
+        return;
+      }
+
+      console.log("Token:", token); // Debugging: Check if the token is retrieved
+
+      await axios.post(
+        `http://localhost:5001/api/user/applications/${petId}`,
+        { message: "I would like to adopt this pet." },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      alert("Application submitted successfully!");
+      navigate("/applications");
+    } catch (error) {
+      console.error("Error submitting application:", error); // Debugging: Log the error
+      alert("Failed to submit application. Please try again.");
+    } finally {
+      setApplying(false);
+    }
   };
 
   if (loading) {
@@ -116,7 +154,13 @@ const Explore = () => {
             <p>Age: {selectedPet.age} years</p>
             <p>Breed: {selectedPet.breed}</p>
             <p>{selectedPet.description}</p>
-            <button className="apply-btn">Apply to Adopt</button>
+            <button 
+              className="apply-btn"
+              onClick={() => handleApplyToAdopt(selectedPet._id)}
+              disabled={applying}
+            >
+              {applying ? "Applying..." : "Apply to Adopt"}
+            </button>
           </div>
         </div>
       )}
