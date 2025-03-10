@@ -30,8 +30,8 @@ const Explore = () => {
     const savedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];
     setFavourites(savedFavourites);
 
-    const storedUser = JSON.parse(localStorage.getItem("userProfile"));
-    if (storedUser) {
+    const token = localStorage.getItem("token");
+    if (token) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -71,8 +71,6 @@ const Explore = () => {
         return;
       }
 
-      console.log("Token:", token); // Debugging: Check if the token is retrieved
-
       await axios.post(
         `http://localhost:5001/api/user/applications/${petId}`,
         { message: "I would like to adopt this pet." },
@@ -84,7 +82,7 @@ const Explore = () => {
       alert("Application submitted successfully!");
       navigate("/applications");
     } catch (error) {
-      console.error("Error submitting application:", error); // Debugging: Log the error
+      console.error("Error submitting application:", error);
       alert("Failed to submit application. Please try again.");
     } finally {
       setApplying(false);

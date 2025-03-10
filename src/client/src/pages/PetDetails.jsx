@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/PetDetails.css";
 
@@ -8,6 +8,8 @@ const PetDetails = () => {
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [applying, setApplying] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch pet details when the component mounts
   useEffect(() => {
@@ -24,6 +26,35 @@ const PetDetails = () => {
 
     fetchPetDetails();
   }, [id]);
+
+  const handleApplyToAdopt = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to apply.");
+      navigate("/login");
+      return;
+    }
+
+    setApplying(true);
+
+    try {
+      await axios.post(
+        `http://localhost:5001/api/user/applications/${id}`,
+        { message: "I would like to adopt this pet." },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      alert("Application submitted successfully!");
+      navigate("/applications");
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      alert("Failed to submit application. Please try again.");
+    } finally {
+      setApplying(false);
+    }
+  };
 
   if (loading) {
     return <p className="loading-message">Loading pet details...</p>;
@@ -42,7 +73,13 @@ const PetDetails = () => {
           <p><strong>Age:</strong> {pet.age} years</p>
           <p><strong>Breed:</strong> {pet.breed}</p>
           <p><strong>Description:</strong> {pet.description}</p>
-          <button className="apply-btn">Apply to Adopt</button>
+          <button 
+            className="apply-btn"
+            onClick={handleApplyToAdopt}
+            disabled={applying}
+          >
+            {applying ? "Applying..." : "Apply to Adopt"}
+          </button>
         </>
       ) : (
         <p>Pet details not found.</p>
