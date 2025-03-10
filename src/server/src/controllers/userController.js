@@ -16,7 +16,7 @@ const updateUserSchema = Joi.object({
 // Register a New User
 async function registerUser(request, response) {
   try {
-    const { name, email, password } = request.body;
+    const { name, email, password, admin } = request.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -31,6 +31,7 @@ async function registerUser(request, response) {
       name,
       email,
       password: hashedPassword,
+      admin
     });
 
     await user.save();
