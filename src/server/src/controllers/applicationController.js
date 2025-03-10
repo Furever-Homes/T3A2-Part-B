@@ -69,23 +69,34 @@ async function getAllApplications(request, response) {
   }
 }
 
-async function getUserApplications(request, response) {
-    try {
-        const applications = await Application.find({
-            user: request.authUserData.id,
-        })
-        .populate("pet", "name breed status")
-        .sort({ createdAt: -1 }); // Sorts by latest applications first
 
-        response.status(200).json(applications);
-    } catch (error) {
-        console.error("Error fetching user applications:", error.message);
-        response.status(500).json({
-            message: "An error occurred while retrieving applications",
-            error: error.message,
-        });
-    }
+
+async function getUserApplications(request, response) {
+  try {
+      // Ensure user data exists in the request
+      if (!request.authUserData || !request.authUserData.userId) {
+          return response.status(401).json({ message: "Unauthorised: User not found" });
+      }
+      const userId = request.authUserData.userId; // Extract user ID 
+
+      // Fetch applications submitted by the user and populate pet details
+      const applications = await Application.find({ user: userId })
+          .populate("pet", "name breed status location")
+          .sort({ createdAt: -1 });
+
+      response.status(200).json(applications);
+  } catch (error) {
+      console.error("❌ Error fetching user applications:", error.message);
+      response.status(500).json({
+          message: "An error occurred while retrieving applications",
+          error: error.message,
+      });
+  }
 }
+
+
+
+
 
 async function deleteUserApplication(request, response) {
   try {
