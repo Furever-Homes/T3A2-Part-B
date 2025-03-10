@@ -93,10 +93,6 @@ async function getUserApplications(request, response) {
   }
 }
 
-
-
-
-
 async function deleteUserApplication(request, response) {
   try {
     const applicationId = request.params.applicationId;
@@ -107,7 +103,7 @@ async function deleteUserApplication(request, response) {
       return response.status(404).json({ message: "Application not found" });
     }
 
-    if (application.user.toString() !== request.user.id) {
+    if (!application.user.equals(request.authUserData.userId)) {
       return response
         .status(403)
         .json({

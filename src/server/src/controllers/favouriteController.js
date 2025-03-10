@@ -1,10 +1,22 @@
 const { User } = require("../models/UserModel");
+const { Pet } = require("../models/PetModel")
 
 // Favourite a Pet
 async function favouritePet(request, response) {
   try {
     const userId = request.authUserData.userId;
     const petId = request.params.petId;
+
+    const petExists = await Pet.findById(petId);
+    if (!petExists) {
+      return response.status(404).json({ success: false, message: "Pet not found" });
+    }
+
+    // Check if pet already exists in favourites
+    const user = await User.findById(userId);
+    if (user.favourites.includes(petId)) {
+      return response.status(400).json({ success: false, message: "Pet is already in favourites" });
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -30,6 +42,17 @@ async function unFavouritePet(request, response) {
   try {
     const userId = request.authUserData.userId;
     const petId = request.params.petId;
+
+    const petExists = await Pet.findById(petId);
+    if (!petExists) {
+      return response.status(404).json({ success: false, message: "Pet not found" });
+    }
+
+    // Check if pet doesn't exist in favourites
+    const user = await User.findById(userId);
+    if (!user.favourites.includes(petId)) {
+      return response.status(400).json({ success: false, message: "Pet is not in favourites" });
+    }
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
