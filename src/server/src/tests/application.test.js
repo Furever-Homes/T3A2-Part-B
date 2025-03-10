@@ -8,13 +8,9 @@ const { Application } = require("../models/ApplicationModel");
 require("./setupTestDB");
 
 describe("Pet Application API Endpoints", () => {
-  let adminToken, userToken, petId, userId;
+  let adminToken, userToken, petId, userId, adminUserId;
 
   beforeEach(async () => {
-    await User.deleteMany({});
-    await Pet.deleteMany({});
-    await Application.deleteMany({});
-
     const hashedPassword = await bcrypt.hash("testpassword", 10);
 
     // Create an admin user
@@ -33,20 +29,8 @@ describe("Pet Application API Endpoints", () => {
       admin: false,
     });
 
-    userId = adminUser._id;
-    console.log(userId)
-
-    // Create a pet
-    const pet = await Pet.create({
-      name: "Test Pet",
-      animalType: "Cat",
-      age: 3,
-      activityLevel: "Medium",
-      location: "Melbourne",
-    });
-
-    petId = pet._id.toString(); // Ensure it's in string format
-    console.log("🚀 Created Pet ID:", petId); // Debugging
+    adminUserId = adminUser._id;
+    userId = testUser._id;
 
     // Log in as the admin to get a valid token
     const adminLoginResponse = await request(app)
@@ -64,36 +48,70 @@ describe("Pet Application API Endpoints", () => {
   });
 
   test("should submit an application", async () => {
-    const res = await request(app)
+    // Create a pet
+    const createPetResponse = await request(app)
+      .post("/api/admin/pets")
+      .set("Authorization", adminToken)
+      .send({
+        name: "ApplicationBuddy",
+        animalType: "Dog",
+        age: 3,
+        activityLevel: "High",
+        status: "Available",
+        description: "A playful application dog.",
+        location: "Sydney",
+      });
+
+    const petId = createPetResponse.body._id
+
+    // Apply for the pet
+    const applicationResponse = await request(app)
       .post(`/api/user/applications/${petId}`)
       .set("Authorization", userToken)
       .send({ message: "I love this pet and would like to adopt!" });
 
-    expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty("application");
-    expect(res.body.application.pet).toBe(petId.toString());
-    expect(res.body.application.user).toBe(userId.toString());
-    expect(res.body.application.message).toBe("I love this pet and would like to adopt!");
+    expect(applicationResponse.status).toBe(201);
+    expect(applicationResponse.body).toHaveProperty("application");
+    expect(applicationResponse.body.application.pet).toBe(petId);
+    expect(applicationResponse.body.application.user).toBe(userId.toString());
+    expect(applicationResponse.body.application.message).toBe("I love this pet and would like to adopt!");
 
     // Check if application is in database
-    const application = await Application.findOne({ user: userId, pet: petId });
-    expect(application).not.toBeNull();
-    expect(application.message).toBe("I love this pet and would like to adopt!");
+    const checkResponse = await Application.findOne({ user: userId, pet: petId });
+    expect(checkResponse).not.toBeNull();
+    expect(checkResponse.message).toBe("I love this pet and would like to adopt!");
   });
 
   test("should not allow duplicate applications for the same pet", async () => {
+    // Create a pet
+    const createPetResponse = await request(app)
+      .post("/api/admin/pets")
+      .set("Authorization", adminToken)
+      .send({
+        name: "ApplicationBuddy",
+        animalType: "Dog",
+        age: 3,
+        activityLevel: "High",
+        status: "Available",
+        description: "A playful application dog.",
+        location: "Sydney",
+      });
+
+    const petId = createPetResponse.body._id
+    
+    // Apply for the pet
     await request(app)
       .post(`/api/user/applications/${petId}`)
       .set("Authorization", userToken)
       .send({ message: "I love this pet and would like to adopt!" });
 
-    const res = await request(app)
+    const duplicateResponse = await request(app)
       .post(`/api/user/applications/${petId}`)
       .set("Authorization", userToken)
       .send({ message: "Trying to apply again" });
 
-    expect(res.status).toBe(400);
-    expect(res.body.message).toBe("You have already submitted an application for this pet");
+    expect(duplicateResponse.status).toBe(400);
+    expect(duplicateResponse.body.message).toBe("You have already submitted an application for this pet");
   });
 
 });
