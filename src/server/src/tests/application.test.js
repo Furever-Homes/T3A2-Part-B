@@ -60,8 +60,7 @@ describe("Pet Application API Endpoints", () => {
         location: "Sydney",
       });
 
-    petId = createPetResponse.body._id
-
+    petId = createPetResponse.body._id;
   });
 
   test("should submit an application", async () => {
@@ -75,15 +74,22 @@ describe("Pet Application API Endpoints", () => {
     expect(applicationResponse.body).toHaveProperty("application");
     expect(applicationResponse.body.application.pet).toBe(petId);
     expect(applicationResponse.body.application.user).toBe(userId.toString());
-    expect(applicationResponse.body.application.message).toBe("I love this pet and would like to adopt!");
+    expect(applicationResponse.body.application.message).toBe(
+      "I love this pet and would like to adopt!"
+    );
 
     // Check if application is in database
-    const checkResponse = await Application.findOne({ user: userId, pet: petId });
+    const checkResponse = await Application.findOne({
+      user: userId,
+      pet: petId,
+    });
     expect(checkResponse).not.toBeNull();
-    expect(checkResponse.message).toBe("I love this pet and would like to adopt!");
+    expect(checkResponse.message).toBe(
+      "I love this pet and would like to adopt!"
+    );
   });
 
-  test("should not allow duplicate applications for the same pet", async () => {   
+  test("should not allow duplicate applications for the same pet", async () => {
     // Apply for the pet
     await request(app)
       .post(`/api/user/applications/${petId}`)
@@ -96,7 +102,9 @@ describe("Pet Application API Endpoints", () => {
       .send({ message: "Trying to apply again" });
 
     expect(duplicateResponse.status).toBe(400);
-    expect(duplicateResponse.body.message).toBe("You have already submitted an application for this pet");
+    expect(duplicateResponse.body.message).toBe(
+      "You have already submitted an application for this pet"
+    );
   });
 
   test("should fetch all user applications", async () => {
@@ -170,9 +178,17 @@ describe("Pet Application API Endpoints", () => {
 
     expect(rejectResponse.status).toBe(200);
     expect(rejectResponse.body.application.status).toBe("Rejected");
+
+    // Attempt to process same application
+    const duplicateResponse = await request(app)
+      .put(`/api/admin/applications/${applicationId}/reject`)
+      .set("Authorization", adminToken);
+
+    expect(duplicateResponse.status).toBe(400);
+    expect(duplicateResponse.body.message).toBe("Application has already been processed");
   });
 
-  test("🗑️ should delete an application", async () => {
+  test("should delete an application", async () => {
     // Create an application
     const applicationResponse = await request(app)
       .post(`/api/user/applications/${petId}`)
@@ -187,11 +203,48 @@ describe("Pet Application API Endpoints", () => {
       .set("Authorization", userToken);
 
     expect(deleteResponse.status).toBe(200);
-    expect(deleteResponse.body.message).toBe("Application deleted successfully");
+    expect(deleteResponse.body.message).toBe(
+      "Application deleted successfully"
+    );
 
     // Check if application is removed
-    const deletedApplication = await Application.findById(applicationId);
-    expect(deletedApplication).toBeNull();
+    const duplicateDeleteRes = await request(app)
+    .delete(`/api/user/applications/${applicationId}`)
+    .set("Authorization", userToken);
+
+    expect(duplicateDeleteRes.status).toBe(404);
+    expect(duplicateDeleteRes.body.message).toBe(
+      "Application not found"
+    );
   });
 
+  test("should delete an application as admin", async () => {
+    // Create an application
+    const applicationResponse = await request(app)
+      .post(`/api/user/applications/${petId}`)
+      .set("Authorization", userToken)
+      .send({ message: "Deleting this later!" });
+
+    const applicationId = applicationResponse.body.application._id;
+
+    // Delete the application
+    const deleteResponse = await request(app)
+      .delete(`/api/admin/applications/${applicationId}`)
+      .set("Authorization", adminToken);
+
+    expect(deleteResponse.status).toBe(200);
+    expect(deleteResponse.body.message).toBe(
+      "Application deleted successfully by admin"
+    );
+
+    // Check if application is removed
+    const duplicateDeleteRes = await request(app)
+    .delete(`/api/admin/applications/${applicationId}`)
+    .set("Authorization", adminToken);
+
+    expect(duplicateDeleteRes.status).toBe(404);
+    expect(duplicateDeleteRes.body.message).toBe(
+      "Application not found"
+    );
+  });
 });
