@@ -8,6 +8,7 @@ const ApplyToAdopt = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
