@@ -77,6 +77,7 @@ const Profile = () => {
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("admin");
     window.location.href = "/login"; // Redirect to login page after logout
   };
 

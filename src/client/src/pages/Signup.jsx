@@ -7,9 +7,6 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    mobile: "",
-    dateOfBirth: "",
-    state: "",
     password: "",
   });
   const [error, setError] = useState(null);
@@ -17,16 +14,15 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const states = ["VIC", "QLD", "NT", "ACT", "TAS", "WA", "NSW", "SA"];
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.mobile || !formData.dateOfBirth || !formData.state || !formData.password) {
+
+    // Check required fields
+    if (!formData.name || !formData.email || !formData.password) {
       setError("All fields are required.");
       return;
     }
@@ -39,8 +35,6 @@ const Signup = () => {
         headers: { "Content-Type": "application/json" },
       });
 
-      // Store token in localStorage for authentication
-      localStorage.setItem("token", response.data.token);
       setSuccess(true);
 
       // Redirect user to login page after signup
@@ -77,34 +71,6 @@ const Signup = () => {
           onChange={handleChange}
           required
         />
-        <input
-          type="text"
-          name="mobile"
-          placeholder="Mobile"
-          value={formData.mobile}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="date"
-          name="dateOfBirth"
-          value={formData.dateOfBirth}
-          onChange={handleChange}
-          required
-        />
-        <select
-          name="state"
-          value={formData.state}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select State</option>
-          {states.map((state) => (
-            <option key={state} value={state}>
-              {state}
-            </option>
-          ))}
-        </select>
         <input
           type="password"
           name="password"
