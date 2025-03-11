@@ -1,4 +1,4 @@
-/* Ensure the entire page takes up full height */
+/* Ensure full-page height */
 html, body {
     height: 100%;
     margin: 0;
@@ -7,28 +7,36 @@ html, body {
     flex-direction: column;
 }
 
-/* App container to ensure footer remains at the bottom */
+/* App container to ensure footer stays at the bottom */
 .app-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    min-height: 100vh;
 }
 
 /* Ensures content expands but footer stays at bottom */
 .main-content {
     flex-grow: 1;
-    padding-bottom: 60px; 
 }
 
+/* Footer Styling */
 .footer {
-    width: 100%;
+    width: 100%;  /* Ensures full width */
+    max-width: 100vw; /* Forces it to take the entire viewport width */
     background-color: #8B5E3B;
     color: white;
     text-align: center;
-    padding: 10px;
-    position: relative; /
+    padding: 15px;
+    position: fixed;
     bottom: 0;
     left: 0;
+    margin-top: auto;
+}
+
+/* Remove any margins or padding that might be restricting width */
+.footer * {
+    margin: 0;
+    padding: 0;
 }
 
 /* Footer Links */
@@ -42,10 +50,10 @@ html, body {
     font-weight: bold;
 }
 
-/* Ensures footer is visible on mobile */
+/* Ensures footer is fully visible on all devices */
 @media (max-width: 768px) {
     .footer {
-        position: relative;
+        position: fixed;
         padding: 15px;
     }
 }
