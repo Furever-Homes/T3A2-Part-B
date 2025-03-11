@@ -11,37 +11,45 @@ const AdminDashboard = () => {
   const [newPet, setNewPet] = useState({
     name: "",
     age: "",
-    breed: "",
+    animalType: "",
+    activityLevel: "",
+    status: "Available",
     description: "",
+    location: "",
   });
   const [image, setImage] = useState(null);
 
   // Fetch pets and applications from backend
   useEffect(() => {
     const fetchAdminData = async () => {
+ 
       try {
-        const token = localStorage.getItem("token");
-        if (!token) return setError("Unauthorized access.");
-
-        const petsResponse = await axios.get("http://localhost:5001/api/pets", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const applicationsResponse = await axios.get("http://localhost:5001/api/applications", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
+        const petsResponse = await axios.get("http://localhost:5001/api/pets");
         setPets(petsResponse.data);
+  
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Unauthorized access.");
+          return;
+        }
+  
+        const applicationsResponse = await axios.get("http://localhost:5001/api/admin/applications", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+  
         setApplications(applicationsResponse.data);
       } catch (err) {
+        console.error("Error fetching admin data:", err);
         setError("Failed to fetch data. Please try again.");
       } finally {
-        setLoading(false);
+        setLoading(false); // ✅ Ensure UI updates even on error
       }
     };
-
+  
     fetchAdminData();
   }, []);
+  
 
   // Handle form inputs
   const handleChange = (e) => {
@@ -53,45 +61,49 @@ const AdminDashboard = () => {
     setImage(e.target.files[0]);
   };
 
-  // Upload Image to Backend
-  const uploadImage = async () => {
-    const formData = new FormData();
-    formData.append("image", image);
-
-    try {
-      const response = await axios.post("http://localhost:5000/api/pets/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      return response.data.imageUrl; // Return the uploaded image URL
-    } catch (error) {
-      console.error("Image upload failed:", error);
-      return null;
-    }
-  };
-
   // Handle new pet submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const imageUrl = await uploadImage(); // Upload image first
-    if (!imageUrl) return alert("Image upload failed.");
-
-    const petWithImage = { ...newPet, photo: imageUrl };
-
+  
+    // Prepare FormData to send all pet details and the image
+    const formData = new FormData();
+    formData.append("name", newPet.name);
+    formData.append("age", String(newPet.age));
+    formData.append("animalType", newPet.animalType);
+    formData.append("activityLevel", newPet.activityLevel);
+    formData.append("status", newPet.status);
+    formData.append("description", newPet.description);
+    formData.append("location", newPet.location);
+    if (image) formData.append("image", image);
+  
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:5000/api/pets", petWithImage, {
-        headers: { Authorization: `Bearer ${token}` },
+  
+      const response = await axios.post("http://localhost:5001/api/admin/pets", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
-
+  
       alert("Pet added successfully!");
-      setPets([...pets, petWithImage]); // Update state with new pet
+      setPets([...pets, response.data]); 
+      setNewPet({
+        name: "",
+        age: "",
+        animalType: "",
+        activityLevel: "",
+        status: "Available",
+        description: "",
+        location: "",
+      });
+      setImage(null);
     } catch (error) {
       console.error("Error adding pet:", error);
+      alert("Failed to add pet.");
     }
   };
-
+  
   return (
     <div className="admin-dashboard">
       <h1>⚙️ Admin Dashboard</h1>
@@ -112,11 +124,17 @@ const AdminDashboard = () => {
 
           <h2>➕ Add a New Pet</h2>
           <form onSubmit={handleSubmit} className="add-pet-form">
-            <input type="text" name="name" placeholder="Pet Name" onChange={handleChange} required />
-            <input type="number" name="age" placeholder="Age" onChange={handleChange} required />
-            <input type="text" name="breed" placeholder="Breed" onChange={handleChange} required />
-            <textarea name="description" placeholder="Description" onChange={handleChange} required></textarea>
-            <input type="file" accept="image/*" onChange={handleImageChange} required />
+            <input type="text" name="name" placeholder="Pet Name" value={newPet.name} onChange={handleChange} required />
+            <input type="number" name="age" placeholder="Age" value={newPet.age} onChange={handleChange} required />
+            <input type="text" name="animalType" placeholder="Animal Type" value={newPet.animalType} onChange={handleChange} required />
+            <input type="text" name="activityLevel" placeholder="Activity Level" value={newPet.activityLevel} onChange={handleChange} required />
+            <select name="status" value={newPet.status} onChange={handleChange} required>
+              <option value="Available">Available</option>
+              <option value="Adopted">Adopted</option>
+            </select>
+            <input type="text" name="location" placeholder="Location" value={newPet.location} onChange={handleChange} required />
+            <textarea name="description" placeholder="Description" value={newPet.description} onChange={handleChange} required></textarea>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
             <button type="submit">Add Pet</button>
           </form>
         </>

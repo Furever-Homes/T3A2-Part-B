@@ -20,8 +20,6 @@ const Applications = () => {
         return;
       }
 
-      console.log("Token:", token); // Debugging: Check if the token is retrieved
-
       const response = await axios.get("http://localhost:5001/api/user/applications", {
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -5,6 +5,7 @@ const { getCloudinaryPublicId } = require("../utils/cloudinaryPublicId");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
+
 // Validation schema for updating user details
 const updateUserSchema = Joi.object({
   name: Joi.string().optional(),
@@ -12,8 +13,6 @@ const updateUserSchema = Joi.object({
   password: Joi.string().min(5).optional(),
   image: Joi.string().allow(null, ""),
 });
-
-
 
 // Register a New User
 async function registerUser(request, response) {
@@ -33,7 +32,7 @@ async function registerUser(request, response) {
       name,
       email,
       password: hashedPassword,
-      admin
+      admin,
     });
 
     await user.save();
@@ -60,9 +59,12 @@ async function loginUser(request, response) {
       return response.status(400).json({ message: "Invalid Password." });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1hr",
-    });
+    const token = jwt.sign(
+      { userId: user._id, admin: user.admin },
+      process.env.JWT_SECRET,
+      { expiresIn: "4hr" }
+    );
+
     response.json({ token });
   } catch (error) {
     response.status(500).json({ error: "Server error" });
@@ -152,7 +154,9 @@ async function logout(request, response) {
   try {
     response.status(200).json({ message: "You have logged out successfully." });
   } catch (error) {
-    response.status(500).json({ message: "Logout failed", error: error.message });
+    response
+      .status(500)
+      .json({ message: "Logout failed", error: error.message });
   }
 }
 
@@ -162,5 +166,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getUser,
-  logout
+  logout,
 };
