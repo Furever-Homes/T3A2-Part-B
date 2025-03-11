@@ -13,18 +13,8 @@ const Favourites = () => {
 
   const fetchFavourites = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("You must be logged in to view favourites.");
-        setLoading(false);
-        return;
-      }
-
-      const response = await axios.get("https://fureverhomes.onrender.com/api/favourites", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setFavourites(response.data);
+      const savedFavourites = JSON.parse(localStorage.getItem("favourites")) || [];
+      setFavourites(savedFavourites);
     } catch (error) {
       setError("Failed to load favourites. Please try again.");
     } finally {
@@ -34,14 +24,9 @@ const Favourites = () => {
 
   const removeFavourite = async (petId) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      await axios.delete(`https://fureverhomes.onrender.com/api/favourites/${petId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setFavourites((prevFavourites) => prevFavourites.filter((pet) => pet._id !== petId));
+      const updatedFavourites = favourites.filter((pet) => pet._id !== petId);
+      setFavourites(updatedFavourites);
+      localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
     } catch (error) {
       console.error("Error removing pet from favourites:", error);
     }

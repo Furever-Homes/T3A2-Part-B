@@ -16,7 +16,7 @@ const Profile = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const response = await axios.get("https://fureverhomes.onrender.com/api/users/profile", {
+        const response = await axios.get("http://localhost:5001/api/user/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -41,7 +41,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.put("https://fureverhomes.onrender.com/api/users/update", updatedUser, {
+      const response = await axios.put("http://localhost:5001/api/user/profile", updatedUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -62,7 +62,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.delete("https://fureverhomes.onrender.com/api/users/delete", {
+      await axios.delete("http://localhost:5001/api/user/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -72,6 +72,12 @@ const Profile = () => {
     } catch (error) {
       console.error("Error deleting account:", error);
     }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login"; // Redirect to login page after logout
   };
 
   // Handle profile image upload
@@ -88,7 +94,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.post("https://fureverhomes.onrender.com/api/users/upload", formData, {
+      const response = await axios.post("http://localhost:5001/api/user/upload", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -138,6 +144,7 @@ const Profile = () => {
           <>
             <button className="edit-btn" onClick={() => setEditing(true)}>Edit Profile</button>
             <button className="delete-btn" onClick={handleDeleteAccount}>Delete Account</button>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </>
         )}
       </div>

@@ -26,15 +26,20 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("https://fureverhomes.onrender.com/api/login", formData, {
+      const response = await axios.post("http://localhost:5001/api/login", formData, {
         headers: { "Content-Type": "application/json" },
       });
 
-      // Store token for authentication
+      // Store token and admin status for authentication
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("admin", response.data.admin);
 
-      // Redirect to Profile page after login
-      navigate("/profile");
+      // Redirect to AdminDashboard if admin, otherwise to Profile page
+      if (response.data.admin) {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/profile");
+      }
     } catch (error) {
       setError(error.response?.data?.message || "Invalid email or password. Please try again.");
     } finally {
