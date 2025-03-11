@@ -23,11 +23,11 @@ const AdminDashboard = () => {
         const token = localStorage.getItem("token");
         if (!token) return setError("Unauthorized access.");
 
-        const petsResponse = await axios.get("http://localhost:5000/api/pets", {
+        const petsResponse = await axios.get("https://fureverhomes.onrender.com/api/pets", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const applicationsResponse = await axios.get("http://localhost:5000/api/applications", {
+        const applicationsResponse = await axios.get("https://fureverhomes.onrender.com/api/applications", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

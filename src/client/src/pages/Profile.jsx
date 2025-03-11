@@ -16,7 +16,7 @@ const Profile = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const response = await axios.get("http://localhost:5000/api/users/profile", {
+        const response = await axios.get("https://fureverhomes.onrender.com/api/users/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -41,7 +41,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.put("http://localhost:5000/api/users/update", updatedUser, {
+      const response = await axios.put("https://fureverhomes.onrender.com/api/users/update", updatedUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -62,7 +62,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.delete("http://localhost:5000/api/users/delete", {
+      await axios.delete("https://fureverhomes.onrender.com/api/users/delete", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -88,7 +88,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.post("http://localhost:5000/api/users/upload", formData, {
+      const response = await axios.post("https://fureverhomes.onrender.com/api/users/upload", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
