@@ -1,10 +1,10 @@
 const { User } = require("../models/UserModel");
+
 const cloudinary = require("../utils/cloudinaryConfig");
 const { getCloudinaryPublicId } = require("../utils/cloudinaryPublicId");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
-
 // Validation schema for updating user details
 const updateUserSchema = Joi.object({
   name: Joi.string().optional(),
@@ -12,6 +12,8 @@ const updateUserSchema = Joi.object({
   password: Joi.string().min(5).optional(),
   image: Joi.string().allow(null, ""),
 });
+
+
 
 // Register a New User
 async function registerUser(request, response) {
@@ -146,10 +148,19 @@ async function getUser(request, response) {
   }
 }
 
+async function logout(request, response) {
+  try {
+    response.status(200).json({ message: "You have logged out successfully." });
+  } catch (error) {
+    response.status(500).json({ message: "Logout failed", error: error.message });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
   updateUser,
   deleteUser,
   getUser,
+  logout
 };

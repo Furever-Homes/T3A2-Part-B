@@ -12,7 +12,7 @@ const {
   deleteUserApplication,
 } = require("../controllers/applicationController");
 
-const { updateUser, deleteUser, getUser } = require("../controllers/userController");
+const { updateUser, deleteUser, getUser, logout } = require("../controllers/userController");
 
 const upload = require("../middlewares/uploadMiddleware");
 const { validateToken } = require("../middlewares/authMiddleware");
@@ -36,5 +36,8 @@ router.delete("/applications/:applicationId", deleteUserApplication);
 router.post("/favourites/:petId", favouritePet); // Favourite a pet
 router.delete("/favourites/:petId", unFavouritePet); // Unfavourite a pet
 router.get("/favourites", getFavourites); // View user's favourited pets
+
+// Logout Route "/api/user/logout"
+router.post("/logout", logout);
 
 module.exports = router;
