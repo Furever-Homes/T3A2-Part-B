@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom"; // Added Link
 import axios from "axios";
 import "../styles/PetDetails.css";
 
@@ -23,6 +23,39 @@ const PetDetails = () => {
     };
 
     fetchPetDetails();
+  }, [id]);
+
+  if (loading) {
+    return <p className="loading-message">Loading pet details...</p>;
+  }
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
+  return (
+    <div className="pet-details">
+      {pet ? (
+        <>
+          <h1>{pet.name}</h1>
+          <img src={pet.photo || "https://via.placeholder.com/300"} alt={pet.name} className="pet-image" />
+          <p><strong>Age:</strong> {pet.age} years</p>
+          <p><strong>Breed:</strong> {pet.breed}</p>
+          <p><strong>Description:</strong> {pet.description}</p>
+
+          {/* Correctly Link Apply to Adopt Button */}
+          <Link to={`/apply-to-adopt/${id}`} className="apply-btn">
+            Apply to Adopt
+          </Link>
+        </>
+      ) : (
+        <p>Pet details not found.</p>
+      )}
+    </div>
+  );
+};
+
+export default PetDetails;
   }, [id]);
 
   if (loading) {

@@ -1,26 +1,37 @@
-/* Footer Styling */
+/* Ensure the entire page takes up full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* App container to ensure footer remains at the bottom */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+/* Ensures content expands but footer stays at bottom */
+.main-content {
+    flex-grow: 1;
+    padding-bottom: 60px; 
+}
+
 .footer {
     width: 100%;
-    background-color: #8B5E3B; 
+    background-color: #8B5E3B;
     color: white;
     text-align: center;
     padding: 10px;
-    position: fixed; 
+    position: relative; /
     bottom: 0;
     left: 0;
 }
 
-.app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding-bottom: 50px; 
-}
-
-.main-content {
-    flex-grow: 1;
-}
-
+/* Footer Links */
 .footer a, .footer span {
     color: white;
     text-decoration: none;
@@ -28,5 +39,13 @@
 }
 
 .footer a:hover, .footer span:hover {
-    font-weight: bold; 
+    font-weight: bold;
+}
+
+/* Ensures footer is visible on mobile */
+@media (max-width: 768px) {
+    .footer {
+        position: relative;
+        padding: 15px;
+    }
 }

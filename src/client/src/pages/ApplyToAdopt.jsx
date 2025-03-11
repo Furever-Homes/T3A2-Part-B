@@ -8,33 +8,47 @@ const ApplyToAdopt = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-
+  const [loading, setLoading] = useState(false); // New state for loading
   const navigate = useNavigate();
 
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Submit adoption application
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null); // Reset error message
 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         setError("You must be logged in to apply.");
+        setLoading(false);
         return;
       }
 
       const applicationData = { ...formData, petId };
 
-      await axios.post("https://fureverhomes.onrender.com/api/applications", applicationData, {
+
+      const response = await axios.post("http://localhost:5000/api/applications", applicationData, {
+
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setSuccess(true);
-      setTimeout(() => navigate("/success"), 2000); // Redirect after success
+      if (response.status === 201) {
+        setSuccess(true);
+        setTimeout(() => navigate("/success"), 2000); // Redirect after success
+      } else {
+        throw new Error("Unexpected response from server");
+      }
     } catch (error) {
       setError("Failed to submit application. Please try again.");
+      console.error("Application error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,7 +83,9 @@ const ApplyToAdopt = () => {
             onChange={handleChange}
             required
           ></textarea>
-          <button type="submit">Submit Application</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Submitting..." : "Submit Application"}
+          </button>
         </form>
       )}
     </div>
