@@ -137,7 +137,15 @@ describe("Pet Application API Endpoints", () => {
       .set("Authorization", adminToken);
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body.length).toBe(1);
+
+    // Fetch applications as admin with query filter
+    const queryRes = await request(app)
+      .get("/api/admin/applications?location=Sydney&animalType=Dog")
+      .set("Authorization", adminToken);
+
+    expect(queryRes.status).toBe(200);
+    expect(queryRes.body.length).toBe(1);
   });
 
   test("should approve an application", async () => {
@@ -185,7 +193,9 @@ describe("Pet Application API Endpoints", () => {
       .set("Authorization", adminToken);
 
     expect(duplicateResponse.status).toBe(400);
-    expect(duplicateResponse.body.message).toBe("Application has already been processed");
+    expect(duplicateResponse.body.message).toBe(
+      "Application has already been processed"
+    );
   });
 
   test("should delete an application", async () => {
@@ -209,13 +219,11 @@ describe("Pet Application API Endpoints", () => {
 
     // Check if application is removed
     const duplicateDeleteRes = await request(app)
-    .delete(`/api/user/applications/${applicationId}`)
-    .set("Authorization", userToken);
+      .delete(`/api/user/applications/${applicationId}`)
+      .set("Authorization", userToken);
 
     expect(duplicateDeleteRes.status).toBe(404);
-    expect(duplicateDeleteRes.body.message).toBe(
-      "Application not found"
-    );
+    expect(duplicateDeleteRes.body.message).toBe("Application not found");
   });
 
   test("should delete an application as admin", async () => {
@@ -239,12 +247,10 @@ describe("Pet Application API Endpoints", () => {
 
     // Check if application is removed
     const duplicateDeleteRes = await request(app)
-    .delete(`/api/admin/applications/${applicationId}`)
-    .set("Authorization", adminToken);
+      .delete(`/api/admin/applications/${applicationId}`)
+      .set("Authorization", adminToken);
 
     expect(duplicateDeleteRes.status).toBe(404);
-    expect(duplicateDeleteRes.body.message).toBe(
-      "Application not found"
-    );
+    expect(duplicateDeleteRes.body.message).toBe("Application not found");
   });
 });
