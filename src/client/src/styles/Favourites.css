@@ -1,14 +1,21 @@
 /* Favourites Page */
 .favourites-page {
   text-align: center;
-  padding: 80px 20px;
-  background-color: #f5e1c8; 
+  padding: 100px 20px 40px; /* Adjusted padding to prevent navbar overlap */
+  background-color: #f5e1c8;
+  min-height: 100vh; /* Ensures full viewport height */
+  box-sizing: border-box;
+}
+
+/* Pushes the content down so it's not hidden under the navbar */
+body {
+  margin-top: 60px; /* Same as navbar height */
 }
 
 /* Favourites Heading */
 .favourites-page h1 {
   font-size: 2.5rem;
-  color: #8B5E3B; 
+  color: #8B5E3B;
   margin-bottom: 20px;
 }
 
@@ -33,15 +40,16 @@
   width: 250px;
   border-radius: 10px;
   padding: 15px;
-  background: white;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  background: #f8f2eb !important; /* Light brown shade */
+  box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .pet-card:hover {
   transform: scale(1.05);
 }
 
+/* Pet Image */
 .pet-image {
   width: 100%;
   height: auto;
@@ -69,7 +77,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .favourites-page {
-    padding-top: 120px;
+    padding-top: 120px; /* Ensures space for navbar */
   }
 
   .pet-card {

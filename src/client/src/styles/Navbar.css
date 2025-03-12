@@ -1,6 +1,8 @@
 /* Navbar Styles */
 .navbar {
   position: fixed;
+  top: 0; /* Ensures navbar stays at the top */
+  left: 0;
   width: 100vw;
   height: 60px;
   background-color: #8B5E3B;
@@ -9,11 +11,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  z-index: 1000;
-  top: 0;
-  left: 0;
+  z-index: 1000; /* Ensures it stays on top */
 }
 
+/* Pushes page content down so it isn't hidden under the navbar */
+body {
+  margin-top: 60px; /* Same as navbar height */
+}
+
+/* Navbar Logo */
 .navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
@@ -25,25 +31,11 @@
   flex: 1;
 }
 
-.mobile-logo {
-  display: none;
-  width: 100vw;
-  text-align: center;
-  background-color: #8B5E3B;
-  padding: 15px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  z-index: 1001;
-}
-
 .paw {
   color: #FFD700;
 }
 
+/* Navigation Links */
 .nav-links {
   display: flex;
   gap: 20px;
@@ -73,14 +65,34 @@
   border-radius: 20px;
 }
 
-/* Specific Buttons for Navigation */
-.nav-links a[href='/explore'].active,
-.nav-links a[href='/favourites'].active,
-.nav-links a[href='/applications'].active,
-.nav-links a[href='/profile'].active {
-  background: white;
-  color: #8B5E3B;
-  border-radius: 20px;
+/* Mobile-Specific Styles */
+@media (max-width: 768px) {
+  .navbar {
+    top: auto;
+    bottom: 0; /* Moves navbar to bottom on mobile */
+    height: 60px;
+    justify-content: space-around;
+    padding: 0;
+  }
+
+  .nav-links {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .nav-links a {
+    font-size: 18px;
+    padding: 15px;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Pushes content up for mobile */
+  body {
+    margin-bottom: 60px; /* Same as navbar height */
+    margin-top: 0; /* Removes top margin so content fits properly */
+  }
 }
 
 /* Profile Dropdown */
@@ -123,7 +135,7 @@
 /* Drop-up Menu for Mobile */
 @media (max-width: 768px) {
   .dropdown-menu {
-    bottom: 100%; /* Makes the menu appear above */
+    bottom: 100%;
     top: auto;
     transform: translateY(-10px);
   }
@@ -159,37 +171,4 @@
 
 .logout-btn:hover {
   background: darkred;
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    width: 100vw;
-    height: 60px;
-    justify-content: space-around;
-    padding: 0;
-  }
-
-  .nav-links {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .nav-links a {
-    font-size: 18px;
-    padding: 15px;
-    flex: 1;
-    text-align: center;
-  }
-
-  .mobile-logo {
-    display: block;
-  }
-
-  .navbar-logo {
-    display: none;
-  }
 }
