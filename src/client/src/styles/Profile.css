@@ -2,23 +2,21 @@
 .profile-page {
   text-align: center;
   padding: 80px 20px 20px;
-  background-color: #f5e1c8; 
+  background: linear-gradient(180deg, #f5e1c8 30%, #e0c3a5 100%);
   min-height: 100vh; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 /* Profile Container */
 .profile-container {
-  background: white;
+  background: #f8f2eb;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
-  text-align: left;
-  max-width: 400px;
-  width: 100%;
+  max-width: 600px;
+  width: 80vw;
   transition: transform 0.3s ease-in-out;
 }
 
@@ -30,15 +28,54 @@
 .profile-image-container {
   text-align: center;
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .profile-image {
-  width: 120px;
-  height: 120px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #8B5E3B; /* Brown border */
   padding: 3px;
+}
+
+/* Profile Buttons */
+.profile-button-container {
+  text-align: center;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.photo-btn {
+  font-size: 1rem;
+  color: #5A3E2B;
+  border-radius: 10px;
+  border: 3px solid #8B5E3B;
+  background: #f2e0c9;
+  transition: transform 0.2s, color 0.3s ease;
+}
+
+.photo-btn:hover {
+  transform: scale(1.02);
+}
+
+.remove-photo-btn {
+  font-size: 1rem;
+  background: #5A3E2B;
+  border-radius: 10px;
+  border: 3px solid #8B5E3B;
+  color: #f2e0c9;
+  transition: transform 0.2s, color 0.3s ease;
+}
+
+.remove-photo-btn:hover {
+  transform: scale(1.02);
 }
 
 /* File Upload Input */
@@ -57,7 +94,7 @@
 
 .profile-container input, 
 .profile-container select {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   margin-top: 6px;
   font-size: 1rem;
@@ -73,25 +110,39 @@
   box-shadow: 0px 0px 6px rgba(139, 94, 59, 0.5);
 }
 
-/* Buttons */
-.profile-buttons {
-  margin-top: 15px;
+/* Profile User Details */
+.profile-details {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Profile Buttons */
+.profile-buttons {
+  display: flex;
+  gap: 10px;
+  /* align-items: center; Centers buttons within container */
+  justify-content: center;
+  max-width: 80%; /* Limit width */
+  width: 100%; /* Ensures it doesn’t shrink too much */
+  margin: auto;
+}
+
+
 .edit-btn, .delete-btn, .logout-btn {
-  flex: 1;
+  width: 100%; /* Ensures buttons take full width within .profile-buttons */
+  max-width: 250px; /* Prevents buttons from stretching too wide */
   padding: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.3s ease;
   color: white;
-  text-align: center;
+  text-align: center; /* Centers text inside button */
 }
+
 
 /* Edit Button */
 .edit-btn {
@@ -136,7 +187,13 @@
       width: 90%;
   }
   
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+
   .profile-buttons {
       flex-direction: column;
+      max-width: 250px;
   }
 }

@@ -1,10 +1,13 @@
 /* Favourites Page */
 .favourites-page {
   text-align: center;
-  padding: 100px 20px 40px; /* Adjusted padding to prevent navbar overlap */
+  padding: 16px; /* Adjusted padding to prevent navbar overlap */
   background-color: #f5e1c8;
   min-height: 100vh; /* Ensures full viewport height */
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Pushes the content down so it's not hidden under the navbar */

@@ -130,7 +130,7 @@ const Explore = () => {
             <img src={pet.image} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
-            <p>Breed: {pet.breed}</p>
+            <p>Type: {pet.animalType}</p>
             <button 
               className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
               onClick={(e) => {
@@ -151,7 +151,7 @@ const Explore = () => {
             <img src={pet.image} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
-            <p>Breed: {pet.breed}</p>
+            <p>Type: {pet.animalType}</p>
             <button 
               className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
               onClick={(e) => {
@@ -172,7 +172,7 @@ const Explore = () => {
             <img src={selectedPet.image} alt={selectedPet.name} className="popup-image" />
             <h2>{selectedPet.name}</h2>
             <p>Age: {selectedPet.age} years</p>
-            <p>Breed: {selectedPet.breed}</p>
+            <p>Type: {selectedPet.animalType}</p>
             <p>{selectedPet.description}</p>
             <button 
               className="apply-btn"
