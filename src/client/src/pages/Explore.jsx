@@ -127,7 +127,7 @@ const Explore = () => {
       <div className="pet-grid">
         {pets.slice(-4).map((pet) => (
           <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-            <img src={pet.photo} alt={pet.name} className="pet-image" />
+            <img src={pet.image} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
             <p>Breed: {pet.breed}</p>
@@ -148,7 +148,7 @@ const Explore = () => {
       <div className="pet-grid">
         {pets.map((pet) => (
           <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-            <img src={pet.photo} alt={pet.name} className="pet-image" />
+            <img src={pet.image} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
             <p>Breed: {pet.breed}</p>
@@ -169,7 +169,7 @@ const Explore = () => {
         <div className="popup-overlay">
           <div className="popup">
             <button className="close-btn" onClick={closePopup}>✖</button>
-            <img src={selectedPet.photo} alt={selectedPet.name} className="popup-image" />
+            <img src={selectedPet.image} alt={selectedPet.name} className="popup-image" />
             <h2>{selectedPet.name}</h2>
             <p>Age: {selectedPet.age} years</p>
             <p>Breed: {selectedPet.breed}</p>
