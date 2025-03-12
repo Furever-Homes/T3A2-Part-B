@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ Import for navigation
 import "../styles/Profile.css";
 import axios from "axios";
 
@@ -8,16 +9,28 @@ const Profile = () => {
   const [updatedUser, setUpdatedUser] = useState({});
   const [uploading, setUploading] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
+  const navigate = useNavigate(); // ✅ Hook for navigation
+  const hasPrompted = useRef(false); // ✅ Prevents multiple prompts
 
-  const DEFAULT_IMAGE_URL = "https://res.cloudinary.com/ddjbhfzgf/image/upload/v1741613254/default_user_gwqxsa.jpg"
+  const DEFAULT_IMAGE_URL = "https://res.cloudinary.com/ddjbhfzgf/image/upload/v1741613254/default_user_gwqxsa.jpg";
 
-  // Fetch user profile on component load
+  // Check if user is logged in
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token && !hasPrompted.current) {
+      hasPrompted.current = true;
+      const confirmLogin = window.confirm("Only logged-in users can view their profile. Would you like to log in?");
+      if (confirmLogin) {
+        navigate("/login"); // Redirect to login page
+      } else {
+        navigate("/"); // Redirect to homepage if they refuse
+      }
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
         const response = await axios.get("http://localhost:5001/api/user/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -30,14 +43,14 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate]);
 
   // Handle input changes for updating profile
   const handleChange = (e) => {
     setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
   };
 
-  // Handle profile update (including name and profile image)
+  // Handle profile update
   const handleUpdateProfile = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -70,7 +83,7 @@ const Profile = () => {
 
       alert("Account deleted successfully.");
       localStorage.removeItem("token");
-      window.location.href = "/"; // Redirect to home after deletion
+      navigate("/"); // ✅ Redirect to home after deletion
     } catch (error) {
       console.error("Error deleting account:", error);
     }
@@ -81,7 +94,7 @@ const Profile = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("favourites");
     localStorage.removeItem("admin");
-    window.location.href = "/login";
+    navigate("/login"); // ✅ Redirect to login page after logout
   };
 
   // Handle profile image upload
@@ -118,23 +131,23 @@ const Profile = () => {
   // Handle profile image removal (sets image to null)
   const handleRemoveImage = async () => {
     if (!window.confirm("Are you sure you want to remove your profile image?")) return;
-  
+
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-  
+
       const response = await axios.put(
         "http://localhost:5001/api/user/profile",
         { image: null },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       alert("Profile image removed successfully!");
       setUser((prevUser) => ({ ...prevUser, image: response.data.image }));
     } catch (error) {
       console.error("Error removing profile image:", error);
     }
-  };  
+  };
 
   if (!user) {
     return <p>Loading profile...</p>;
@@ -174,6 +187,7 @@ const Profile = () => {
           <h1>{user.name || "Adopter Profile"}</h1>
           <p><strong>Email:</strong> {user.email || "Not set"}</p>
         </div>
+
         {editing ? (
           <section className="edit-section">
             <input type="text" name="name" value={updatedUser.name} onChange={handleChange} />
@@ -183,7 +197,7 @@ const Profile = () => {
             </div>
           </section>
         ) : (
-          <section className="profile-buttons"> 
+          <section className="profile-buttons">
             <button className="edit-btn" onClick={() => setEditing(true)}>Edit Profile</button>
             <button className="delete-btn" onClick={handleDeleteAccount}>Delete Account</button>
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
