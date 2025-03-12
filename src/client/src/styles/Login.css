@@ -62,6 +62,7 @@
 /* Hover Effect */
 .login-page button:hover {
   background-color: #6E4829; 
+}
 
 /* Loading Button */
 .login-page button:disabled {
@@ -78,9 +79,30 @@
 }
 
 /* Redirect Message */
-.login-page p {
+.signup-redirect {
   font-size: 1rem;
-  color: #555;
+  color: #5a3e2b;
   margin-top: 15px;
 }
+
+/* Sign Up Button */
+.signup-btn {
+  margin-top: 5px;
+  width: 100%;
+  max-width: 350px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  background-color: #A67C52;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect */
+.signup-btn:hover {
+  background-color: #8B5E3B;
+  transform: scale(1.02);
 }
