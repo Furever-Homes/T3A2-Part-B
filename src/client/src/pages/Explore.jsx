@@ -44,15 +44,37 @@ const Explore = () => {
     setSelectedPet(null);
   };
 
-  const toggleFavourite = (pet) => {
+  const toggleFavourite = async (pet) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      const confirmLogin = window.confirm("You need to log in to favourite a pet. Would you like to log in now?");
+      if (confirmLogin) {
+        navigate("/login"); // Redirect to login page
+      }
+      return; // Stop function execution
+    }
+  
     const isFavourited = favourites.some((fav) => fav._id === pet._id);
-    const updatedFavourites = isFavourited
-      ? favourites.filter((fav) => fav._id !== pet._id)
-      : [...favourites, pet];
-
+    let updatedFavourites = isFavourited
+      ? favourites.filter((fav) => fav._id !== pet._id) // Remove pet from favourites
+      : [...favourites, pet]; // Add pet to favourites
+  
     setFavourites(updatedFavourites);
-    localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
-  };
+  
+    try {
+      if (isFavourited) {
+        await axios.delete(`http://localhost:5001/api/user/favourites/${pet._id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } else {
+        await axios.post(`http://localhost:5001/api/user/favourites/${pet._id}`, {}, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+    } catch (error) {
+      console.error("Error updating favourites:", error);
+    }
+  };  
 
   const handleApplyToAdopt = async (petId) => {
     if (!isLoggedIn) {
@@ -101,11 +123,32 @@ const Explore = () => {
     <div className="explore-page">
       <h1>🐾 Explore Pets</h1>
 
-      <h2>All Pets</h2>
+      <h2> Recently Added Pets</h2>
+      <div className="pet-grid">
+        {pets.slice(-4).map((pet) => (
+          <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
+            <img src={pet.image} alt={pet.name} className="pet-image" />
+            <h3>{pet.name}</h3>
+            <p>{pet.age} years old</p>
+            <p>Breed: {pet.breed}</p>
+            <button 
+              className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavourite(pet);
+              }}
+            >
+              {favourites.some((fav) => fav._id === pet._id) ? "❤️ Favourited" : "🤍 Favourite"}
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <h2> All Pets</h2>
       <div className="pet-grid">
         {pets.map((pet) => (
           <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-            <img src={pet.photo} alt={pet.name} className="pet-image" />
+            <img src={pet.image} alt={pet.name} className="pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
             <p>Breed: {pet.breed}</p>
@@ -126,7 +169,7 @@ const Explore = () => {
         <div className="popup-overlay">
           <div className="popup">
             <button className="close-btn" onClick={closePopup}>✖</button>
-            <img src={selectedPet.photo} alt={selectedPet.name} className="popup-image" />
+            <img src={selectedPet.image} alt={selectedPet.name} className="popup-image" />
             <h2>{selectedPet.name}</h2>
             <p>Age: {selectedPet.age} years</p>
             <p>Breed: {selectedPet.breed}</p>
