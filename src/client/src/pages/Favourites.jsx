@@ -43,15 +43,16 @@ const Favourites = () => {
         return;
       }
 
+      // Update UI
+      const updatedFavourites = favourites.filter((pet) => pet._id !== petId);
+      setFavourites(updatedFavourites);
+      localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+
       // Call backend to remove favourite
       await axios.delete(`http://localhost:5001/api/user/favourites/${petId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Update UI
-      const updatedFavourites = favourites.filter((pet) => pet._id !== petId);
-      setFavourites(updatedFavourites);
-      localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
     } catch (error) {
       console.error("Error removing pet from favourites:", error);
       setError("Failed to remove favourite. Please try again.");

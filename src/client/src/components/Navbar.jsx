@@ -14,6 +14,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userProfile");
+    localStorage.removeItem("token");
+    localStorage.removeItem("favourites"); // Clear favourites on logout
+    localStorage.removeItem("admin");
     setUser(null);
   };
 
