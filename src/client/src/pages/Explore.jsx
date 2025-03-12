@@ -101,28 +101,7 @@ const Explore = () => {
     <div className="explore-page">
       <h1>🐾 Explore Pets</h1>
 
-      <h2> Recently Added Pets</h2>
-      <div className="pet-grid">
-        {pets.slice(-4).map((pet) => (
-          <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-            <img src={pet.photo} alt={pet.name} className="pet-image" />
-            <h3>{pet.name}</h3>
-            <p>{pet.age} years old</p>
-            <p>Breed: {pet.breed}</p>
-            <button 
-              className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleFavourite(pet);
-              }}
-            >
-              {favourites.some((fav) => fav._id === pet._id) ? "❤️ Favourited" : "🤍 Favourite"}
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <h2> All Pets</h2>
+      <h2>All Pets</h2>
       <div className="pet-grid">
         {pets.map((pet) => (
           <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
