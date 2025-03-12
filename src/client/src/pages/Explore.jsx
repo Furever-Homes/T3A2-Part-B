@@ -6,6 +6,7 @@ import axios from "axios";
 const Explore = () => {
   const [pets, setPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
+  const [comment, setComment] = useState("");
   const [favourites, setFavourites] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -38,10 +39,12 @@ const Explore = () => {
 
   const openPopup = (pet) => {
     setSelectedPet(pet);
+    setComment("");
   };
 
   const closePopup = () => {
     setSelectedPet(null);
+    setComment(""); 
   };
 
   const toggleFavourite = async (pet) => {
@@ -95,10 +98,8 @@ const Explore = () => {
 
       await axios.post(
         `http://localhost:5001/api/user/applications/${petId}`,
-        { message: "I would like to adopt this pet." },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { message: comment },
+        { headers: { Authorization: `Bearer ${token}` },}
       );
 
       alert("Application submitted successfully!");
@@ -174,6 +175,15 @@ const Explore = () => {
             <p>Age: {selectedPet.age} years</p>
             <p>Type: {selectedPet.animalType}</p>
             <p>{selectedPet.description}</p>
+
+            {/* Comment Input Field */}
+            <textarea
+              className="comment-box"
+              placeholder="Add a message for your application..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            ></textarea>
+
             <button 
               className="apply-btn"
               onClick={() => handleApplyToAdopt(selectedPet._id)}
