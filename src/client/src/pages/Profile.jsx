@@ -175,11 +175,13 @@ const Profile = () => {
           <p><strong>Email:</strong> {user.email || "Not set"}</p>
         </div>
         {editing ? (
-          <>
+          <section className="edit-section">
             <input type="text" name="name" value={updatedUser.name} onChange={handleChange} />
-            <button onClick={handleUpdateProfile}>Save Changes</button>
-            <button onClick={() => setEditing(false)}>Cancel</button>
-          </>
+            <div className="edit-buttons">
+              <button className="save-edit-btn" onClick={handleUpdateProfile}>Save Changes</button>
+              <button className="cancel-edit-btn" onClick={() => setEditing(false)}>Cancel</button>
+            </div>
+          </section>
         ) : (
           <section className="profile-buttons"> 
             <button className="edit-btn" onClick={() => setEditing(true)}>Edit Profile</button>
