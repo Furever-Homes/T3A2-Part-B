@@ -131,7 +131,7 @@
 
 .edit-btn, .delete-btn, .logout-btn {
   width: 100%; /* Ensures buttons take full width within .profile-buttons */
-  max-width: 250px; /* Prevents buttons from stretching too wide */
+  max-width: 500px; /* Prevents buttons from stretching too wide */
   padding: 12px;
   font-size: 1rem;
   font-weight: bold;
@@ -194,6 +194,27 @@
   margin-top: 12px;
 }
 
+.admin-btn {
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #8B5E3B, #6E4829);
+  color: white;
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  width: 100%;
+  max-width: 80%;
+}
+
+.admin-btn:hover {
+  background: linear-gradient(135deg, #6E4829, #57321D);
+  transform: scale(1.02);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .profile-container {
@@ -207,6 +228,11 @@
 
   .profile-buttons {
       flex-direction: column;
-      max-width: 250px;
+      align-items: center;
+      max-width: 500px;
+  }
+  
+  .admin-btn {
+      max-width: 500px;
   }
 }

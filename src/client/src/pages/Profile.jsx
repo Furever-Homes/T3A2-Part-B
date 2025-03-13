@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Import for navigation
+import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
 import axios from "axios";
 
@@ -9,8 +9,8 @@ const Profile = () => {
   const [updatedUser, setUpdatedUser] = useState({});
   const [uploading, setUploading] = useState(false);
   const [showFileInput, setShowFileInput] = useState(false);
-  const navigate = useNavigate(); // ✅ Hook for navigation
-  const hasPrompted = useRef(false); // ✅ Prevents multiple prompts
+  const navigate = useNavigate(); 
+  const hasPrompted = useRef(false); 
 
   const DEFAULT_IMAGE_URL = "https://res.cloudinary.com/ddjbhfzgf/image/upload/v1741613254/default_user_gwqxsa.jpg";
 
@@ -83,7 +83,7 @@ const Profile = () => {
 
       alert("Account deleted successfully.");
       localStorage.removeItem("token");
-      navigate("/"); // ✅ Redirect to home after deletion
+      navigate("/"); 
     } catch (error) {
       console.error("Error deleting account:", error);
     }
@@ -94,7 +94,7 @@ const Profile = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("favourites");
     localStorage.removeItem("admin");
-    navigate("/login"); // ✅ Redirect to login page after logout
+    navigate("/login"); 
   };
 
   // Handle profile image upload
@@ -147,6 +147,11 @@ const Profile = () => {
     } catch (error) {
       console.error("Error removing profile image:", error);
     }
+  };
+
+  // Navigate to admin dashboard
+  const handleAdminDashboard = () => {
+    navigate("/admin/dashboard");
   };
 
   if (!user) {
@@ -203,6 +208,12 @@ const Profile = () => {
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </section>
         )}
+
+        {/* Admin Dashboard Button (Only for Admins) */}
+        {user.admin && (
+          <button className="admin-btn" onClick={handleAdminDashboard}>Go to Admin Dashboard</button>
+        )}
+  
       </div>
     </div>
   );
