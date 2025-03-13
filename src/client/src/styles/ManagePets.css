@@ -1,0 +1,169 @@
+/* Global Fix for Side Strips */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background: #f5e1c8; 
+  }
+  
+  /* Navbar Spacing Fix */
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #8B5E3B;
+    padding: 15px 0;
+  }
+  
+  /* Manage Pets Page */
+  .manage-pets {
+    text-align: center;
+    padding: 140px 20px 20px; /* Increased top padding */
+    background: linear-gradient(180deg, #f5e1c8 30%, #e0c3a5 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Form Styling */
+  .pet-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8f2eb; 
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.2), -5px -5px 12px rgba(255, 255, 255, 0.5);
+    max-width: 500px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .pet-form input,
+  .pet-form select,
+  .pet-form textarea {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #8B5E3B;
+    font-size: 1rem;
+  }
+  
+  .pet-form textarea {
+    height: 80px;
+  }
+  
+  .pet-form button {
+    background: #8B5E3B;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+  }
+  
+  .pet-form button:hover {
+    background: #6E4829;
+    transform: scale(1.05);
+  }
+  
+  /* Pet List */
+  .pet-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    width: 90%;
+    max-width: 1200px;
+    padding-bottom: 40px;
+  }
+  
+  /* Individual Pet Card */
+  .pet-card {
+    width: 260px;
+    border-radius: 12px;
+    padding: 16px;
+    background: #f8f2eb; 
+    box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.2), -5px -5px 12px rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .pet-card:hover {
+    transform: scale(1.07);
+    box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Pet Image */
+  .pet-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #8B5E3B;
+    background: #f2e0c9;
+  }
+  
+  /* Pet Info */
+  .pet-card h3 {
+    font-size: 1.3rem;
+    color: #5A3E2B;
+    margin: 10px 0 5px;
+  }
+  
+  .pet-card p {
+    font-size: 1rem;
+    color: #4f3a28;
+    margin: 5px 0;
+  }
+  
+  /* Buttons */
+  .pet-card button {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  
+  .pet-card .delete-btn {
+    background: #d9534f;
+    color: white;
+  }
+  
+  .pet-card .delete-btn:hover {
+    background: #b52b27;
+  }
+  
+  .pet-card button:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .manage-pets {
+      padding-top: 160px;
+    }
+  
+    .pet-list {
+      gap: 15px;
+    }
+  
+    .pet-card {
+      width: 90%;
+      max-width: 300px;
+    }
+  }
