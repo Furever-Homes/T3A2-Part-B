@@ -82,7 +82,9 @@ const Login = () => {
 
       {/* New Sign Up Button */}
       <p className="signup-redirect">Don't have an account?</p>
-      <button className="login-signup-btn" onClick={() => navigate("/signup")}>
+
+      <button className="signup-btn" onClick={() => navigate("/signup")}>
+
         Sign Up Here
       </button>
     </div>
