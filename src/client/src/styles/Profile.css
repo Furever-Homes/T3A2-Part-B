@@ -217,6 +217,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .profile-page {
+    margin-top: 100px;
+  }
+
   .profile-container {
       width: 90%;
   }
