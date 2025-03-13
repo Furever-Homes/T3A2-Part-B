@@ -55,12 +55,13 @@ body, html {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease-in-out;
   text-decoration: none; /* Remove underline */
-  min-width: 120px;
+  min-width: 220px;
 }
 
 /* Login Button (Darker Brown) */
 .login-btn {
   background-color: #8B5E3B; /* Brown */
+  box-sizing: border-box;
 }
 
 .login-btn:hover {
@@ -71,6 +72,7 @@ body, html {
 /* Signup Button (Slightly Lighter Brown) */
 .signup-btn {
   background-color: #A67C52; 
+  box-sizing: border-box;
 }
 
 .signup-btn:hover {
@@ -83,6 +85,7 @@ body, html {
 .explore-btn {
   display: inline-block;
   padding: 14px 24px;
+  box-sizing: border-box;
   font-size: 1.2rem;
   font-weight: bold;
   text-decoration: none;
@@ -103,8 +106,10 @@ body, html {
 
 /* Mobile Responsiveness */
 @media (max-width: 600px) {
-  .button-group {
+  .button-group, .explore-btn {
     flex-direction: column;
+    width: 80vw;
+    align-items: center;
     gap: 10px;
   }
 
