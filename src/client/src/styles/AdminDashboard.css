@@ -1,8 +1,13 @@
-/* Admin Dashboard Page */
+/* Admin Dashboard */
 .admin-dashboard {
   text-align: center;
   padding: 80px 20px;
-  background-color: #f5e1c8; 
+  background-color: #f5e1c8; /* Match Explore & Profile page */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 /* Admin Dashboard Heading */
@@ -15,7 +20,7 @@
 /* Section Headings */
 .admin-dashboard h2 {
   font-size: 1.8rem;
-  color: #6E4829; 
+  color: #5A3E2B;
   margin-top: 20px;
 }
 
@@ -36,12 +41,72 @@
   background-color: #6E4829; 
 }
 
-/* Error Message */
-.error-message {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
-}
+  /* Add Pet Form */
+  .add-pet-form {
+    background: #f8f2eb; /* Same as pet card background */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Inputs and Dropdowns */
+  .add-pet-form input,
+  .add-pet-form select,
+  .add-pet-form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease-in-out;
+    box-sizing: border-box;
+  }
+  
+  /* Highlight inputs on focus */
+  .add-pet-form input:focus,
+  .add-pet-form select:focus,
+  .add-pet-form textarea:focus {
+    border-color: #8B5E3B;
+    outline: none;
+    box-shadow: 0px 0px 6px rgba(139, 94, 59, 0.5);
+  }
+  
+  /* File Upload */
+  .add-pet-form input[type="file"] {
+    border: none;
+  }
+  
+  /* Submit Button */
+  .add-pet-form button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #8B5E3B, #6E4829);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  .add-pet-form button:hover {
+    background: linear-gradient(135deg, #6E4829, #57321D);
+    transform: scale(1.02);
+  }
+  
+  /* Error Message */
+  .error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 12px;
+  }
 
 /* Responsive Layout */
 @media (max-width: 768px) {
