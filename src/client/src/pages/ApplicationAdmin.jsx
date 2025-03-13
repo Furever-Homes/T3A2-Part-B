@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/ApplicationsAdmin.css";
+import "../styles/ApplicationAdmin.css";
 
 const ApplicationsAdmin = () => {
   return (
