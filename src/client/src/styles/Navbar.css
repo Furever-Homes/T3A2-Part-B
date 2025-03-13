@@ -10,8 +10,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0px 20px 0px 20px;
+  /* margin: auto; */
   z-index: 1000; /* Ensures it stays on top */
+  box-sizing: border-box;
 }
 
 /* Pushes page content down so it isn't hidden under the navbar */
@@ -29,7 +31,7 @@ body {
   display: flex;
   align-items: center;
   flex: 1;
-  justify-content:left /* Center the logo */
+  justify-content: left /* Center the logo */
 }
 
 .paw {
@@ -39,7 +41,7 @@ body {
 /* Navigation Links */
 .nav-links {
   display: flex;
-  gap: 0px;
+  gap: 6px;
   flex: 1;
   justify-content: flex-end;
   align-items: center;
@@ -85,6 +87,7 @@ body {
   }
 
   .nav-links {
+    flex-wrap: wrap;
     flex-direction: row;
     width: 100%;
     gap: 5px;
@@ -94,12 +97,12 @@ body {
   .nav-links a {
     width: auto;
     text-align: center;
-    padding: 5px;
+    padding: 16px;
   }
 
   /* Pushes content up for mobile */
   body {
-    margin-top: 10px; /* Adjust margin to fit new navbar height */
+    margin-top: 20px; /* Adjust margin to fit new navbar height */
   }
 }
 

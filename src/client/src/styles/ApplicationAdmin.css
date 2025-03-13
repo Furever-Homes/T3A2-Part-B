@@ -1,0 +1,197 @@
+/* Applications Admin Page */
+.applications-admin-page {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #f5e1c8 30%, #e0c3a5 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Explore Heading */
+.applications-admin-page h1 {
+  font-size: 2.5rem;
+  color: #8b5e3b;
+  margin-bottom: 20px;
+}
+
+/* Filters Section */
+.admin-app-filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-app-filters select {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  border: 2px solid #8b5e3b;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-app-filters select:hover {
+  border-color: #6e4829;
+}
+
+/* Applications List - Flex Display */
+.admin-applications-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Application Card - Same Height for All */
+.admin-application-card {
+  background: #f8f2eb;
+  border-radius: 12px;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 350px;
+  text-align: left;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  min-height: 480px; /* Ensure all cards have the same height */
+  justify-content: space-between; /* Ensures buttons always align at the bottom */
+}
+
+.admin-application-card:hover {
+  transform: scale(1.02);
+}
+
+/* Applicant & Pet Info */
+.applicant-info,
+.pet-info {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.user-image,
+.admin-app-pet-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #8b5e3b;
+  margin-bottom: 10px;
+}
+
+/* Text Styling */
+.admin-application-card p {
+  font-size: 1rem;
+  color: #5a3e2b;
+  margin: 5px 0;
+}
+
+/* Action Buttons */
+.application-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto; /* Pushes buttons to the bottom */
+}
+
+/* Ensures action buttons align properly */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Buttons */
+.app-approve-btn,
+.app-reject-btn,
+.app-delete-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  color: white;
+  text-align: center;
+}
+
+/* Approve Button */
+.app-approve-btn {
+  background: linear-gradient(135deg, #5cb85c, #4cae4c);
+}
+
+.app-approve-btn:hover {
+  background: linear-gradient(135deg, #4cae4c, #3d8b3d);
+  transform: scale(1.02);
+}
+
+/* Reject Button */
+.app-reject-btn {
+  background: linear-gradient(135deg, #d9534f, #b52b27);
+}
+
+.app-reject-btn:hover {
+  background: linear-gradient(135deg, #b52b27, #92251f);
+  transform: scale(1.02);
+}
+
+/* Delete Button */
+.app-delete-btn {
+  background: linear-gradient(135deg, #8b5e3b, #6e4829);
+  width: 100%;
+}
+
+.app-delete-btn:hover {
+  background: linear-gradient(135deg, #6e4829, #57321d);
+  transform: scale(1.02);
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admin-applications-list {
+    justify-content: space-evenly;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-app-filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .admin-app-filters select {
+    width: 90%;
+  }
+
+  .admin-applications-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .admin-application-card {
+    width: 90%;
+    max-width: 400px;
+  }
+}

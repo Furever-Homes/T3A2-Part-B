@@ -6,6 +6,7 @@ import axios from "axios";
 const Explore = () => {
   const [pets, setPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
+  const [comment, setComment] = useState("");
   const [favourites, setFavourites] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -38,10 +39,12 @@ const Explore = () => {
 
   const openPopup = (pet) => {
     setSelectedPet(pet);
+    setComment("");
   };
 
   const closePopup = () => {
     setSelectedPet(null);
+    setComment(""); 
   };
 
   const toggleFavourite = async (pet) => {
@@ -95,10 +98,8 @@ const Explore = () => {
 
       await axios.post(
         `http://localhost:5001/api/user/applications/${petId}`,
-        { message: "I would like to adopt this pet." },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { message: comment || "I would like to adopt this pet."},
+        { headers: { Authorization: `Bearer ${token}` },}
       );
 
       alert("Application submitted successfully!");
@@ -127,10 +128,10 @@ const Explore = () => {
       <div className="pet-grid">
         {pets.slice(-4).map((pet) => (
           <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-            <img src={pet.image} alt={pet.name} className="pet-image" />
+            <img src={pet.image} alt={pet.name} className="explore-pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
-            <p>Breed: {pet.breed}</p>
+            <p>Type: {pet.animalType}</p>
             <button 
               className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
               onClick={(e) => {
@@ -148,10 +149,10 @@ const Explore = () => {
       <div className="pet-grid">
         {pets.map((pet) => (
           <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-            <img src={pet.image} alt={pet.name} className="pet-image" />
+            <img src={pet.image} alt={pet.name} className="explore-pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
-            <p>Breed: {pet.breed}</p>
+            <p>Type: {pet.animalType}</p>
             <button 
               className={`favourite-btn ${favourites.some((fav) => fav._id === pet._id) ? "favourited" : ""}`}
               onClick={(e) => {
@@ -172,8 +173,17 @@ const Explore = () => {
             <img src={selectedPet.image} alt={selectedPet.name} className="popup-image" />
             <h2>{selectedPet.name}</h2>
             <p>Age: {selectedPet.age} years</p>
-            <p>Breed: {selectedPet.breed}</p>
+            <p>Type: {selectedPet.animalType}</p>
             <p>{selectedPet.description}</p>
+
+            {/* Comment Input Field */}
+            <textarea
+              className="comment-box"
+              placeholder="Add a message for your application..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            ></textarea>
+
             <button 
               className="apply-btn"
               onClick={() => handleApplyToAdopt(selectedPet._id)}
