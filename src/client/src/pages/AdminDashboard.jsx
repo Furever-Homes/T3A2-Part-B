@@ -5,17 +5,18 @@ import "../styles/AdminDashboard.css";
 
 const AdminDashboard = () => {
   const [pets, setPets] = useState([]);
+  const [addingPet, setAddingPet] = useState(false);
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newPet, setNewPet] = useState({
     name: "",
     age: "",
-    animalType: "Cat", // Default option
-    activityLevel: "Medium", // Default option
-    status: "Available",
+    animalType: "", // Default option
+    activityLevel: "", // Default option
+    status: "",
     description: "",
-    location: "Melbourne", // Default option
+    location: "", // Default option
   });
   const [image, setImage] = useState(null);
 
@@ -64,6 +65,7 @@ const AdminDashboard = () => {
   // Handle new pet submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAddingPet(true);
 
     const formData = new FormData();
     formData.append("name", newPet.name);
@@ -89,8 +91,10 @@ const AdminDashboard = () => {
         }
       );
 
-      alert("Pet added successfully!");
       setPets([...pets, response.data]);
+      alert("Pet added successfully!");
+
+      // Reset form
       setNewPet({
         name: "",
         age: "",
@@ -101,9 +105,12 @@ const AdminDashboard = () => {
         location: "Melbourne",
       });
       setImage(null);
+      document.getElementById("imageUploadDash").value = ""; // Reset file input field
     } catch (error) {
       console.error("Error adding pet:", error);
       alert("Failed to add pet.");
+    } finally {
+      setAddingPet(false);
     }
   };
 
@@ -151,6 +158,9 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             >
+              <option value="" disabled>
+                Animal Type
+              </option>
               <option value="Cat">Cat</option>
               <option value="Dog">Dog</option>
               <option value="Other">Other</option>
@@ -163,6 +173,9 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             >
+              <option value="" disabled>
+                Activity Level
+              </option>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
               <option value="High">High</option>
@@ -175,6 +188,9 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             >
+              <option value="" disabled>
+                Availability
+              </option>
               <option value="Available">Available</option>
               <option value="Adopted">Adopted</option>
             </select>
@@ -186,6 +202,9 @@ const AdminDashboard = () => {
               onChange={handleChange}
               required
             >
+              <option value="" disabled>
+                Location
+              </option>
               <option value="Melbourne">Melbourne</option>
               <option value="Sydney">Sydney</option>
               <option value="Brisbane">Brisbane</option>
@@ -201,8 +220,15 @@ const AdminDashboard = () => {
               required
             ></textarea>
 
-            <input type="file" accept="image/*" onChange={handleImageChange} />
-            <button type="submit">Add Pet</button>
+            <input
+              id="imageUploadDash"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            <button type="submit" disabled={addingPet}>
+              {addingPet ? "Adding Pet..." : "Add Pet"}
+            </button>
           </form>
         </>
       )}

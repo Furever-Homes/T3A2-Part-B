@@ -3,28 +3,39 @@ import axios from "axios";
 import "../styles/ManagePets.css";
 
 const ManagePets = () => {
+  // ----------------------
+  // STATE
+  // ----------------------
   const [pets, setPets] = useState([]);
-  const [newPet, setNewPet] = useState({
-    name: "",
-    age: "",
-    animalType: "Dog",
-    activityLevel: "Medium",
-    status: "Available",
-    description: "",
-    location: "Melbourne",
-  });
-  const [image, setImage] = useState(null);
-  const [editingPet, setEditingPet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch all pets
+  // For the "Add a Pet" form
+  const [newPet, setNewPet] = useState({
+    name: "",
+    age: "",
+    animalType: "",     // Start with an empty string -> user must choose
+    activityLevel: "",
+    status: "",
+    description: "",
+    location: "",
+  });
+  const [image, setImage] = useState(null);
+  const [addingPet, setAddingPet] = useState(false);
+
+  // For editing in a popup
+  const [editPet, setEditPet] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  // ----------------------
+  // FETCH ALL PETS
+  // ----------------------
   useEffect(() => {
     const fetchPets = async () => {
       try {
         const response = await axios.get("http://localhost:5001/api/pets");
         setPets(response.data);
-      } catch (error) {
+      } catch (err) {
         setError("Failed to fetch pets.");
       } finally {
         setLoading(false);
@@ -34,59 +45,134 @@ const ManagePets = () => {
     fetchPets();
   }, []);
 
-  // Handle form changes
+  // ----------------------
+  // "ADD PET" HANDLERS
+  // ----------------------
+  // Handle text input/select changes for newPet
   const handleChange = (e) => {
     setNewPet({ ...newPet, [e.target.name]: e.target.value });
   };
 
-  // Handle image file change
+  // Handle image selection
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
-  // Add a new pet
-  const handleAddPet = async (e) => {
+  // Submit new pet
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    Object.keys(newPet).forEach((key) => formData.append(key, newPet[key]));
-    if (image) formData.append("image", image);
+    setAddingPet(true);
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post("http://localhost:5001/api/admin/pets", formData, {
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
-      });
 
+      // Build form data
+      const formData = new FormData();
+      Object.keys(newPet).forEach((key) => formData.append(key, newPet[key]));
+      if (image) formData.append("image", image);
+
+      const response = await axios.post(
+        "http://localhost:5001/api/admin/pets",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Add new pet to our list
       setPets([...pets, response.data]);
       alert("Pet added successfully!");
-      setNewPet({ name: "", age: "", animalType: "Dog", activityLevel: "Medium", status: "Available", description: "", location: "Melbourne" });
+
+      // Reset form
+      setNewPet({
+        name: "",
+        age: "",
+        animalType: "",
+        activityLevel: "",
+        status: "",
+        description: "",
+        location: "",
+      });
       setImage(null);
-    } catch (error) {
+      const fileInput = document.getElementById("imageUploadDash");
+      if (fileInput) fileInput.value = ""; // Reset file input field
+    } catch (err) {
       alert("Failed to add pet.");
+      console.error(err);
+    } finally {
+      setAddingPet(false);
     }
   };
 
-  // Edit pet
-  const handleEditPet = async (e) => {
+  // ----------------------
+  // "EDIT PET" HANDLERS (POPUP/MODAL)
+  // ----------------------
+  // Open the edit popup with a selected pet
+  const openPopup = (pet) => {
+    setIsPopupOpen(true);
+    // Copy the pet info to an editable state
+    setEditPet({ ...pet });
+    // Clear out any old selected image
+    setImage(null);
+  };
+
+  // Close the popup
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setEditPet(null);
+    setImage(null);
+  };
+
+  // Handle changes for the editing form fields
+  const handleEditChange = (e) => {
+    setEditPet({ ...editPet, [e.target.name]: e.target.value });
+  };
+
+  // Save changes (PUT request)
+  const handleSaveChanges = async (e) => {
     e.preventDefault();
+    if (!editPet) return;
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5001/api/admin/pets/${editingPet._id}`, newPet, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const formData = new FormData();
+      Object.keys(editPet).forEach((key) => formData.append(key, editPet[key]));
+      if (image) {
+        formData.append("image", image);
+      }
 
-      setPets(pets.map((pet) => (pet._id === editingPet._id ? { ...editingPet, ...newPet } : pet)));
+      // Update pet via PUT
+      await axios.put(
+        `http://localhost:5001/api/admin/pets/${editPet._id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Update local state
+      setPets((prevPets) =>
+        prevPets.map((pet) =>
+          pet._id === editPet._id ? { ...pet, ...editPet } : pet
+        )
+      );
       alert("Pet updated successfully!");
-      setEditingPet(null);
-      setNewPet({ name: "", age: "", animalType: "Dog", activityLevel: "Medium", status: "Available", description: "", location: "Melbourne" });
-    } catch (error) {
+      closePopup();
+    } catch (err) {
       alert("Failed to update pet.");
+      console.error(err);
     }
   };
 
-  // Delete a pet
+  // ----------------------
+  // "DELETE PET" HANDLER
+  // ----------------------
   const handleDeletePet = async (petId) => {
     if (!window.confirm("Are you sure you want to delete this pet?")) return;
 
@@ -96,10 +182,11 @@ const ManagePets = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setPets(pets.filter((pet) => pet._id !== petId));
+      setPets((prevPets) => prevPets.filter((pet) => pet._id !== petId));
       alert("Pet deleted successfully!");
-    } catch (error) {
+    } catch (err) {
       alert("Failed to delete pet.");
+      console.error(err);
     }
   };
 
@@ -107,27 +194,82 @@ const ManagePets = () => {
     <div className="manage-pets">
       <h1>🐾 Manage Pets</h1>
 
-      {/* Error Message */}
       {error && <p className="error-message">{error}</p>}
 
-      {/* Add/Edit Pet Form */}
-      <form onSubmit={editingPet ? handleEditPet : handleAddPet} className="manage-pet-form">
-        <input type="text" name="name" placeholder="Pet Name" value={newPet.name} onChange={handleChange} required />
-        <input type="number" name="age" placeholder="Age" value={newPet.age} onChange={handleChange} required />
+      {/* ADD PET FORM */}
+      <h2>➕ Add a New Pet</h2>
+      <form onSubmit={handleSubmit} className="add-pet-form">
+        <input
+          type="text"
+          name="name"
+          placeholder="Pet Name"
+          value={newPet.name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="number"
+          name="age"
+          placeholder="Age"
+          value={newPet.age}
+          onChange={handleChange}
+          required
+        />
 
-        <select name="animalType" value={newPet.animalType} onChange={handleChange}>
-          <option value="Dog">Dog</option>
+        {/* Animal Type Dropdown */}
+        <select
+          name="animalType"
+          value={newPet.animalType}
+          onChange={handleChange}
+          required
+        >
+          <option value="" disabled>
+            Animal Type
+          </option>
           <option value="Cat">Cat</option>
+          <option value="Dog">Dog</option>
           <option value="Other">Other</option>
         </select>
 
-        <select name="activityLevel" value={newPet.activityLevel} onChange={handleChange}>
+        {/* Activity Level Dropdown */}
+        <select
+          name="activityLevel"
+          value={newPet.activityLevel}
+          onChange={handleChange}
+          required
+        >
+          <option value="" disabled>
+            Activity Level
+          </option>
           <option value="Low">Low</option>
           <option value="Medium">Medium</option>
           <option value="High">High</option>
         </select>
 
-        <select name="location" value={newPet.location} onChange={handleChange}>
+        {/* Status Dropdown */}
+        <select
+          name="status"
+          value={newPet.status}
+          onChange={handleChange}
+          required
+        >
+          <option value="" disabled>
+            Availability
+          </option>
+          <option value="Available">Available</option>
+          <option value="Adopted">Adopted</option>
+        </select>
+
+        {/* Location Dropdown */}
+        <select
+          name="location"
+          value={newPet.location}
+          onChange={handleChange}
+          required
+        >
+          <option value="" disabled>
+            Location
+          </option>
           <option value="Melbourne">Melbourne</option>
           <option value="Sydney">Sydney</option>
           <option value="Brisbane">Brisbane</option>
@@ -135,18 +277,26 @@ const ManagePets = () => {
           <option value="Canberra">Canberra</option>
         </select>
 
-        <select name="status" value={newPet.status} onChange={handleChange}>
-          <option value="Available">Available</option>
-          <option value="Adopted">Adopted</option>
-        </select>
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={newPet.description}
+          onChange={handleChange}
+          required
+        ></textarea>
 
-        <textarea name="description" placeholder="Description" value={newPet.description} onChange={handleChange} required></textarea>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-
-        <button type="submit">{editingPet ? "Update Pet" : "Add Pet"}</button>
+        <input
+          id="imageUploadDash"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        <button type="submit" disabled={addingPet}>
+          {addingPet ? "Adding Pet..." : "Add Pet"}
+        </button>
       </form>
 
-      {/* Pets List */}
+      {/* PETS LIST */}
       <h2>📋 Current Pets</h2>
       {loading ? (
         <p>Loading pets...</p>
@@ -163,10 +313,93 @@ const ManagePets = () => {
               <p>Status: {pet.status}</p>
               <p>{pet.description}</p>
 
-              <button onClick={() => setEditingPet(pet) || setNewPet(pet)}>✏ Edit</button>
-              <button className="delete-btn" onClick={() => handleDeletePet(pet._id)}>🗑 Delete</button>
+              <button onClick={() => openPopup(pet)}>✏ Edit</button>
+              <button
+                className="delete-btn"
+                onClick={() => handleDeletePet(pet._id)}
+              >
+                🗑 Delete
+              </button>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* EDIT PET POPUP (MODAL) */}
+      {isPopupOpen && editPet && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Edit Pet</h2>
+            <form onSubmit={handleSaveChanges} className="manage-pet-form">
+              <input
+                type="text"
+                name="name"
+                placeholder="Pet Name"
+                value={editPet.name}
+                onChange={handleEditChange}
+                required
+              />
+              <input
+                type="number"
+                name="age"
+                placeholder="Age"
+                value={editPet.age}
+                onChange={handleEditChange}
+                required
+              />
+              <select
+                name="animalType"
+                value={editPet.animalType}
+                onChange={handleEditChange}
+              >
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Other">Other</option>
+              </select>
+              <select
+                name="activityLevel"
+                value={editPet.activityLevel}
+                onChange={handleEditChange}
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+              <select
+                name="location"
+                value={editPet.location}
+                onChange={handleEditChange}
+              >
+                <option value="Melbourne">Melbourne</option>
+                <option value="Sydney">Sydney</option>
+                <option value="Brisbane">Brisbane</option>
+                <option value="Perth">Perth</option>
+                <option value="Canberra">Canberra</option>
+              </select>
+              <select
+                name="status"
+                value={editPet.status}
+                onChange={handleEditChange}
+              >
+                <option value="Available">Available</option>
+                <option value="Adopted">Adopted</option>
+              </select>
+              <textarea
+                name="description"
+                placeholder="Description"
+                value={editPet.description}
+                onChange={handleEditChange}
+                required
+              />
+
+              <input type="file" accept="image/*" onChange={handleImageChange} />
+
+              <button type="submit">Save Changes</button>
+              <button type="button" onClick={closePopup}>
+                Cancel
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>
