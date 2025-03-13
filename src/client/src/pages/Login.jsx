@@ -30,17 +30,17 @@ const Login = () => {
       const response = await axios.post("http://localhost:5001/api/login", formData, {
         headers: { "Content-Type": "application/json" },
       });
-  
+
       const token = response.data.token;
-  
+
       // Decode the token to extract `admin` status
       const decodedToken = jwtDecode(token);
       const isAdmin = decodedToken.admin; // Extract `admin` field
-  
+
       // Store token in localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("admin", isAdmin ? "true" : "false"); // Store as string
-  
+
       // Redirect based on admin status
       if (isAdmin) {
         navigate("/admin/dashboard");
@@ -79,6 +79,12 @@ const Login = () => {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+
+      {/* New Sign Up Button */}
+      <p className="signup-redirect">Don't have an account?</p>
+      <button className="login-signup-btn" onClick={() => navigate("/signup")}>
+        Sign Up Here
+      </button>
     </div>
   );
 };
