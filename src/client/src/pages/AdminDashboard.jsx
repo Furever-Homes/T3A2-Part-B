@@ -11,45 +11,45 @@ const AdminDashboard = () => {
   const [newPet, setNewPet] = useState({
     name: "",
     age: "",
-    animalType: "",
-    activityLevel: "",
+    animalType: "Cat", // Default option
+    activityLevel: "Medium", // Default option
     status: "Available",
     description: "",
-    location: "",
+    location: "Melbourne", // Default option
   });
   const [image, setImage] = useState(null);
 
   // Fetch pets and applications from backend
   useEffect(() => {
     const fetchAdminData = async () => {
- 
       try {
         const petsResponse = await axios.get("http://localhost:5001/api/pets");
         setPets(petsResponse.data);
-  
+
         const token = localStorage.getItem("token");
         if (!token) {
           setError("Unauthorized access.");
           return;
         }
-  
-        const applicationsResponse = await axios.get("http://localhost:5001/api/admin/applications", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
 
-  
+        const applicationsResponse = await axios.get(
+          "http://localhost:5001/api/admin/applications",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
         setApplications(applicationsResponse.data);
       } catch (err) {
         console.error("Error fetching admin data:", err);
         setError("Failed to fetch data. Please try again.");
       } finally {
-        setLoading(false); // ✅ Ensure UI updates even on error
+        setLoading(false);
       }
     };
-  
+
     fetchAdminData();
   }, []);
-  
 
   // Handle form inputs
   const handleChange = (e) => {
@@ -64,8 +64,7 @@ const AdminDashboard = () => {
   // Handle new pet submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Prepare FormData to send all pet details and the image
+
     const formData = new FormData();
     formData.append("name", newPet.name);
     formData.append("age", String(newPet.age));
@@ -75,27 +74,31 @@ const AdminDashboard = () => {
     formData.append("description", newPet.description);
     formData.append("location", newPet.location);
     if (image) formData.append("image", image);
-  
+
     try {
       const token = localStorage.getItem("token");
-  
-      const response = await axios.post("http://localhost:5001/api/admin/pets", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-  
+
+      const response = await axios.post(
+        "http://localhost:5001/api/admin/pets",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
       alert("Pet added successfully!");
-      setPets([...pets, response.data]); 
+      setPets([...pets, response.data]);
       setNewPet({
         name: "",
         age: "",
-        animalType: "",
-        activityLevel: "",
+        animalType: "Cat",
+        activityLevel: "Medium",
         status: "Available",
         description: "",
-        location: "",
+        location: "Melbourne",
       });
       setImage(null);
     } catch (error) {
@@ -103,7 +106,7 @@ const AdminDashboard = () => {
       alert("Failed to add pet.");
     }
   };
-  
+
   return (
     <div className="admin-dashboard">
       <h1>⚙️ Admin Dashboard</h1>
@@ -124,16 +127,80 @@ const AdminDashboard = () => {
 
           <h2>➕ Add a New Pet</h2>
           <form onSubmit={handleSubmit} className="add-pet-form">
-            <input type="text" name="name" placeholder="Pet Name" value={newPet.name} onChange={handleChange} required />
-            <input type="number" name="age" placeholder="Age" value={newPet.age} onChange={handleChange} required />
-            <input type="text" name="animalType" placeholder="Animal Type" value={newPet.animalType} onChange={handleChange} required />
-            <input type="text" name="activityLevel" placeholder="Activity Level" value={newPet.activityLevel} onChange={handleChange} required />
-            <select name="status" value={newPet.status} onChange={handleChange} required>
+            <input
+              type="text"
+              name="name"
+              placeholder="Pet Name"
+              value={newPet.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="number"
+              name="age"
+              placeholder="Age"
+              value={newPet.age}
+              onChange={handleChange}
+              required
+            />
+
+            {/* Animal Type Dropdown */}
+            <select
+              name="animalType"
+              value={newPet.animalType}
+              onChange={handleChange}
+              required
+            >
+              <option value="Cat">Cat</option>
+              <option value="Dog">Dog</option>
+              <option value="Other">Other</option>
+            </select>
+
+            {/* Activity Level Dropdown */}
+            <select
+              name="activityLevel"
+              value={newPet.activityLevel}
+              onChange={handleChange}
+              required
+            >
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+
+            {/* Status Dropdown */}
+            <select
+              name="status"
+              value={newPet.status}
+              onChange={handleChange}
+              required
+            >
               <option value="Available">Available</option>
               <option value="Adopted">Adopted</option>
             </select>
-            <input type="text" name="location" placeholder="Location" value={newPet.location} onChange={handleChange} required />
-            <textarea name="description" placeholder="Description" value={newPet.description} onChange={handleChange} required></textarea>
+
+            {/* Location Dropdown */}
+            <select
+              name="location"
+              value={newPet.location}
+              onChange={handleChange}
+              required
+            >
+              <option value="Melbourne">Melbourne</option>
+              <option value="Sydney">Sydney</option>
+              <option value="Brisbane">Brisbane</option>
+              <option value="Perth">Perth</option>
+              <option value="Canberra">Canberra</option>
+            </select>
+
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={newPet.description}
+              onChange={handleChange}
+              required
+            ></textarea>
+
             <input type="file" accept="image/*" onChange={handleImageChange} />
             <button type="submit">Add Pet</button>
           </form>
