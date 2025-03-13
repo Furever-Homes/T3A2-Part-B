@@ -258,6 +258,22 @@ By following the agile scrum framework, our team completed the below:
 - **13th Feb 2025**: 4th Stand Up - Review final documentation
 - **16th Feb 2025**: 5th Stand Up - Final checks & submission
 
+#### Part B Meetings:
+
+- **18th Feb 2025**: 1st Standup, Group Meeting - roughly allocating tasks, splitting frontend and backend work
+- **20th Feb 2025**: 3rd Sprint Planning session (Sprint 3)
+- **24th Feb 2025**: 2nd Stand up - update and progress checks. Start creating models and frontend homepage
+- **27th Feb 2025**: 3rd Stand up - Initiated working on routes, controllers and middlewares for backend. Creating Explore and Pets page.
+- **1st Mar 2025**: 4th Sprint Planning Session (Sprint 4)
+- **4th Mar 2025**: 4th Stand up - Finalising main body of application
+- **6th Mar 2025**: 5th Stand up - Testing backend logic with JEST, finalising front end design
+- **11th Mar 2025**: 6th Stand up - Testing front end
+- **13th Mar 2025**: 7th Stand up - Presentation of application, Deployment and submission
+
+#### Example of Jira Sprint 3 task with child issues completed
+
+![Sprint 3 example screenshot](docs/Jira/Sprint%203%20task%20example.png)
+
 ### Screenshot Examples of Task progression throughout Part A Timeline:
 
 #### 30th January 2025
@@ -274,3 +290,14 @@ By following the agile scrum framework, our team completed the below:
 
 ![Epic 15th Feb](docs/Jira/Epic_250215.png)
 ![Wireframes 15th Feb](docs/Jira/WF_250215.png)
+
+### Part B example:
+
+#### 20th February 2025
+
+![Epic 20th February 2025](/docs/Jira/sprint%203.PNG)
+
+#### 6th March 2025
+
+![Epic 6th March 2025](/docs/Jira/sprint%204.PNG)
+
