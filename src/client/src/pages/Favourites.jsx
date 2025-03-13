@@ -6,6 +6,7 @@ import "../styles/Favourites.css";
 const Favourites = () => {
   const [favourites, setFavourites] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
   const [selectedPet, setSelectedPet] = useState(null); // Track selected pet
   const [applying, setApplying] = useState(false);
@@ -63,14 +64,14 @@ const Favourites = () => {
     }
   };
 
-  // Open popup for selected pet
   const openPopup = (pet) => {
     setSelectedPet(pet);
+    setComment("");
   };
 
-  // Close the popup
   const closePopup = () => {
     setSelectedPet(null);
+    setComment(""); 
   };
 
   // Apply to adopt pet
@@ -145,6 +146,15 @@ const Favourites = () => {
             <p>Age: {selectedPet.age} years</p>
             <p>Type: {selectedPet.animalType}</p>
             <p>{selectedPet.description}</p>
+
+            {/* Comment Input Field */}
+            <textarea
+              className="comment-box"
+              placeholder="Add a message for your application..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            ></textarea>
+
             <button
               className="apply-btn"
               onClick={() => handleApplyToAdopt(selectedPet._id)}
