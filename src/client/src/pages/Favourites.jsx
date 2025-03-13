@@ -88,7 +88,7 @@ const Favourites = () => {
     try {
       await axios.post(
         `http://localhost:5001/api/user/applications/${petId}`,
-        { message: "I would like to adopt this pet." },
+        { message: comment || "I would like to adopt this pet."},
         {
           headers: { Authorization: `Bearer ${token}` },
         }

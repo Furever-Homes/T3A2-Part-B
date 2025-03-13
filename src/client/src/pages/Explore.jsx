@@ -98,7 +98,7 @@ const Explore = () => {
 
       await axios.post(
         `http://localhost:5001/api/user/applications/${petId}`,
-        { message: comment },
+        { message: comment || "I would like to adopt this pet."},
         { headers: { Authorization: `Bearer ${token}` },}
       );
 

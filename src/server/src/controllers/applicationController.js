@@ -80,7 +80,7 @@ async function getUserApplications(request, response) {
 
       // Fetch applications submitted by the user and populate pet details
       const applications = await Application.find({ user: userId })
-          .populate("pet", "name status location")
+          .populate("pet", "name status location image")
           .sort({ createdAt: -1 });
 
       response.status(200).json(applications);
