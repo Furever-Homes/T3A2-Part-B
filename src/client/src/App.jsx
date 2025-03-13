@@ -16,6 +16,7 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard"; 
 import ApplicationAdmin from "./pages/ApplicationAdmin";
+import ManagePets from "./pages/ManagePets";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/applications" element={<ApplicationAdmin />} />
+        <Route path="/admin/manage-pets" element={<ManagePets />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

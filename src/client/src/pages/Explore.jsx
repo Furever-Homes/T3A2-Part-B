@@ -127,7 +127,7 @@ const Explore = () => {
       <h2> Recently Added Pets</h2>
       <div className="pet-grid">
         {pets.slice(-4).map((pet) => (
-          <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
+          <div key={pet._id} className="explore-pet-card" onClick={() => openPopup(pet)}>
             <img src={pet.image} alt={pet.name} className="explore-pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
@@ -148,7 +148,7 @@ const Explore = () => {
       <h2> All Pets</h2>
       <div className="pet-grid">
         {pets.map((pet) => (
-          <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
+          <div key={pet._id} className="explore-pet-card" onClick={() => openPopup(pet)}>
             <img src={pet.image} alt={pet.name} className="explore-pet-image" />
             <h3>{pet.name}</h3>
             <p>{pet.age} years old</p>
