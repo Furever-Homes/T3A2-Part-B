@@ -125,7 +125,7 @@ async function approveApplication(request, response) {
   try {
     const applicationId = request.params.applicationId;
 
-    // Find the application and populate pet details
+    // Find the application from URL and populate pet details
     const application = await Application.findById(applicationId).populate("pet");
     if (!application) {
       return response.status(404).json({ message: "Application not found" });
