@@ -1,4 +1,3 @@
-/* Admin Dashboard */
 .admin-dashboard {
   text-align: center;
   padding: 80px 20px;
@@ -10,7 +9,6 @@
   justify-content: flex-start;
 }
 
-/* Headings */
 .admin-dashboard h1 {
   font-size: 2.5rem;
   color: #8B5E3B;
@@ -23,7 +21,6 @@
   margin-top: 20px;
 }
 
-/* Links */
 .admin-dashboard a {
   font-size: 1.2rem;
   font-weight: bold;
@@ -36,7 +33,6 @@
   color: #6E4829;
 }
 
-/* Add Pet Form */
 .add-pet-form {
   background: #f8f2eb; /* Same as pet card background */
   padding: 20px;
@@ -50,7 +46,6 @@
   gap: 15px;
 }
 
-/* Inputs and Dropdowns */
 .add-pet-form input,
 .add-pet-form select,
 .add-pet-form textarea {
@@ -60,9 +55,9 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   transition: border-color 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
-/* Highlight inputs on focus */
 .add-pet-form input:focus,
 .add-pet-form select:focus,
 .add-pet-form textarea:focus {
@@ -71,12 +66,10 @@
   box-shadow: 0px 0px 6px rgba(139, 94, 59, 0.5);
 }
 
-/* File Upload */
 .add-pet-form input[type="file"] {
   border: none;
 }
 
-/* Submit Button */
 .add-pet-form button {
   width: 100%;
   padding: 12px;
@@ -95,14 +88,12 @@
   transform: scale(1.02);
 }
 
-/* Error Message */
 .error-message {
   color: red;
   font-weight: bold;
   margin-top: 12px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .add-pet-form {
     width: 90%;

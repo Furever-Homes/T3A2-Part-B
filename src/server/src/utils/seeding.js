@@ -71,7 +71,7 @@ async function seed() {
       animalType: "Cat",
       age: 3,
       activityLevel: "Medium",
-      status: "Available",
+      status: "Adopted",
       description: "A curious and playful kitten.",
       location: "Melbourne",
     }),
