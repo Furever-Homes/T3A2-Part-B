@@ -118,7 +118,7 @@ const Favourites = () => {
         <div className="pet-grid">
           {favourites.map((pet) => (
             <div key={pet._id} className="pet-card" onClick={() => openPopup(pet)}>
-              <img src={pet.image} alt={pet.name} className="pet-image" />
+              <img src={pet.image} alt={pet.name} className="favourite-pet-image" />
               <h3>{pet.name}</h3>
               <p>{pet.age} years old</p>
               <p>Type: {pet.animalType}</p>

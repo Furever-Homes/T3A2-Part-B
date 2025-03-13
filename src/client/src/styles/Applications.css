@@ -21,15 +21,18 @@
   }
   
   /* Application List */
-  .applications-list {
+  .user-applications-list {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
     gap: 15px;
+    max-width: 90%;
+    margin: auto;
   }
   
   /* Individual Application Card */
-  .application-card {
+  .user-application-card {
     background: white;
     padding: 15px;
     border-radius: 10px;
@@ -40,20 +43,20 @@
   }
   
   /* Application Card Title */
-  .application-card h2 {
+  .user-application-card h2 {
     font-size: 1.5rem;
     color: #8B5E3B; 
     margin-bottom: 5px;
   }
   
   /* Application Status */
-  .application-card p {
+  .user-application-card p {
     font-size: 1rem;
     color: #444;
     margin: 5px 0;
   }
   
-  .pet-image-app {
+  .user-app-pet-image-app {
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -75,7 +78,7 @@
       padding-top: 120px;
     }
   
-    .application-card {
+    .user-application-card {
       width: 90%;
     }
   }

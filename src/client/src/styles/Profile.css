@@ -129,7 +129,7 @@
 }
 
 
-.edit-btn, .delete-btn, .logout-btn {
+.edit-btn, .prof-delete-btn, .logout-btn {
   width: 100%; /* Ensures buttons take full width within .profile-buttons */
   max-width: 500px; /* Prevents buttons from stretching too wide */
   padding: 12px;
@@ -155,11 +155,11 @@
 }
 
 /* Delete Button */
-.delete-btn {
+.prof-delete-btn {
   background: linear-gradient(135deg, #d9534f, #b52b27);
 }
 
-.delete-btn:hover {
+.prof-delete-btn:hover {
   background: linear-gradient(135deg, #b52b27, #92251f);
   transform: scale(1.02);
 }

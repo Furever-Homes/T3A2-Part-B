@@ -65,11 +65,11 @@ const Applications = () => {
         <p>You haven't submitted any applications yet.</p>
       )}
 
-      <div className="applications-list">
+      <div className="user-applications-list">
         {applications.map((app) => (
-          <div key={app._id} className="application-card">
+          <div key={app._id} className="user-application-card">
             {/* Pet Image */}
-            {app.pet.image && <img src={app.pet.image} alt={app.pet.name} className="pet-image-app" />}
+            {app.pet.image && <img src={app.pet.image} alt={app.pet.name} className="user-app-pet-image-app" />}
 
             <h2>{app.pet.name}</h2>
             <p><strong>Status:</strong> {app.status}</p>

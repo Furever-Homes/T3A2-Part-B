@@ -44,22 +44,22 @@ async function submitApplication(request, response) {
 // /api/admin/applications
 // /api/admin/applications?location=xxx
 // /api/admin/applications?animalType=xxx
-// /api/admin/applications?location=xxx&animalType=xxx
+// /api/admin/applications?status=xxx
+// /api/admin/applications?location=xxx&animalType=xxx&status=xxx
 async function getAllApplications(request, response) {
   try {
-    const { location, animalType } = request.query;
+    const { location, animalType, status } = request.query;
 
-    // Find applications and populate user and pet
     let applications = await Application.find()
-      .populate("user", "name email")
-      .populate("pet", "name location animalType");
+      .populate("user", "name email image") // Include user image
+      .populate("pet", "name image animalType age activityLevel status location"); // Include all pet properties
 
-    // Apply filtering using JavaScript's `.filter()` method
-    if (location || animalType) {
+    if (location || animalType || status) {
       applications = applications.filter(app => {
-        if (!app.pet) return false; // Ensure app has a valid pet reference
+        if (!app.pet) return false;
         if (location && app.pet.location !== location) return false;
         if (animalType && app.pet.animalType !== animalType) return false;
+        if (status && app.status !== status) return false;
         return true;
       });
     }

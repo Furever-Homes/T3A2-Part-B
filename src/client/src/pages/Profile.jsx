@@ -204,7 +204,7 @@ const Profile = () => {
         ) : (
           <section className="profile-buttons">
             <button className="edit-btn" onClick={() => setEditing(true)}>Edit Profile</button>
-            <button className="delete-btn" onClick={handleDeleteAccount}>Delete Account</button>
+            <button className="prof-delete-btn" onClick={handleDeleteAccount}>Delete Account</button>
             <button className="logout-btn" onClick={handleLogout}>Logout</button>
           </section>
         )}

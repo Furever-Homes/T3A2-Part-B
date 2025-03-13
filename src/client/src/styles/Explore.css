@@ -32,6 +32,13 @@ body, html {
   margin-bottom: 50px;
 }
 
+/* Explore Heading */
+.explore-page h1 {
+  font-size: 2.5rem;
+  color: #8B5E3B;
+  margin-bottom: 20px;
+}
+
 /* Pet Card Grid */
 .pet-grid {
   display: flex;
@@ -63,7 +70,7 @@ body, html {
 }
 
 /* Pet Image */
-.pet-image {
+.explore-pet-image {
   width: 100%;
   height: 180px;
   object-fit: cover;
