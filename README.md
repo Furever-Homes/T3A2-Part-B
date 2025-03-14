@@ -336,19 +336,47 @@ By following the agile scrum framework, our team completed the below:
 
 ### Testing
 
-![Application already processed message](<docs/testing-images/ApproveReject Application processed.PNG>) 
-![Application approved message](<docs/testing-images/ApproveReject Application.PNG>) 
-![Create pet listing](<docs/testing-images/Create pet.PNG>) 
-![Delete pet listing](<docs/testing-images/Delete pet.PNG>) 
-![Add pet to favourites](<docs/testing-images/favourite pet.PNG>) 
-![Retrieve all applications with applied filter](<docs/testing-images/Get all applications with filter.PNG>) 
-![Retrieve all applications](<docs/testing-images/Get all applications.PNG>) 
-![Remove pet from favourites](<docs/testing-images/remove pet from favourites.PNG>) 
-![Show all favourites](<docs/testing-images/show all favourites.PNG>) 
-![Submit an application](<docs/testing-images/Submit application.PNG>) 
-![Failed Login Screenshot](<docs/testing-images/User login reject.png>) 
-![Successful Login Screenshot](<docs/testing-images/User login success.PNG>) 
-![Failed Registration](<docs/testing-images/User Register reject.PNG>) 
 ![Successful Registration](<docs/testing-images/User Register success.png>)
 
+Upon meeting requirements for registration, users will receive a message saying "User registered successfully". If requirements are not meant, they will retrieve an error, for example if an invalid email is provided, or the email is already in use.
+
+![Failed Registration](<docs/testing-images/User Register reject.PNG>) 
+
+![Successful Login Screenshot](<docs/testing-images/User login success.PNG>) 
+
+![Failed Login Screenshot](<docs/testing-images/User login reject.png>) 
+
+![Submit an application](<docs/testing-images/Submit application.PNG>) 
+
+When an application has been submitted by a user successfully, an acknowledgement will be sent and the application will be placed in "Pending" status by default.
+
+![Create pet listing](<docs/testing-images/Create pet.PNG>) 
+
+Successful addition of a pet listing.
+
+![Delete pet listing](<docs/testing-images/Delete pet.PNG>) 
+
+![Retrieve all applications](<docs/testing-images/Get all applications.PNG>) 
+
+![Retrieve all applications with applied filter](<docs/testing-images/Get all applications with filter.PNG>) 
+
+Admin can retrieve all applications, regardless of status. Above is a screenshot of the filter being applied, only showing applications for Dogs in Sydney.
+
+![Application approved message](<docs/testing-images/ApproveReject Application.PNG>) 
+
+Using the route applications/:applicationId/approve OR /reject, Administrators are able to approve or reject pending applications.
+
+![Application already processed message](<docs/testing-images/ApproveReject Application processed.PNG>) 
+
+If an application has already been processed by another admin staff and it attemps to be processed again, a message will be sent to Admin saying it has already been processed.
+
+![Add pet to favourites](<docs/testing-images/favourite pet.PNG>) 
+
+![Remove pet from favourites](<docs/testing-images/remove pet from favourites.PNG>) 
+
+![Show all favourites](<docs/testing-images/show all favourites.PNG>) 
+
+Users are able to add/remove and retrieve all pets from their favourites list but must be logged in. If not logged in, they will be directed to login/sign up.
+
 ![JEST backend test screenshot](<docs/testing-images/JEST backend test.png>) 
+
