@@ -334,3 +334,21 @@ By following the agile scrum framework, our team completed the below:
 
 ![Epic 6th March 2025](/docs/Jira/sprint%204.PNG)
 
+### Testing
+
+![Application already processed message](<docs/testing-images/ApproveReject Application processed.PNG>) 
+![Application approved message](<docs/testing-images/ApproveReject Application.PNG>) 
+![Create pet listing](<docs/testing-images/Create pet.PNG>) 
+![Delete pet listing](<docs/testing-images/Delete pet.PNG>) 
+![Add pet to favourites](<docs/testing-images/favourite pet.PNG>) 
+![Retrieve all applications with applied filter](<docs/testing-images/Get all applications with filter.PNG>) 
+![Retrieve all applications](<docs/testing-images/Get all applications.PNG>) 
+![Remove pet from favourites](<docs/testing-images/remove pet from favourites.PNG>) 
+![Show all favourites](<docs/testing-images/show all favourites.PNG>) 
+![Submit an application](<docs/testing-images/Submit application.PNG>) 
+![Failed Login Screenshot](<docs/testing-images/User login reject.png>) 
+![Successful Login Screenshot](<docs/testing-images/User login success.PNG>) 
+![Failed Registration](<docs/testing-images/User Register reject.PNG>) 
+![Successful Registration](<docs/testing-images/User Register success.png>)
+
+![JEST backend test screenshot](<docs/testing-images/JEST backend test.png>) 
