@@ -8,7 +8,7 @@ A Pet Adoption & Shelter Management Application
 |------------|------|
 | Furever Homes - Organisation Page | [https://github.com/Furever-Homes](https://github.com/Furever-Homes) |
 | Furever Homes - Full Stack Application | [https://github.com/Furever-Homes/T3A2-Part-B](https://github.com/Furever-Homes/T3A2-Part-B) |
-| Furever Homes - Deployed Website | TBC |
+| Furever Homes - Deployed Website | [https://fureverhomes.netlify.app/](https://fureverhomes.netlify.app/) |
 
 ## Contents
 
@@ -20,6 +20,7 @@ A Pet Adoption & Shelter Management Application
 6) [User Stories](#user-stories)
 7) [Wireframes](#wireframes)
 8) [Project Management: Jira](#project-management-jira)
+9) [Testing](#testing)
 
 ## What is "Furever Homes"?
 
@@ -334,62 +335,112 @@ By following the agile scrum framework, our team completed the below:
 
 ![Epic 6th March 2025](/docs/Jira/sprint%204.PNG)
 
-## Testing
+### Testing
+
+Testing was an essential part of our development process to ensure the reliability, security and functionality of our Forever Homes. Both manual testing (through user interactions) and automated testing (using Jest) were performed to validate the application's functionality across different user scenarios.  
+
+The key areas of testing included:
+
+- User authentication (registration & login)
+
+- Pet management (creating, retrieving, updating, deleting pets)
+
+- Adoption applications (submission, approval, rejection)
+
+- User-specific functionalities (favoriting pets)
+
+- API endpoint validation using Jest and Supertest  
 
 #### Successful Registration
+
 ![Successful Registration](<docs/testing-images/User Register success.png>)
 
 Upon meeting requirements for registration, users will receive a message saying "User registered successfully". If requirements are not met, they will receive an error, for example if an invalid email is provided, or the email is already in use.
 
 #### Failed Registration
-![Failed Registration](<docs/testing-images/User Register reject.PNG>) 
+
+![Failed Registration](<docs/testing-images/User Register reject.PNG>)
 
 #### Successful Login
-![Successful Login Screenshot](<docs/testing-images/User login success.PNG>) 
+
+![Successful Login Screenshot](<docs/testing-images/User login success.PNG>)
 
 #### Failed Login
-![Failed Login Screenshot](<docs/testing-images/User login reject.png>) 
+
+![Failed Login Screenshot](<docs/testing-images/User login reject.png>)
 
 #### User submits application successfully
-![Submit an application](<docs/testing-images/Submit application.PNG>) 
+
+![Submit an application](<docs/testing-images/Submit application.PNG>)
 
 When an application has been submitted by a user successfully, an acknowledgement will be sent and the application will be placed in "Pending" status by default.
 
 #### Admin Create Pet Listing
-![Create pet listing](<docs/testing-images/Create pet.PNG>) 
+
+![Create pet listing](<docs/testing-images/Create pet.PNG>)
 
 Successful addition of a pet listing.
 
+##### Update Pet Details with Image
+
+![Update Pet Details with Image](<docs/testing-images/Update Pet Details - Insomnia.png>)
+
 #### Deleting a pet listing by admin
-![Delete pet listing](<docs/testing-images/Delete pet.PNG>) 
+
+![Delete pet listing](<docs/testing-images/Delete pet.PNG>)
 
 #### Admin retrieve all applications
-![Retrieve all applications](<docs/testing-images/Get all applications.PNG>) 
+
+![Retrieve all applications](<docs/testing-images/Get all applications.PNG>)
 
 #### Retrieve applications with filter applied
-![Retrieve all applications with applied filter](<docs/testing-images/Get all applications with filter.PNG>) 
+
+![Retrieve all applications with applied filter](<docs/testing-images/Get all applications with filter.PNG>)
 
 Admin can retrieve all submitted applications, regardless of status. Above is a screenshot of the filter being applied, only showing applications for Dogs in Sydney.
 
-#### Application successfully approved 
-![Application approved message](<docs/testing-images/ApproveReject Application.PNG>) 
+#### Application successfully approved
+
+![Application approved message](<docs/testing-images/ApproveReject Application.PNG>)
 
 Using the route applications/:applicationId/approve OR /reject, Administrators are able to approve/reject pending applications.
 
-![Application already processed message](<docs/testing-images/ApproveReject Application processed.PNG>) 
+![Application already processed message](<docs/testing-images/ApproveReject Application processed.PNG>)
 
 If an application has already been processed by another admin and they attempt to be process again, a message will be sent to Admin saying it has already been processed.
 
 #### Adding Pets to Favourites
-![Add pet to favourites](<docs/testing-images/favourite pet.PNG>) 
 
-![Remove pet from favourites](<docs/testing-images/remove pet from favourites.PNG>) 
+![Add pet to favourites](<docs/testing-images/favourite pet.PNG>)
 
-![Show all favourites](<docs/testing-images/show all favourites.PNG>) 
+![Remove pet from favourites](<docs/testing-images/remove pet from favourites.PNG>)
+
+![Show all favourites](<docs/testing-images/show all favourites.PNG>)
 
 Users are able to add/remove and retrieve all pets from their favourites list but must be logged in. If not logged in, they will be directed to login/sign up.
 
-### Jest testing
+### Backend Jest Testing
 
-![JEST backend test screenshot](<docs/testing-images/JEST backend test.png>) 
+![JEST backend test screenshot](<docs/testing-images/JEST backend test.png>)  
 
+#### Results for User API's
+
+![JEST - User API Endpoints 1](<docs/testing-images/Screenshot 2025-03-09 at 3.03.05 pm.png>)
+![JEST - User API Endpoints 2](<docs/testing-images/Screenshot 2025-03-09 at 3.03.28 pm.png>)
+![JEST - User API Endpoints 3](<docs/testing-images/Screenshot 2025-03-09 at 3.03.43 pm.png>)
+
+#### Results for Pet API's
+
+![JEST - Pet API Endpoints 1](<docs/testing-images/Screenshot 2025-03-09 at 10.36.13 pm.png>)
+![JEST - Pet API Endpoints 2](<docs/testing-images/Screenshot 2025-03-09 at 10.38.14 pm.png>)
+![JEST - Pet API Endpoints 3](<docs/testing-images/Screenshot 2025-03-09 at 10.39.18 pm.png>)
+![JEST - Pet API Endpoints 4](<docs/testing-images/Screenshot 2025-03-09 at 10.39.43 pm.png>)
+![JEST - Pet API Endpoints 5](<docs/testing-images/Screenshot 2025-03-09 at 10.40.01 pm.png>)
+
+#### Results for Application API's
+
+![JEST - Applications API Endpoints 1](<docs/testing-images/Screenshot 2025-03-11 at 4.21.26 am.png>)
+
+### Frontend Jest Testing
+
+![JEST - Frontend Testing](docs/testing-images/Frontendjesttesting.png)
