@@ -26,7 +26,7 @@ const Favourites = () => {
       }
 
       // Fetch favourites from the backend
-      const response = await axios.get("http://localhost:5001/api/user/favourites", {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/favourites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -54,7 +54,7 @@ const Favourites = () => {
       localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
 
       // Call backend to remove favourite
-      await axios.delete(`http://localhost:5001/api/user/favourites/${petId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/user/favourites/${petId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -87,7 +87,7 @@ const Favourites = () => {
 
     try {
       await axios.post(
-        `http://localhost:5001/api/user/applications/${petId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/applications/${petId}`,
         { message: comment || "I would like to adopt this pet."},
         {
           headers: { Authorization: `Bearer ${token}` },

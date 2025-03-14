@@ -17,7 +17,7 @@ const Explore = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/pets");
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/pets`);
         setPets(response.data);
       } catch (error) {
         setError("Failed to load pets. Please try again later.");
@@ -66,11 +66,11 @@ const Explore = () => {
   
     try {
       if (isFavourited) {
-        await axios.delete(`http://localhost:5001/api/user/favourites/${pet._id}`, {
+        await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/user/favourites/${pet._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        await axios.post(`http://localhost:5001/api/user/favourites/${pet._id}`, {}, {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/favourites/${pet._id}`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
@@ -97,7 +97,7 @@ const Explore = () => {
       }
 
       await axios.post(
-        `http://localhost:5001/api/user/applications/${petId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/applications/${petId}`,
         { message: comment || "I would like to adopt this pet."},
         { headers: { Authorization: `Bearer ${token}` },}
       );
