@@ -13,7 +13,7 @@ app.use(helmet());
 const corsOptions = {
     origin: [
       "http://localhost:5173", // Allow local frontend for testing
-      "https://fureverhomes.onrender.com", // <-- For deployed frontend website
+      "https://fureverhomes.netlify.app/", // <-- For deployed frontend website
     ],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
