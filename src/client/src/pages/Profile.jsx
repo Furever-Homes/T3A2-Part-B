@@ -12,7 +12,7 @@ const Profile = () => {
   const navigate = useNavigate(); 
   const hasPrompted = useRef(false); 
 
-  const DEFAULT_IMAGE_URL = "https://res.cloudinary.com/ddjbhfzgf/image/upload/v1741613254/default_user_gwqxsa.jpg";
+  const DEFAULT_IMAGE_URL = import.meta.env.VITE_CLOUDINARY_DEFAULT_USER;
 
   // Check if user is logged in
   useEffect(() => {
@@ -31,7 +31,7 @@ const Profile = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/user/profile", {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -56,7 +56,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.put("http://localhost:5001/api/user/profile", updatedUser, {
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, updatedUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -77,7 +77,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.delete("http://localhost:5001/api/user/profile", {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -111,7 +111,7 @@ const Profile = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const response = await axios.put("http://localhost:5001/api/user/profile", formData, {
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -137,7 +137,7 @@ const Profile = () => {
       if (!token) return;
 
       const response = await axios.put(
-        "http://localhost:5001/api/user/profile",
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/profile`,
         { image: null },
         { headers: { Authorization: `Bearer ${token}` } }
       );

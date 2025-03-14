@@ -33,7 +33,7 @@ const ManagePets = () => {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/pets");
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/pets`);
         setPets(response.data);
       } catch (err) {
         setError("Failed to fetch pets.");
@@ -72,7 +72,7 @@ const ManagePets = () => {
       if (image) formData.append("image", image);
 
       const response = await axios.post(
-        "http://localhost:5001/api/admin/pets",
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/pets`,
         formData,
         {
           headers: {
@@ -146,7 +146,7 @@ const ManagePets = () => {
 
       // Update pet via PUT
       await axios.put(
-        `http://localhost:5001/api/admin/pets/${editPet._id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/pets/${editPet._id}`,
         formData,
         {
           headers: {
@@ -178,7 +178,7 @@ const ManagePets = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5001/api/admin/pets/${petId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/admin/pets/${petId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

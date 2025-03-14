@@ -20,7 +20,7 @@ const Applications = () => {
         return;
       }
 
-      const response = await axios.get("http://localhost:5001/api/user/applications", {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/applications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -41,7 +41,7 @@ const Applications = () => {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      await axios.delete(`http://localhost:5001/api/user/applications/${applicationId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/user/applications/${applicationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

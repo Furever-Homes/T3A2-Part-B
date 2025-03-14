@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const petsResponse = await axios.get("http://localhost:5001/api/pets");
+        const petsResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/pets`);
         setPets(petsResponse.data);
 
         const token = localStorage.getItem("token");
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
         }
 
         const applicationsResponse = await axios.get(
-          "http://localhost:5001/api/admin/applications",
+          `${import.meta.env.VITE_BACKEND_URL}/api/admin/applications`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -81,7 +81,7 @@ const AdminDashboard = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:5001/api/admin/pets",
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/pets`,
         formData,
         {
           headers: {

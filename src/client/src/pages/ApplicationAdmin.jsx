@@ -26,7 +26,7 @@ const ApplicationAdmin = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:5001/api/user/profile", {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -60,7 +60,7 @@ const ApplicationAdmin = () => {
       if (filters.status) query += `status=${filters.status}&`;
 
       const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:5001/api/admin/applications?${query}`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/applications?${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -80,7 +80,7 @@ const ApplicationAdmin = () => {
   const handleApprove = async (applicationId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5001/api/admin/applications/${applicationId}/approve`, {}, {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/admin/applications/${applicationId}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Application approved!");
@@ -94,7 +94,7 @@ const ApplicationAdmin = () => {
   const handleReject = async (applicationId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5001/api/admin/applications/${applicationId}/reject`, {}, {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/admin/applications/${applicationId}/reject`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Application rejected!");
@@ -111,7 +111,7 @@ const ApplicationAdmin = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5001/api/admin/applications/${applicationId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/admin/applications/${applicationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Application deleted!");
