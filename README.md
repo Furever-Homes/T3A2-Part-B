@@ -13,11 +13,13 @@ A Pet Adoption & Shelter Management Application
 ## Contents
 
 1) [What is "Furever Homes"?](#what-is-furever-homes)
-2) [Dataflow Diagram](#dataflow-diagram)
-3) [Application Architecture Diagram](#application-architecture-diagram)
-4) [User Stories](#user-stories)
-5) [Wireframes](#wireframes)
-6) [Project Management: Jira](#project-management-jira)
+2) [Tech Stack](#tech-stack)
+3) [Dependencies](#dependencies)
+4) [Dataflow Diagram](#dataflow-diagram)
+5) [Application Architecture Diagram](#application-architecture-diagram)
+6) [User Stories](#user-stories)
+7) [Wireframes](#wireframes)
+8) [Project Management: Jira](#project-management-jira)
 
 ## What is "Furever Homes"?
 
@@ -31,7 +33,7 @@ The application includes features such as:
 - Pet Data Management (CRUD)
 - Secure user registration & login using JWT Authentication
 
-### Tech Stack
+## Tech Stack
 
 <div align="center">
     <img src="https://img.shields.io/badge/-CSS-1572B6?style=flat-square&logo=css3&logoColor=white" height=30>
@@ -50,6 +52,37 @@ The application includes features such as:
 **Node.js**: A JavaScript runtime environment which allows JavaScript to run on the server.  
 **Express**: A backend framework for Node.js which manages API requests, middleware & route handling.  
 **MongoDB**: A NoSQL database solution that stores data in a JSON-like format.
+
+## Dependencies
+
+### Frontend Dependencies
+
+- axios: Used to make HTTP requests from the frontend to fetch the pet data, submit applications and manage authentication.
+- jwt-decode: To decode JSON Web Tokens (JWT) to extract user information (e.g., checking if a user is an admin)
+- react: The main library for building the UI components in a in re way
+- react-dom: Provided the DOM-specific methods that were used to render React components in the browser
+- react-router-dom: Enabled us to utilise navigation between different pages using routes (e.g., /explore, /profile, /admin).
+
+### Backend Dependencies
+
+- bcrypt: We used this for hashing and verifying the user passwords securely
+- cloudinary: This handled the image uploads and storage for the pet photos
+- cors: Enabled the Cross-Origin Resource Sharing, which made it possible for the frontend to communicate with the backend on a different domain.
+- dotenv: This managed environment variables (e.g., database connection strings, API keys)
+- express: This is the core framework for building the whole backend API
+- helmet: Used to mplement headers to prevent common web vulnerabilities
+- joi: Validates incoming data (e.g., ensuring valid email formats in user registration)
+- jsonwebtoken: Used to create and verify JSON Web Tokens (JWT) for the user authentication
+- mongoose: Connects to MongoDB and defines the schemas for users, pets and applications
+- multer: Handled the file uploads, used to store pet images
+- multer-storage-cloudinary: This was used to integrate Multer with Cloudinary for seamless image uploads
+
+### Backend Dev Dependencies
+
+- jest: We used this testing framework for running automated tests
+- mongodb-memory-server: Used to create an in-memory MongoDB instance for testing without actually modifying real data
+- supertest: Allowed us to test API endpoints by sending HTTP requests and verifying responses
+
 
 ## Dataflow Diagram
 
