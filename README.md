@@ -334,42 +334,53 @@ By following the agile scrum framework, our team completed the below:
 
 ![Epic 6th March 2025](/docs/Jira/sprint%204.PNG)
 
-### Testing
+## Testing
 
+#### Successful Registration
 ![Successful Registration](<docs/testing-images/User Register success.png>)
 
-Upon meeting requirements for registration, users will receive a message saying "User registered successfully". If requirements are not meant, they will retrieve an error, for example if an invalid email is provided, or the email is already in use.
+Upon meeting requirements for registration, users will receive a message saying "User registered successfully". If requirements are not met, they will receive an error, for example if an invalid email is provided, or the email is already in use.
 
+#### Failed Registration
 ![Failed Registration](<docs/testing-images/User Register reject.PNG>) 
 
+#### Successful Login
 ![Successful Login Screenshot](<docs/testing-images/User login success.PNG>) 
 
+#### Failed Login
 ![Failed Login Screenshot](<docs/testing-images/User login reject.png>) 
 
+#### User submits application successfully
 ![Submit an application](<docs/testing-images/Submit application.PNG>) 
 
 When an application has been submitted by a user successfully, an acknowledgement will be sent and the application will be placed in "Pending" status by default.
 
+#### Admin Create Pet Listing
 ![Create pet listing](<docs/testing-images/Create pet.PNG>) 
 
 Successful addition of a pet listing.
 
+#### Deleting a pet listing by admin
 ![Delete pet listing](<docs/testing-images/Delete pet.PNG>) 
 
+#### Admin retrieve all applications
 ![Retrieve all applications](<docs/testing-images/Get all applications.PNG>) 
 
+#### Retrieve applications with filter applied
 ![Retrieve all applications with applied filter](<docs/testing-images/Get all applications with filter.PNG>) 
 
-Admin can retrieve all applications, regardless of status. Above is a screenshot of the filter being applied, only showing applications for Dogs in Sydney.
+Admin can retrieve all submitted applications, regardless of status. Above is a screenshot of the filter being applied, only showing applications for Dogs in Sydney.
 
+#### Application successfully approved 
 ![Application approved message](<docs/testing-images/ApproveReject Application.PNG>) 
 
-Using the route applications/:applicationId/approve OR /reject, Administrators are able to approve or reject pending applications.
+Using the route applications/:applicationId/approve OR /reject, Administrators are able to approve/reject pending applications.
 
 ![Application already processed message](<docs/testing-images/ApproveReject Application processed.PNG>) 
 
-If an application has already been processed by another admin staff and it attemps to be processed again, a message will be sent to Admin saying it has already been processed.
+If an application has already been processed by another admin and they attempt to be process again, a message will be sent to Admin saying it has already been processed.
 
+#### Adding Pets to Favourites
 ![Add pet to favourites](<docs/testing-images/favourite pet.PNG>) 
 
 ![Remove pet from favourites](<docs/testing-images/remove pet from favourites.PNG>) 
@@ -377,6 +388,8 @@ If an application has already been processed by another admin staff and it attem
 ![Show all favourites](<docs/testing-images/show all favourites.PNG>) 
 
 Users are able to add/remove and retrieve all pets from their favourites list but must be logged in. If not logged in, they will be directed to login/sign up.
+
+### Jest testing
 
 ![JEST backend test screenshot](<docs/testing-images/JEST backend test.png>) 
 
