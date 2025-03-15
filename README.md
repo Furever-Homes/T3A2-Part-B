@@ -8,19 +8,23 @@ A Pet Adoption & Shelter Management Application
 |------------|------|
 | Furever Homes - Organisation Page | [https://github.com/Furever-Homes](https://github.com/Furever-Homes) |
 | Furever Homes - Full Stack Application | [https://github.com/Furever-Homes/T3A2-Part-B](https://github.com/Furever-Homes/T3A2-Part-B) |
-| Furever Homes - Deployed Website | [https://fureverhomes.netlify.app/](https://fureverhomes.netlify.app/) |
+| Furever Homes - Deployed Frontend Website | [https://fureverhomes.netlify.app/](https://fureverhomes.netlify.app/) |
+| Furever Homes - Deployed API Web Application | [https://fureverhomes.onrender.com](https://fureverhomes.onrender.com) |
 
 ## Contents
 
 1) [What is "Furever Homes"?](#what-is-furever-homes)
-2) [Tech Stack](#tech-stack)
-3) [Dependencies](#dependencies)
-4) [Dataflow Diagram](#dataflow-diagram)
-5) [Application Architecture Diagram](#application-architecture-diagram)
-6) [User Stories](#user-stories)
-7) [Wireframes](#wireframes)
-8) [Project Management: Jira](#project-management-jira)
-9) [Testing](#testing)
+2) [Meet The Furever Homes Team](#meet-the-furever-homes-team)
+3) [Tech Stack](#tech-stack)
+4) [Dependencies](#dependencies)
+5) [Local Client Installation](#local-client-installation)
+6) [Local Server Installation](#local-server-installation)
+7) [Dataflow Diagram](#dataflow-diagram)
+8) [Application Architecture Diagram](#application-architecture-diagram)
+9) [User Stories](#user-stories)
+10) [Wireframes](#wireframes)
+11) [Project Management: Jira](#project-management-jira)
+12) [Testing](#testing)
 
 ## What is "Furever Homes"?
 
@@ -28,11 +32,24 @@ Furever homes is a platform which is designed to provide a simple and easy pet a
 
 The application includes features such as:
 
-- Pet search functionality with filtering options
+- Pet search functionality
 - Ability for adopters to shortlist pets into a 'favourites' section
 - Application processes (Submit, Approve, Reject)
 - Pet Data Management (CRUD)
 - Secure user registration & login using JWT Authentication
+
+## Meet The Furever Homes Team
+
+- **Hendric Widjaja** - Backend Dev
+- **Jess Lee** - Backend Dev
+- **Jesse Prpic** - Frontend Dev
+- **Melissa Duncan** - Frontend Dev
+
+Throughout the project, tasks were distributed among team members based on their expertise in either frontend or backend development. We collectively decided to split the team evenly, with two members focusing on frontend and two on backend. Fortunately, everyone was aligned with their roles, and no disputes arose regarding task allocation. Once divided, we delegated responsibilities evenly, following our Jira management board, with a strong focus on adhering to the project timeline.
+
+Hendric and Jess took charge of backend development, handling the database structure, API development, authentication processes, and application logic using Node.js, Express, and MongoDB. Meanwhile, Jesse and Melissa focused on the frontend, crafting an intuitive user interface by developing React components, implementing styling, and integrating API calls.
+
+Effective communication was key to ensuring that both the frontend and backend remained in sync throughout development. By maintaining clear collaboration and regular check-ins, we successfully integrated all aspects of the project, resulting in a fully functional pet adoption platform.
 
 ## Tech Stack
 
@@ -84,6 +101,118 @@ The application includes features such as:
 - mongodb-memory-server: Used to create an in-memory MongoDB instance for testing without actually modifying real data
 - supertest: Allowed us to test API endpoints by sending HTTP requests and verifying responses
 
+## Local Client Installation
+
+### Necessary Account Creation
+
+- **MongoDB** - [https://account.mongodb.com/account/register](https://account.mongodb.com/account/register)
+- **Cloudinary** - [https://cloudinary.com/users/register_free](https://cloudinary.com/users/register_free)
+
+    - Once you have created your account, drop and drag the images below (assets folder) into the assets section of your Cloudinary account. You may also feel free to use your own default images.
+        - Default Cat: [src/client/src/assets/default_cat.jpg](src/client/src/assets/default_cat.jpg)
+        - Default Dog: [src/client/src/assets/default_dog.jpg](src/client/src/assets/default_dog.jpg)
+        - Default Other: [src/client/src/assets/default_other.jpg](src/client/src/assets/default_other.jpg)
+        - Default User: [src/client/src/assets/default_user.jpg](src/client/src/assets/default_user.jpg)
+    - Copy the URL for each corresponding default image to the necessary environment variables
+
+### STEP 1: Clone the repository (client)
+
+```bash
+git clone git@github.com:Furever-Homes/T3A2-Part-B.git
+cd src/client
+```
+
+### STEP 2: Install client dependencies
+
+```bash
+npm install
+```
+
+### STEP 3: Create `.env` file in src/client
+
+```sh
+# ROUTE / DOMAIN FOR CONNECTING TO LOCALLY HOSTED BACKEND
+VITE_BACKEND_URL=http://localhost:5001
+
+# DEFAULT USER IMAGE FROM CLOUDINARY
+VITE_CLOUDINARY_DEFAULT_USER=insert_cloudinary_URL_for_default_user_image
+
+# NOTE: "VITE_CLOUDINARY_DEFAULT_USER" value must be the same as CLOUDINARY_DEFAULT_USER value in server .env
+```
+
+Note: An .env.example file has been provided in this repository for clarity
+
+### STEP 4: Start local client
+
+```bash
+npm start
+```
+
+## Local Server Installation
+
+### STEP 1: Clone the repository (backend)
+
+```bash
+git clone git@github.com:Furever-Homes/T3A2-Part-B.git
+cd src/server
+```
+
+### STEP 2: Install server dependencies
+
+```bash
+npm install
+```
+
+### STEP 3: Create `.env` file in src/server
+
+```sh
+# PORT selection (must match port selection used for frontend connection to backend URL)
+PORT=5001
+
+# Database URL for Mongo DB Atlas (must create an account)
+DATABASE_URL=insert_database_URL_for_mongodb_atlas
+
+# Password for test users in seeding.js
+PASSWORD=insert_password_for_test_users_for_seeding
+
+# JWT Secret for password hashing (bcrypt)
+JWT_SECRET=insert_JWT_secret_for_password_hashing
+
+# Cloudinary Environment Variables
+CLOUDINARY_CLOUD_NAME=INSERT_CLOUDINARY_CLOUDNAME
+CLOUDINARY_API_KEY=INSERT_CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET=INSERT_CLOUDINARY_API_SECRET
+CLOUDINARY_DEFAULT_DOG=INSERT_CLOUDINARY_URL_for_default_dog_image
+CLOUDINARY_DEFAULT_CAT=INSERT_CLOUDINARY_URL_for_default_cat_image
+CLOUDINARY_DEFAULT_OTHER=INSERT_CLOUDINARY_URL_for_default_other_image
+CLOUDINARY_DEFAULT_USER=INSERT_CLOUDINARY_URL_for_default_user_image
+
+# NOTE: "CLOUDINARY_DEFAULT_USER" value must be the same as VITE_CLOUDINARY_DEFAULT_USER value in client .env
+```
+
+Note: An .env.example file has been provided in this repository for clarity
+
+### STEP 4: Start local server
+
+```bash
+npm start
+```
+
+### DATABASE COMMANDS
+
+```bash
+# Dropping Database
+npm run db:drop
+```
+
+```bash
+# Seeding Database
+npm run seed
+```
+
+### TEST ENVIRONMENT: Data from - `npm run seed`
+
+![Furever Homes Test Data](docs/testing-images/FureverHomes_TestData.png)
 
 ## Dataflow Diagram
 
@@ -124,7 +253,7 @@ This layer handles user interactions and renders the entire user interface. It i
 2. **Business Logic Layer**  
 This Business Logic Layer contains the core application logic, business rules, and processing workflows. The Node.js & Express.js backend acts as an intermediary between the frontend and the database, which manages components such as:
 
-    - API controllers that handle all API requests from the frontend related to pets, users, and adoptions. 
+    - API controllers that handle all API requests from the frontend related to pets, users, and adoptions.
     - All business logic for features such as checking pet availability, authenticating users and adoption request validiation checks are all encapsulated into services.
     - Middleware that manages authentication utilising JWT verification, logins and error handling.
 
@@ -210,6 +339,7 @@ Throughout this process, we've developed both lo-fi and hi-fi wireframes. The lo
 [Lo-Fi Wireframes - individual images of each wireframe](docs/wireframe_images/Furever%20Homes%20-%20Lo%20Fi%20-%20Individual%20Screenshot.pdf)
 
 ## Hi-Fi Wireframes
+
 ![Destop - Whole Journey](docs/wireframe_images/(Desktop)%20Furever%20Homes%20-%20Hi%20Fi%20-%20User%20Journey.png)
 ![Mobile - User Journey](docs/wireframe_images/(Mobile)%20Furever%20Homes%20-%20Hi%20Fi%20-%20User%20Journey.png)
 ![Mobile - Shelter Journey](docs/wireframe_images/(Mobile)%20Furever%20Homes%20-%20Hi%20Fi%20-%20Shelter.png)
@@ -292,7 +422,7 @@ By following the agile scrum framework, our team completed the below:
 - **13th Feb 2025**: 4th Stand Up - Review final documentation
 - **16th Feb 2025**: 5th Stand Up - Final checks & submission
 
-#### Part B Meetings:
+#### Part B Meetings
 
 - **18th Feb 2025**: 1st Standup, Group Meeting - roughly allocating tasks, splitting frontend and backend work
 - **20th Feb 2025**: 3rd Sprint Planning session (Sprint 3)
@@ -308,7 +438,7 @@ By following the agile scrum framework, our team completed the below:
 
 ![Sprint 3 example screenshot](docs/Jira/Sprint%203%20task%20example.png)
 
-### Screenshot Examples of Task progression throughout Part A Timeline:
+### Screenshot Examples of Task progression throughout Part A Timeline
 
 #### 30th January 2025
 
@@ -325,7 +455,7 @@ By following the agile scrum framework, our team completed the below:
 ![Epic 15th Feb](docs/Jira/Epic_250215.png)
 ![Wireframes 15th Feb](docs/Jira/WF_250215.png)
 
-### Part B example:
+### Part B example
 
 #### 20th February 2025
 
