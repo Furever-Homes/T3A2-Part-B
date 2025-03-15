@@ -210,6 +210,10 @@ npm run db:drop
 npm run seed
 ```
 
+### DEPLOYMENT ENVIRONMENT: Data from - `npm run seed`
+
+![Furever Homes Test Data for Deployed website](docs/testing-images/FureverHomesTestData_deployed.png)
+
 ### TEST ENVIRONMENT: Data from - `npm run seed`
 
 ![Furever Homes Test Data](docs/testing-images/FureverHomes_TestData.png)
