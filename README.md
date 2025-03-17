@@ -11,6 +11,8 @@ A Pet Adoption & Shelter Management Application
 | Furever Homes - Deployed Frontend Website | [https://fureverhomes.netlify.app/](https://fureverhomes.netlify.app/) |
 | Furever Homes - Deployed API Web Application | [https://fureverhomes.onrender.com](https://fureverhomes.onrender.com) |
 
+*NOTE: Due to limitations of render (free version), please allow approximately 1 min after first API call for server to warm up*
+
 ## Contents
 
 1) [What is "Furever Homes"?](#what-is-furever-homes)
