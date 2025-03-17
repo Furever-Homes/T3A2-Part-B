@@ -153,6 +153,19 @@ body, html {
     gap: 15px;
   }
 
+  .popup {
+    max-width: 80dvw;
+  }
+
+  .popup p {
+    margin: 6px;
+  }
+
+  .popup-image {
+    max-height: 200px;
+    max-width: 200px;
+  }
+
   .explore-pet-card {
     width: 90%;
     max-width: 300px;
