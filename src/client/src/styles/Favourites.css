@@ -80,7 +80,8 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
   .favourites-page {
-    padding-top: 120px; /* Ensures space for navbar */
+    padding-top: 120px;
+    padding-bottom: 60px;
   }
 
   .favourite-pet-card {
