@@ -194,7 +194,14 @@ CLOUDINARY_DEFAULT_USER=INSERT_CLOUDINARY_URL_for_default_user_image
 
 Note: An .env.example file has been provided in this repository for clarity
 
-### STEP 4: Start local server
+### STEP 4: Seed Database
+
+```bash
+# Inserts test data into the database
+npm run seed
+```
+
+### STEP 5: Start local server
 
 ```bash
 npm start
@@ -212,13 +219,25 @@ npm run db:drop
 npm run seed
 ```
 
-### DEPLOYMENT ENVIRONMENT: Data from - `npm run seed`
+### DEPLOYED TEST ENVIRONMENT: Data from - `npm run seed`
 
-![Furever Homes Test Data for Deployed website](docs/testing-images/FureverHomesTestData_deployed.png)
+This data is for test usage only for [https://fureverhomes.netlify.app/](https://fureverhomes.netlify.app/)
 
-### TEST ENVIRONMENT: Data from - `npm run seed`
+| Name | Email | Password | Admin | Favourites | Applications |
+|------|-------|----------|-------|------------|--------------|
+| John Doe | johndoe@example.com | abc123 | FALSE | Buddy, Charlie | Buddy, Oscar
+| Jane Smith | janesmith@example.com | abc123 | FALSE | Mittens, Max | Mittens, Daisy |
+| Alex Brown | alexbrown@example.com | abc123 | FALSE | Luna, Oscar | Luna |
+| Admin user | admin@example.com | abc123 | True | N/A | N/A |
 
-![Furever Homes Test Data](docs/testing-images/FureverHomes_TestData.png)
+### LOCAL TEST ENVIRONMENT: Data from - `npm run seed`
+
+| Name | Email | Password | Admin | Favourites | Applications |
+|------|-------|----------|-------|------------|--------------|
+| John Doe | johndoe@example.com | [As noted in PASSWORD environment variable](#step-3-create-env-file-in-srcserver) | FALSE | Buddy, Charlie | Buddy, Oscar
+| Jane Smith | janesmith@example.com | [As noted in PASSWORD environment variable](#step-3-create-env-file-in-srcserver) | FALSE | Mittens, Max | Mittens, Daisy |
+| Alex Brown | alexbrown@example.com | [As noted in PASSWORD environment variable](#step-3-create-env-file-in-srcserver) | FALSE | Luna, Oscar | Luna |
+| Admin user | admin@example.com | [As noted in PASSWORD environment variable](#step-3-create-env-file-in-srcserver) | True | N/A | N/A |
 
 ## Dataflow Diagram
 
