@@ -121,7 +121,7 @@ Effective communication was key to ensuring that both the frontend and backend r
 
 ```bash
 git clone git@github.com:Furever-Homes/T3A2-Part-B.git
-cd src/client
+cd T3A2-Part-B/src/client
 ```
 
 ### STEP 2: Install client dependencies
@@ -156,7 +156,7 @@ npm start
 
 ```bash
 git clone git@github.com:Furever-Homes/T3A2-Part-B.git
-cd src/server
+cd T3A2-Part-B/src/server
 ```
 
 ### STEP 2: Install server dependencies
